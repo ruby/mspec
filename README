@@ -23,7 +23,11 @@ guards not only enable or disable execution but also annotate the specs with
 additional information about why they are run or not run. Second, MSpec
 provides a different shared spec implementation specifically designed to ease
 writing specs for the numerous aliased methods in Ruby. The MSpec shared spec
-implementation should not conflict with RSpec's own shared behavior facility. Third, MSpec provides various helper methods to simplify some specs, for example, creating temporary file names. Finally, MSpec has several specialized runner scripts.
+implementation should not conflict with RSpec's own shared behavior facility.
+Third, MSpec provides various helper methods to simplify some specs, for
+example, creating temporary file names. Finally, MSpec has several specialized
+runner scripts that includes a configuration facility with a default project
+file and user-specific overrides.
 
 Caveats:
 
