@@ -40,11 +40,11 @@ class MSpecCI < MSpecScript
 
     options.separator "\n How might this work in the real world?"
     options.separator "\n   1. To simply run the known good specs"
-    options.separator "\n     mspec ci"
+    options.separator "\n     $ mspec ci"
     options.separator "\n   2. To run a subset of the known good specs"
-    options.separator "\n     mspec ci path/to/specs"
+    options.separator "\n     $ mspec ci path/to/specs"
     options.separator "\n   3. To start the debugger before the spec matching 'this crashes'"
-    options.separator "\n     mspec ci --spec-debug -S 'this crashes'"
+    options.separator "\n     $ mspec ci --spec-debug -S 'this crashes'"
     options.separator ""
 
     @patterns = options.parse argv

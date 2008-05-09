@@ -46,12 +46,12 @@ class MSpecRun < MSpecScript
 
     options.separator "\n How might this work in the real world?"
     options.separator "\n   1. To simply run some specs"
-    options.separator "\n     mspec path/to/the/specs"
+    options.separator "\n     $ mspec path/to/the/specs"
     options.separator "     mspec path/to/the_file_spec.rb"
     options.separator "\n   2. To run specs tagged with 'fails'"
-    options.separator "\n     mspec -g fails path/to/the_file_spec.rb"
+    options.separator "\n     $ mspec -g fails path/to/the_file_spec.rb"
     options.separator "\n   3. To start the debugger before the spec matching 'this crashes'"
-    options.separator "\n     mspec --spec-debug -S 'this crashes' path/to/the_file_spec.rb"
+    options.separator "\n     $ mspec --spec-debug -S 'this crashes' path/to/the_file_spec.rb"
     options.separator ""
 
     @patterns = options.parse argv

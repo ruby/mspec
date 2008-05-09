@@ -49,9 +49,9 @@ class MSpecTag < MSpecScript
 
     options.separator "\n How might this work in the real world?"
     options.separator "\n   1. To add the 'fails' tag to failing specs"
-    options.separator "\n     mspec tag path/to/the_file_spec.rb"
+    options.separator "\n     $ mspec tag path/to/the_file_spec.rb"
     options.separator "\n   2. To remove the 'fails' tag from passing specs"
-    options.separator "\n     mspec tag --del fails path/to/the_file_spec.rb"
+    options.separator "\n     $ mspec tag --del fails path/to/the_file_spec.rb"
     options.separator ""
 
     @patterns = options.parse argv
