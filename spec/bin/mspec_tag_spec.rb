@@ -6,10 +6,12 @@ describe MSpecTag, "#options" do
   before :each do
     @stdout, $stdout = $stdout, IOStub.new
 
-    @options = mock("MSpecOptions", :null_object => true)
-    @options.stub!(:parse).and_return(["blocked!"])
+    @argv = ["a", "b"]
+    @options, @config = new_option
     MSpecOptions.stub!(:new).and_return(@options)
+
     @script = MSpecTag.new
+    @script.stub!(:config).and_return(@config)
   end
 
   after :each do
@@ -18,57 +20,62 @@ describe MSpecTag, "#options" do
 
   it "enables the filter options" do
     @options.should_receive(:add_filters)
-    @script.options
+    @script.options @argv
   end
 
   it "enables the config option" do
     @options.should_receive(:add_config)
-    @script.options
+    @script.options @argv
+  end
+
+  it "provides a custom action (block) to the config option" do
+    @script.should_receive(:load).with("cfg.mspec")
+    @script.options ["-B", "cfg.mspec", "a"]
   end
 
   it "enables the name option" do
     @options.should_receive(:add_name)
-    @script.options
+    @script.options @argv
   end
 
   it "enables the tags dir option" do
     @options.should_receive(:add_tags_dir)
-    @script.options
+    @script.options @argv
   end
 
   it "enables the dry run option" do
     @options.should_receive(:add_pretend)
-    @script.options
+    @script.options @argv
   end
 
   it "enables the interrupt single specs option" do
     @options.should_receive(:add_interrupt)
-    @script.options
+    @script.options @argv
   end
 
   it "enables the formatter options" do
     @options.should_receive(:add_formatters)
-    @script.options
+    @script.options @argv
   end
 
   it "enables the verbose option" do
     @options.should_receive(:add_verbose)
-    @script.options
+    @script.options @argv
   end
 
   it "enables the tagging options" do
     @options.should_receive(:add_tagging)
-    @script.options
+    @script.options @argv
   end
 
   it "enables the version option" do
     @options.should_receive(:add_version)
-    @script.options
+    @script.options @argv
   end
 
   it "enables the help option" do
     @options.should_receive(:add_help)
-    @script.options
+    @script.options @argv
   end
 
   it "exits if there are no files to process" do

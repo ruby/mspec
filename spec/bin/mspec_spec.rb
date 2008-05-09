@@ -1,34 +1,25 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 load 'bin/mspec'
 
-class MMConfig < Hash
-  def initialize
-    self[:includes] = []
-    self[:requires] = []
-    self[:target]   = 'ruby'
-    self[:flags]    = []
-    self[:command]  = nil
-    self[:options]  = []
-  end
-end
-
-def new_option
-  config = MMConfig.new
-  return MSpecOptions.new(config, "spec"), config
-end
-
 describe MSpecMain, "#options" do
   before :each do
-    @options = mock("MSpecOptions", :null_object => true)
+    @options, @config = new_option
     @options.stub!(:parser).and_return(mock("parser"))
     @options.parser.stub!(:filter!).and_return(["blocked!"])
     MSpecOptions.stub!(:new).and_return(@options)
+
     @script = MSpecMain.new
+    @script.stub!(:config).and_return(@config)
   end
 
   it "enables the config option" do
     @options.should_receive(:add_config)
     @script.options
+  end
+
+  it "provides a custom action (block) to the config option" do
+    @script.options ["-B", "config"]
+    @config[:options].should include("-B", "config")
   end
 
   it "enables the target options" do

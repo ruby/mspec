@@ -8,7 +8,7 @@ require 'mspec/utils/script'
 
 
 class MSpecCI < MSpecScript
-  def options
+  def options(argv=ARGV)
     options = MSpecOptions.new config, "ci", "", 28, "   "
 
     options.separator " Ask yourself:"
@@ -18,7 +18,7 @@ class MSpecCI < MSpecScript
     options.separator "  4. When to perform it?"
 
     options.separator "\n How to run the specs"
-    options.add_config { |f| config f }
+    options.add_config { |f| load f }
     options.add_name
     options.add_tags_dir
     options.add_pretend
@@ -47,7 +47,7 @@ class MSpecCI < MSpecScript
     options.separator "\n     mspec ci --spec-debug -S 'this crashes'"
     options.separator ""
 
-    @patterns = options.parse
+    @patterns = options.parse argv
     @patterns = config[:ci_files] if @patterns.empty?
   end
 

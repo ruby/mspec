@@ -16,7 +16,7 @@ class MSpecTag < MSpecScript
     config[:outcome] = :fail
   end
 
-  def options
+  def options(argv=ARGV)
     options = MSpecOptions.new config, "tag", "", 28, "   "
 
     options.separator " Ask yourself:"
@@ -30,7 +30,7 @@ class MSpecTag < MSpecScript
     options.add_filters
 
     options.separator "\n How to modify the execution"
-    options.add_config { |f| config f }
+    options.add_config { |f| load f }
     options.add_name
     options.add_tags_dir
     options.add_pretend
@@ -54,7 +54,7 @@ class MSpecTag < MSpecScript
     options.separator "\n     mspec tag --del fails path/to/the_file_spec.rb"
     options.separator ""
 
-    @patterns = options.parse
+    @patterns = options.parse argv
     if @patterns.empty?
       puts options.parser
       puts "No files specified."

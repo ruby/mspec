@@ -4,28 +4,6 @@ require 'mspec/version'
 require 'mspec/runner/mspec'
 require 'mspec/runner/formatters'
 
-class MOSConfig < Hash
-  def initialize
-    self[:includes]  = []
-    self[:requires]  = []
-    self[:flags]     = []
-    self[:options]   = []
-    self[:includes]  = []
-    self[:excludes]  = []
-    self[:patterns]  = []
-    self[:xpatterns] = []
-    self[:tags]      = []
-    self[:xtags]     = []
-    self[:atags]     = []
-    self[:astrings]  = []
-  end
-end
-
-def new_option
-  config = MOSConfig.new
-  return MSpecOptions.new(config, "spec"), config
-end
-
 describe MSpecOptions, "#parser" do
   it "returns an OptionParser instance" do
     MSpecOptions.new({}, "spec").parser.should be_kind_of(OptionParser)

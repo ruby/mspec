@@ -36,7 +36,6 @@ class MSpecMain < MSpecScript
 
     options.add_config do |f|
       config[:options] << '-B' << f
-      config f
     end
 
     options.add_targets

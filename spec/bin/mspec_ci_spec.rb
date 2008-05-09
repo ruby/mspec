@@ -5,14 +5,21 @@ load 'bin/mspec-ci'
 
 describe MSpecCI, "#options" do
   before :each do
-    @options = mock("MSpecOptions", :null_object => true)
+    @options, @config = new_option
     MSpecOptions.stub!(:new).and_return(@options)
+
     @script = MSpecCI.new
+    @script.stub!(:config).and_return(@config)
   end
 
   it "enables the config option" do
     @options.should_receive(:add_config)
     @script.options
+  end
+
+  it "provides a custom action (block) to the config option" do
+    @script.should_receive(:load).with("cfg.mspec")
+    @script.options ["-B", "cfg.mspec"]
   end
 
   it "enables the name option" do
