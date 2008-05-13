@@ -164,14 +164,21 @@ describe MSpec, ".report_mode?" do
 end
 
 describe MSpec, ".describe" do
-  it "pushes a new RunState instance on the stack" do
+  before :each do
     MSpec.stack.clear
+  end
+
+  it "accepts one argument" do
+    MSpec.describe(Object) { ScratchPad.record MSpec.current }
+    ScratchPad.recorded.should be_kind_of(RunState)
+  end
+
+  it "pushes a new RunState instance on the stack" do
     MSpec.describe(Object, "msg") { ScratchPad.record MSpec.current }
     ScratchPad.recorded.should be_kind_of(RunState)
   end
 
   it "pops the RunState instance off the stack when finished" do
-    MSpec.stack.clear
     MSpec.describe(Object, "msg") { ScratchPad.record MSpec.current }
     ScratchPad.recorded.should be_kind_of(RunState)
     MSpec.stack.should == []

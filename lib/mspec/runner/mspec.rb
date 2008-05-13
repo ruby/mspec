@@ -20,7 +20,7 @@ module MSpec
   @randomize   = nil
   @expectation = nil
 
-  def self.describe(mod, msg, &block)
+  def self.describe(mod, msg=nil, &block)
     stack.push RunState.new
 
     current.describe(mod, msg, &block)
