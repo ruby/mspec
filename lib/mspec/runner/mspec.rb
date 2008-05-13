@@ -117,7 +117,7 @@ module MSpec
 
   def self.protect(msg, &block)
     begin
-      instance_eval &block
+      instance_eval(&block)
     rescue Exception => e
       register_exit 1
       if current and current.state
