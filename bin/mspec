@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-$:.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+MSPEC_HOME = File.expand_path(File.dirname(__FILE__) + '/..')
+$:.unshift "#{MSPEC_HOME}/lib"
 
 require 'yaml'
 require 'optparse'
@@ -129,7 +130,7 @@ class MSpecMain < MSpecScript
     argv = config[:flags]
     argv.concat config[:includes]
     argv.concat config[:requires]
-    argv << "mspec/bin/mspec-#{ config[:command] || "run" }"
+    argv << "#{MSPEC_HOME}/bin/mspec-#{ config[:command] || "run" }"
     argv.concat config[:options]
 
     if config[:multi] and config[:command] == "ci"
