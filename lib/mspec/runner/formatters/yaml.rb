@@ -26,7 +26,7 @@ class YamlFormatter < DottedFormatter
       state.exceptions.each do |msg, exc|
         outcome = failure?(state) ? "FAILED" : "ERROR"
         str =  "#{state.description} #{outcome}\n"
-        str << "Exception occurred during: #{msg}\n" if msg
+        str << "#{exc.class.name} occurred during: #{msg}\n" if msg
         str << backtrace(exc)
         print "- ", str.inspect, "\n"
       end
