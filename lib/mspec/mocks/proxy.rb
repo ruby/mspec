@@ -70,13 +70,15 @@ class MockProxy
   end
 
   def and_return(*args)
-    if args.size > 1
-      @multiple_returns = true
-      @returning = args
-    elsif args.size == 1
+    case args.size
+    when 0
+      @returning = nil
+    when 1
       @returning = args[0]
     else
-      @returning = nil
+      @multiple_returns = true
+      @returning = args
+      count[1] = args.size if count[1] < args.size
     end
     self
   end
