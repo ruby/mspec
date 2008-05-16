@@ -39,3 +39,8 @@ def new_option
   config = MOSConfig.new
   return MSpecOptions.new(config, "spec"), config
 end
+
+# Just to have an exception name output not be "Exception"
+class MSpecExampleError < Exception
+end
+

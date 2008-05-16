@@ -81,14 +81,14 @@ describe DottedFormatter, "#after" do
   end
 
   it "prints an 'E' if there was an exception other than expectation failure" do
-    @state.exceptions << ["msg", Exception.new("boom!")]
+    @state.exceptions << ["msg", MSpecExampleError.new("boom!")]
     @formatter.after(@state)
     @out.should == "E"
   end
 
   it "prints an 'E' if there are mixed exceptions and exepctation failures" do
     @state.exceptions << ["msg", ExpectationNotMetError.new("failed")]
-    @state.exceptions << ["msg", Exception.new("boom!")]
+    @state.exceptions << ["msg", MSpecExampleError.new("boom!")]
     @formatter.after(@state)
     @out.should == "E"
   end
@@ -113,7 +113,7 @@ describe DottedFormatter, "#finish" do
   end
 
   it "prints a failure message for an exception" do
-    @state.exceptions << ["msg", Exception.new("broken")]
+    @state.exceptions << ["msg", MSpecExampleError.new("broken")]
     @formatter.after @state
     @formatter.finish
     @out.should =~ /^1\)\ndescribe it ERROR$/
@@ -121,7 +121,7 @@ describe DottedFormatter, "#finish" do
 
   it "prints a backtrace for an exception" do
     @formatter.stub!(:backtrace).and_return("path/to/some/file.rb:35:in method")
-    @state.exceptions << ["msg", Exception.new("broken")]
+    @state.exceptions << ["msg", MSpecExampleError.new("broken")]
     @formatter.after @state
     @formatter.finish
     @out.should =~ %r[path/to/some/file.rb:35:in method$]
@@ -140,7 +140,7 @@ describe DottedFormatter, "#finish" do
   end
 
   it "prints errors, backtraces, elapsed time, and tallies" do
-    @state.exceptions << ["msg", Exception.new("broken")]
+    @state.exceptions << ["msg", MSpecExampleError.new("broken")]
     @formatter.stub!(:backtrace).and_return("path/to/some/file.rb:35:in method")
     @timer.should_receive(:format).and_return("Finished in 2.0 seconds")
     @tally.should_receive(:format).and_return("1 example, 0 failures")
@@ -151,7 +151,7 @@ describe DottedFormatter, "#finish" do
 
 1)
 describe it ERROR
-Exception occurred during: msg
+MSpecExampleError occurred during: msg
 broken
 path/to/some/file.rb:35:in method
 

@@ -102,7 +102,7 @@ describe HtmlFormatter, "#after" do
   it "prints the #it string once for each exception raised" do
     @formatter.register
     @state.exceptions << ["msg", ExpectationNotMetError.new("disappointing")]
-    @state.exceptions << ["msg", Exception.new("painful")]
+    @state.exceptions << ["msg", MSpecExampleError.new("painful")]
     @formatter.tally.after @state
     @formatter.after @state
     @out.should == %[<li class="fail">- it (FAILED - 1)</li>\n<li class="fail">- it (ERROR - 2)</li>\n]
@@ -128,7 +128,7 @@ describe HtmlFormatter, "#finish" do
   end
 
   it "prints a failure message for an exception" do
-    @state.exceptions << ["msg", Exception.new("broken")]
+    @state.exceptions << ["msg", MSpecExampleError.new("broken")]
     @formatter.instance_variable_set :@states, [@state]
     @formatter.finish
     @out.should =~ %r[<p>describe it ERROR</p>]
@@ -136,7 +136,7 @@ describe HtmlFormatter, "#finish" do
 
   it "prints a backtrace for an exception" do
     @formatter.stub!(:backtrace).and_return("path/to/some/file.rb:35:in method")
-    @state.exceptions << ["msg", Exception.new("broken")]
+    @state.exceptions << ["msg", MSpecExampleError.new("broken")]
     @formatter.instance_variable_set :@states, [@state]
     @formatter.finish
     @out.should =~ %r[<pre>.*path/to/some/file.rb:35:in method.*</pre>]m
@@ -155,7 +155,7 @@ describe HtmlFormatter, "#finish" do
   end
 
   it "prints errors, backtraces, elapsed time, and tallies" do
-    @state.exceptions << ["msg", Exception.new("broken")]
+    @state.exceptions << ["msg", MSpecExampleError.new("broken")]
     @formatter.stub!(:backtrace).and_return("path/to/some/file.rb:35:in method")
     @timer.should_receive(:format).and_return("Finished in 2.0 seconds")
     @tally.should_receive(:format).and_return("1 example, 1 failures")
@@ -164,7 +164,7 @@ describe HtmlFormatter, "#finish" do
     @out.should ==
 %[<ol>
 <li><p>describe it ERROR</p>
-<p>broken</p>
+<p>MSpecExampleError: broken</p>
 <pre>
 path/to/some/file.rb:35:in method</pre>
 </li>

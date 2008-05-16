@@ -58,7 +58,7 @@ describe YamlFormatter, "#finish" do
 
     $stdout = IOStub.new
     @state = SpecState.new("describe", "it")
-    @state.exceptions << ["msg", Exception.new("broken")]
+    @state.exceptions << ["msg", MSpecExampleError.new("broken")]
 
     @formatter = YamlFormatter.new
     @formatter.stub!(:backtrace).and_return("")
@@ -80,7 +80,7 @@ describe YamlFormatter, "#finish" do
     @formatter.should_receive(:backtrace).and_return("path/to/some/file.rb:35:in method")
     @formatter.finish
     $stdout.should =~ /describe it ERROR/
-    $stdout.should =~ /Exception occurred during: msg/
+    $stdout.should =~ /MSpecExampleError occurred during: msg/
     $stdout.should =~ %r[path/to/some/file.rb:35:in method]
   end
 
