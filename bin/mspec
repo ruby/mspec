@@ -3,7 +3,6 @@
 MSPEC_HOME = File.expand_path(File.dirname(__FILE__) + '/..')
 $:.unshift "#{MSPEC_HOME}/lib"
 
-require 'yaml'
 require 'optparse'
 require 'mspec/utils/options'
 require 'mspec/utils/script'
@@ -84,6 +83,8 @@ class MSpecMain < MSpecScript
   end
 
   def report(files, timer)
+    require 'yaml'
+
     exceptions = []
     tally = Tally.new
 
