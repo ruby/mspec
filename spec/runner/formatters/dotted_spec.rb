@@ -152,7 +152,7 @@ describe DottedFormatter, "#finish" do
 1)
 describe it ERROR
 MSpecExampleError occurred during: msg
-broken
+MSpecExampleError: broken
 path/to/some/file.rb:35:in method
 
 Finished in 2.0 seconds

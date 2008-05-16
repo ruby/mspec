@@ -81,6 +81,7 @@ describe YamlFormatter, "#finish" do
     @formatter.finish
     $stdout.should =~ /describe it ERROR/
     $stdout.should =~ /MSpecExampleError occurred during: msg/
+    $stdout.should =~ /MSpecExampleError: broken/
     $stdout.should =~ %r[path/to/some/file.rb:35:in method]
   end
 
