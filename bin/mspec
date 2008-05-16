@@ -14,7 +14,7 @@ class MSpecMain < MSpecScript
   def initialize
     config[:includes] = []
     config[:requires] = []
-    config[:target]   = 'ruby'
+    config[:target]   = ENV['RUBY'] || 'ruby'
     config[:flags]    = []
     config[:command]  = nil
     config[:options]  = []
