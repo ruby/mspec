@@ -1,4 +1,4 @@
-class BeEqualMatcher
+class EqualMatcher
   def initialize(expected)
     @expected = expected
   end
@@ -20,7 +20,7 @@ class BeEqualMatcher
 end
 
 class Object
-  def be_equal(expected)
+  def equal(expected)
     BeEqualMatcher.new(expected)
   end
 end
