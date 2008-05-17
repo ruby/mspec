@@ -79,6 +79,7 @@ describe Mock, ".verify_call" do
   end
 
   after :each do
+    ScratchPad.clear
     Mock.cleanup
   end
 
@@ -111,6 +112,59 @@ describe Mock, ".verify_call" do
   it "does not raise an exception when the mock method is called with arguments and is expecting :any_args" do
     @proxy.with(:any_args)
     Mock.verify_call @mock, :method_call, 1, 2, 3
+  end
+  
+  it "yields a passed block when it is expected to" do
+    @proxy.and_yield()
+    Mock.verify_call @mock, :method_call do 
+      ScratchPad.record true
+    end
+    ScratchPad.recorded.should == true
+  end
+  
+  it "does not yield a passed block when it is not expected to" do
+    Mock.verify_call @mock, :method_call do 
+      ScratchPad.record true
+    end
+    ScratchPad.recorded.should == nil
+  end
+  
+  it "can yield subsequently" do
+    @proxy.and_yield(1).and_yield(2).and_yield(3)
+    
+    ScratchPad.record []
+    Mock.verify_call @mock, :method_call do |arg|
+      ScratchPad << arg
+    end
+    ScratchPad.recorded.should == [1, 2, 3]
+  end
+
+  it "can yield and return an expected value" do
+    @proxy.and_yield(1).and_return(3)
+    
+    Mock.verify_call(@mock, :method_call) { |arg| ScratchPad.record arg }.should == 3
+    ScratchPad.recorded.should == 1
+  end
+
+  it "raises an expection when it is expected to yield but no block is given" do
+    @proxy.and_yield(1, 2, 3)
+    lambda {
+      Mock.verify_call(@mock, :method_call)
+    }.should raise_error(ExpectationNotMetError)
+  end
+
+  it "raises an expection when it is expected to yield more arguments than the block can take" do
+    @proxy.and_yield(1, 2, 3)
+    lambda {
+      Mock.verify_call(@mock, :method_call) {|a, b|}
+    }.should raise_error(ExpectationNotMetError)
+  end
+
+  it "does not raise an expection when it is expected to yield to a block that can take any number of arguments" do
+    @proxy.and_yield(1, 2, 3)
+    lambda {
+      Mock.verify_call(@mock, :method_call) {|*a|}
+    }.should_not raise_error(ExpectationNotMetError)
   end
 end
 

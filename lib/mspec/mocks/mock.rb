@@ -68,6 +68,22 @@ module Mock
       else
         proxy.arguments == compare
       end
+      
+      if proxy.yielding?
+        if block
+          proxy.yielding.each do |args_to_yield|
+            if block.arity == -1 || block.arity == args_to_yield.size
+              block.call(*args_to_yield)
+            else
+              Expectation.fail_with("Mock #{obj.inspect} asked to yield |#{proxy.yielding.join(', ')}| on #{sym}\n",
+                                    "but a block with arity #{block.arity} was passed")
+            end
+          end
+        else
+          Expectation.fail_with("Mock #{obj.inspect} asked to yield |[#{proxy.yielding.join('], [')}]| on #{sym}\n",
+                                "but no block was passed")
+        end
+      end
 
       if pass
         proxy.called

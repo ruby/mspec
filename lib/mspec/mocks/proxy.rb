@@ -2,6 +2,7 @@ class MockProxy
   def initialize
     @multiple_returns = nil
     @returning = nil
+    @yielding  = []
     @arguments = :any_args
   end
 
@@ -81,6 +82,19 @@ class MockProxy
       count[1] = args.size if count[1] < args.size
     end
     self
+  end
+
+  def and_yield(*args)
+    @yielding << args
+    self
+  end
+  
+  def yielding
+    @yielding
+  end
+  
+  def yielding?
+    !@yielding.empty?
   end
 
   private
