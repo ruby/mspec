@@ -12,7 +12,7 @@ describe EqualMatcher do
     EqualMatcher.new(o).matches?(o).should == true
   end
 
-  it "does not match when actual is not a kind_of? expected" do
+  it "does not match when actual is not a equal? to expected" do
     EqualMatcher.new(1).matches?(1.0).should == false
     EqualMatcher.new(1.5).matches?(1.5).should == false
     EqualMatcher.new("blue").matches?("blue").should == false
