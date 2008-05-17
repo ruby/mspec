@@ -21,6 +21,6 @@ end
 
 class Object
   def equal(expected)
-    BeEqualMatcher.new(expected)
+    EqualMatcher.new(expected)
   end
 end
