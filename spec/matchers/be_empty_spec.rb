@@ -14,13 +14,13 @@ describe BeEmptyMatcher do
   it "provides a useful failure message" do
     matcher = BeEmptyMatcher.new
     matcher.matches?("not empty string")
-    matcher.failure_message.should == ["Expected not empty string", "to be empty"]
+    matcher.failure_message.should == ["Expected \"not empty string\"", "to be empty"]
   end
 
   it "provides a useful negative failure message" do
     matcher = BeEmptyMatcher.new
     matcher.matches?("")
-    matcher.negative_failure_message.should == ["Expected <#{String}>", "not to be empty"]
+    matcher.negative_failure_message.should == ["Expected \"\"", "not to be empty"]
   end
 end
 

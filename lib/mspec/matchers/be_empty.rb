@@ -5,11 +5,11 @@ class BeEmptyMatcher
   end
 
   def failure_message
-    ["Expected #{@actual}", "to be empty"]
+    ["Expected #{@actual.inspect}", "to be empty"]
   end
 
   def negative_failure_message
-    ["Expected <#{@actual.class}>", "not to be empty"]
+    ["Expected #{@actual.inspect}", "not to be empty"]
   end
 end
 
