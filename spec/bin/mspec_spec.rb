@@ -179,6 +179,7 @@ describe MSpecMain, "#multi_exec" do
     @script.stub!(:config).and_return(@config)
     @script.stub!(:fork)
     @script.stub!(:report)
+    Process.stub!(:waitall)
   end
 
   it "calls #fork for each entry in config[:ci_files]" do
