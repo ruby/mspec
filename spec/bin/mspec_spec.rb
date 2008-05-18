@@ -68,6 +68,8 @@ describe MSpecMain, "#parallel" do
   end
 
   it "returns true unless JRUBY_VERSION is set or RUBY_PLATFORM matches mswin or mingw" do
+    Object.should_receive(:const_defined?).with(:JRUBY_VERSION).and_return(false)
+    Object.const_set :RUBY_PLATFORM, "i686-linux"
     @script.parallel.should == true
   end
 end
