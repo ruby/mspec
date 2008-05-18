@@ -58,6 +58,27 @@ describe DottedFormatter, "#print" do
   end
 end
 
+describe DottedFormatter, "#message" do
+  before :each do
+    @formatter = DottedFormatter.new
+  end
+
+  it "returns <No message> if the exception message is empty" do
+    exc = Exception.new ""
+    @formatter.message(exc).should == "<No message>"
+  end
+
+  it "returns the message without exception class when the exception is ExpectationNotMetError" do
+    exc = Exception.new "message"
+    @formatter.message(exc).should == "Exception: message"
+  end
+
+  it "returns the message with exception class when the exception is not ExpectationNotMetError" do
+    exc = ExpectationNotMetError.new "message"
+    @formatter.message(exc).should == "message"
+  end
+end
+
 describe DottedFormatter, "#after" do
   before :each do
     $stdout = @out = IOStub.new

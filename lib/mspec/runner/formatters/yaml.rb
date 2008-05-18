@@ -27,7 +27,7 @@ class YamlFormatter < DottedFormatter
         outcome = failure?(state) ? "FAILED" : "ERROR"
         str =  "#{state.description} #{outcome}\n"
         str << "#{exc.class.name} occurred during: #{msg}\n" if msg
-        str << (exc.message.empty? ? "<No message>" : "#{exc.class}: #{exc.message}")
+        str << message(exc)
         str << backtrace(exc)
         print "- ", str.inspect, "\n"
       end

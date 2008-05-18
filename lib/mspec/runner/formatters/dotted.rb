@@ -42,7 +42,8 @@ class DottedFormatter
         outcome = failure?(state) ? "FAILED" : "ERROR"
         print "\n#{count += 1})\n#{state.description} #{outcome}\n"
         print "#{exc.class.name} occurred during: #{msg}\n" if msg
-        print((exc.message.empty? ? "<No message>" : "#{exc.class}: #{exc.message}") + "\n")
+        print message(exc)
+        print "\n"
         print backtrace(exc)
         print "\n"
       end
@@ -52,6 +53,16 @@ class DottedFormatter
 
   def print(*args)
     @out.print(*args)
+  end
+
+  def message(exc)
+    if exc.message.empty?
+      "<No message>"
+    elsif exc.class == ExpectationNotMetError
+      exc.message
+    else
+      "#{exc.class}: #{exc.message}"
+    end
   end
 
   def failure?(state)
