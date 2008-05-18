@@ -16,6 +16,14 @@ describe Object, "#tmp" do
     tmp("test.txt").should == dir + "/test.txt"
   end
 
+  it "returns /var/tmp/<name> if /var/tmp is a writable directory" do
+    dir = "/var/tmp"
+    File.should_receive(:directory?).with(dir).and_return(true)
+    File.should_receive(:writable?).with(dir).and_return(true)
+    File.should_receive(:expand_path).with(dir).and_return(dir)
+    tmp("test.txt").should == dir + "/test.txt"
+  end
+
   it "returns ENV['TMPDIR']/<name> if ENV['TMPDIR'] is a writable directory" do
     dir = "/tmpdir"
     ENV.should_receive(:[]).with("TMPDIR").and_return(dir)
