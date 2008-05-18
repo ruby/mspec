@@ -199,6 +199,8 @@ end
 
 describe MSpecMain, "#run" do
   before :each do
+    @options, @config = new_option
+    MSpecOptions.stub!(:new).and_return(@options)
     @script = MSpecMain.new
   end
 

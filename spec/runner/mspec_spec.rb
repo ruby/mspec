@@ -2,59 +2,81 @@ require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/matchers/base'
 require 'mspec/runner/mspec'
 
-describe MSpec do
-  it "provides .register_files to record which spec files to run" do
+describe MSpec, ".register_files" do
+  it "records which spec files to run" do
     MSpec.register_files [:one, :two, :three]
     MSpec.retrieve(:files).should == [:one, :two, :three]
   end
+end
 
-  it "provides .register_mode for setting execution mode flags" do
+describe MSpec, ".register_mode" do
+  it "sets execution mode flags" do
     MSpec.register_mode :verify
     MSpec.retrieve(:mode).should == :verify
   end
+end
 
-  it "provides .register_tags_path to record the path to tag files" do
+describe MSpec, ".register_tags_path" do
+  it "records the path to tag files" do
     MSpec.register_tags_path "path/to/tags"
     MSpec.retrieve(:tags_path).should == "path/to/tags"
   end
+end
 
-  it "provides .register_exit to record the exit code" do
+describe MSpec, ".register_exit" do
+  before :each do
+    MSpec.store :exit, 0
+  end
+
+  it "records the exit code" do
     MSpec.exit_code.should == 0
     MSpec.register_exit 1
     MSpec.exit_code.should == 1
   end
+end
 
-  it "provides .exit_code to retrieve the code set with .register_exit" do
+describe MSpec, ".exit_code" do
+  it "retrieves the code set with .register_exit" do
     MSpec.register_exit 99
     MSpec.exit_code.should == 99
   end
+end
 
-  it "provides .store to store data" do
+describe MSpec, ".store" do
+  it "records data for MSpec settings" do
     MSpec.store :anything, :value
     MSpec.retrieve(:anything).should == :value
   end
+end
 
-  it "provides .retrieve to access .store'd data" do
+describe MSpec, ".retrieve" do
+  it "accesses .store'd data" do
     MSpec.register :action, :first
     MSpec.retrieve(:action).should == [:first]
   end
+end
 
-  it "provides .randomize/.randomize? to record/return the flag to randomize spec execution order" do
+describe MSpec, ".randomize" do
+  it "sets the flag to randomize spec execution order" do
     MSpec.randomize?.should == false
     MSpec.randomize
     MSpec.randomize?.should == true
     MSpec.randomize false
     MSpec.randomize?.should == false
   end
+end
 
-  it "provides .register as the gateway behind the register(symbol, action) facility" do
+describe MSpec, ".register" do
+  it "is the gateway behind the register(symbol, action) facility" do
     MSpec.register :bonus, :first
     MSpec.register :bonus, :second
     MSpec.register :bonus, :second
     MSpec.retrieve(:bonus).should == [:first, :second]
   end
+end
 
-  it "provides .unregister as the gateway behind the unregister(symbol, actions) facility" do
+describe MSpec, ".unregister" do
+  it "is the gateway behind the unregister(symbol, actions) facility" do
     MSpec.register :unregister, :first
     MSpec.register :unregister, :second
     MSpec.unregister :unregister, :second
