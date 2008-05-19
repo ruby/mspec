@@ -3,7 +3,7 @@ require 'mspec/guards/bug'
 
 describe Object, "#ruby_bug" do
   before :each do
-    @guard = BugGuard.new
+    @guard = BugGuard.new "#1234"
     BugGuard.stub!(:new).and_return(@guard)
     ScratchPad.clear
   end
@@ -18,5 +18,11 @@ describe Object, "#ruby_bug" do
     @guard.stub!(:implementation?).and_return(true)
     ruby_bug { ScratchPad.record :yield }
     ScratchPad.recorded.should_not == :yield
+  end
+
+  it "accepts an optional String identifying the bug tracker number" do
+    @guard.stub!(:implementation?).and_return(false)
+    ruby_bug("#1234") { ScratchPad.record :yield }
+    ScratchPad.recorded.should == :yield
   end
 end
