@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/guards/guard'
+require 'rbconfig'
 
 describe SpecGuard, ".register" do
   before :each do
@@ -174,6 +175,103 @@ describe SpecGuard, "#platform?" do
   it "returns true when arg is :windows and RUBY_PLATFORM contains 'mingw'" do
     Object.const_set :RUBY_PLATFORM, 'i386-mingw32'
     @guard.platform?(:windows).should == true
+  end
+end
+
+describe SpecGuard, "#platform? on JRuby" do
+  before :all do
+    @verbose = $VERBOSE
+    $VERBOSE = nil
+  end
+
+  after :all do
+    $VERBOSE = @verbose
+  end
+
+  before :each do
+    @ruby_platform = Object.const_get :RUBY_PLATFORM
+    Object.const_set :RUBY_PLATFORM, 'java'
+    @guard = SpecGuard.new
+  end
+
+  after :each do
+    Object.const_set :RUBY_PLATFORM, @ruby_platform
+  end
+
+  it "returns true when arg is :java and RUBY_PLATFORM contains 'java'" do
+    @guard.platform?(:java).should == true
+  end
+
+  it "returns true when arg is :windows and RUBY_PLATFORM contains 'java' and os?(:windows) is true" do
+    Config::CONFIG.stub!(:[]).and_return('mswin32')
+    @guard.platform?(:windows).should == true
+  end
+
+  it "returns true when RUBY_PLATFORM contains 'java' and os?(argument) is true" do
+    Config::CONFIG.stub!(:[]).and_return('amiga')
+    @guard.platform?(:amiga).should == true
+  end
+end
+
+describe SpecGuard, "#wordsize?" do
+  before :each do
+    @guard = SpecGuard.new
+  end
+
+  it "returns true when arg is 32 and 1.size is 4" do
+    @guard.wordsize?(32).should == (1.size == 4)
+  end
+
+  it "returns true when arg is 64 and 1.size is 8" do
+    @guard.wordsize?(64).should == (1.size == 8)
+  end
+end
+
+describe SpecGuard, "#os?" do
+  before :each do
+    @guard = SpecGuard.new
+    Config::CONFIG.stub!(:[]).and_return('unreal')
+  end
+
+  it "returns true if argument matches Config::CONFIG['host_os']" do
+    @guard.os?(:unreal).should == true
+  end
+
+  it "returns true if any argument matches Config::CONFIG['host_os']" do
+    @guard.os?(:bsd, :unreal, :amiga).should == true
+  end
+
+  it "returns false if no argument matches Config::CONFIG['host_os']" do
+    @guard.os?(:bsd, :netbsd, :amiga, :msdos).should == false
+  end
+
+  it "returns false if argument does not match Config::CONFIG['host_os']" do
+    @guard.os?(:amiga).should == false
+  end
+
+  it "returns true when arg is :windows and Config::CONFIG['host_os'] contains 'mswin'" do
+    Config::CONFIG.stub!(:[]).and_return('mswin32')
+    @guard.os?(:windows).should == true
+  end
+
+  it "returns true when arg is :windows and Config::CONFIG['host_os'] contains 'mingw'" do
+    Config::CONFIG.stub!(:[]).and_return('mingw32')
+    @guard.os?(:windows).should == true
+  end
+end
+
+describe SpecGuard, "windows?" do
+  before :each do
+    @guard = SpecGuard.new
+  end
+
+  it "returns true if the key passed matches 'mswin' or 'mingw'" do
+    @guard.windows?('mswin32').should == true
+    @guard.windows?('i386-mingw32').should == true
+  end
+
+  it "returns false if the key passes matches neither 'mswin' nor 'mingw'" do
+    @guard.windows?('darwin9.0').should == false
   end
 end
 

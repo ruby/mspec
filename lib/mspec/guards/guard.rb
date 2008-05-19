@@ -87,14 +87,30 @@ class SpecGuard
     end
   end
 
+  def windows?(key)
+    !!key.match(/(mswin|mingw)/)
+  end
+
   def platform?(*args)
     args.any? do |platform|
-      case platform
-      when :windows
-        ['mswin', 'mingw'].any? { |p| RUBY_PLATFORM.match p }
+      if platform != :java && RUBY_PLATFORM.match('java') && os?(platform)
+        true
       else
-        RUBY_PLATFORM.match platform.to_s
+        RUBY_PLATFORM.match(platform.to_s) || windows?(RUBY_PLATFORM)
       end
+    end
+  end
+
+  def wordsize?(size)
+    size == 8 * 1.size
+  end
+
+  def os?(*oses)
+    require 'rbconfig'
+    oses.any? do |os|
+      host_os = Config::CONFIG['host_os'] || RUBY_PLATFORM
+      host_os.downcase!
+      host_os.match(os.to_s) || windows?(host_os)
     end
   end
 

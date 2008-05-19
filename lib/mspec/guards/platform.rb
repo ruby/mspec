@@ -9,19 +9,6 @@ class PlatformGuard < SpecGuard
     end
   end
 
-  def wordsize?(size)
-    size == 8 * 1.size
-  end
-
-  def os?(*oses)
-    require 'rbconfig'
-    oses.any? do |os|
-      host_os = Config::CONFIG['host_os'] || RUBY_PLATFORM
-      host_os.downcase!
-      host_os.match os.to_s
-    end
-  end
-
   def match?
     match = @platforms.empty? ? true : platform?(*@platforms)
     @options.each do |key, value|

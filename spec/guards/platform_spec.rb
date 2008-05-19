@@ -1,21 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/guards/platform'
 
-describe MSpec, ".wordsize?" do
-  before :each do
-    @guard = PlatformGuard.new
-  end
-
-  it "returns true when arg is 32 and 1.size is 4" do
-    @guard.wordsize?(32).should == (1.size == 4)
-  end
-
-  it "returns true when arg is 64 and 1.size is 8" do
-    @guard.wordsize?(64).should == (1.size == 8)
-  end
-end
-
-
 describe Object, "#platform_is" do
   before :each do
     @guard = PlatformGuard.new :dummy
