@@ -53,6 +53,7 @@ class OptionParser
   end
 end
 
+require 'mspec/version'
 
 # MSpecOptions wraps OptionParser and provides a composable set of
 # options that the runner scripts pick from.
