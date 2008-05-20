@@ -87,8 +87,8 @@ class SpecGuard
     end
   end
 
-  def windows?(key)
-    !!key.match(/(mswin|mingw)/)
+  def windows?(sym, key)
+    sym == :windows && !!key.match(/(mswin|mingw)/)
   end
 
   def platform?(*args)
@@ -96,7 +96,7 @@ class SpecGuard
       if platform != :java && RUBY_PLATFORM.match('java') && os?(platform)
         true
       else
-        RUBY_PLATFORM.match(platform.to_s) || windows?(RUBY_PLATFORM)
+        RUBY_PLATFORM.match(platform.to_s) || windows?(platform, RUBY_PLATFORM)
       end
     end
   end
@@ -110,7 +110,7 @@ class SpecGuard
     oses.any? do |os|
       host_os = Config::CONFIG['host_os'] || RUBY_PLATFORM
       host_os.downcase!
-      host_os.match(os.to_s) || windows?(host_os)
+      host_os.match(os.to_s) || windows?(os, host_os)
     end
   end
 

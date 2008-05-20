@@ -176,6 +176,16 @@ describe SpecGuard, "#platform?" do
     Object.const_set :RUBY_PLATFORM, 'i386-mingw32'
     @guard.platform?(:windows).should == true
   end
+
+  it "returns false when arg is not :windows and Config::CONFIG['host_os'] contains 'mswin'" do
+    Object.const_set :RUBY_PLATFORM, 'i386-mswin32'
+    @guard.platform?(:linux).should == false
+  end
+
+  it "returns false when arg is not :windows and Config::CONFIG['host_os'] contains 'mingw'" do
+    Object.const_set :RUBY_PLATFORM, 'i386-mingw32'
+    @guard.platform?(:linux).should == false
+  end
 end
 
 describe SpecGuard, "#platform? on JRuby" do
@@ -250,13 +260,23 @@ describe SpecGuard, "#os?" do
   end
 
   it "returns true when arg is :windows and Config::CONFIG['host_os'] contains 'mswin'" do
-    Config::CONFIG.stub!(:[]).and_return('mswin32')
+    Config::CONFIG.stub!(:[]).and_return('i386-mswin32')
     @guard.os?(:windows).should == true
   end
 
   it "returns true when arg is :windows and Config::CONFIG['host_os'] contains 'mingw'" do
-    Config::CONFIG.stub!(:[]).and_return('mingw32')
+    Config::CONFIG.stub!(:[]).and_return('i386-mingw32')
     @guard.os?(:windows).should == true
+  end
+
+  it "returns false when arg is not :windows and Config::CONFIG['host_os'] contains 'mswin'" do
+    Config::CONFIG.stub!(:[]).and_return('i386-mingw32')
+    @guard.os?(:linux).should == false
+  end
+
+  it "returns false when arg is not :windows and Config::CONFIG['host_os'] contains 'mingw'" do
+    Config::CONFIG.stub!(:[]).and_return('i386-mingw32')
+    @guard.os?(:linux).should == false
   end
 end
 
@@ -265,13 +285,19 @@ describe SpecGuard, "windows?" do
     @guard = SpecGuard.new
   end
 
-  it "returns true if the key passed matches 'mswin' or 'mingw'" do
-    @guard.windows?('mswin32').should == true
-    @guard.windows?('i386-mingw32').should == true
+  it "returns false if not passed :windows" do
+    @guard.windows?(:linux, 'mswin32').should == false
+    @guard.windows?(:linux, 'i386-mingw32').should == false
   end
 
-  it "returns false if the key passes matches neither 'mswin' nor 'mingw'" do
-    @guard.windows?('darwin9.0').should == false
+  it "returns true if passed :windows and the key matches 'mswin' or 'mingw'" do
+    @guard.windows?(:windows, 'mswin32').should == true
+    @guard.windows?(:windows, 'i386-mingw32').should == true
+  end
+
+  it "returns false if passed :windows and the key matches neither 'mswin' nor 'mingw'" do
+    @guard.windows?(:windows, 'darwin9.0').should == false
+    @guard.windows?(:windows, 'linux').should == false
   end
 end
 
