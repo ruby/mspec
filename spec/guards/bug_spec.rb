@@ -1,6 +1,22 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/guards/bug'
 
+describe BugGuard, "#to_v" do
+  before :each do
+    @guard = BugGuard.new "#1", "x.x.x.x"
+  end
+
+  it "returns a version string containing only digits" do
+    @guard.to_v("1.8.6.22").should == "0108060022"
+  end
+
+  it "replaces missing version parts with zeros" do
+    @guard.to_v("1.8").should == "0108999999"
+    @guard.to_v("1.8.6").should == "0108069999"
+    @guard.to_v("1.8.7.333").should == "0108070333"
+  end
+end
+
 describe BugGuard, "#match? when #implementation? is 'ruby'" do
   before :all do
     @verbose = $VERBOSE
@@ -28,8 +44,8 @@ describe BugGuard, "#match? when #implementation? is 'ruby'" do
   end
 
   it "returns false when version argument is less than RUBY_VERSION and RUBY_PATCHLEVEL" do
-    BugGuard.new("#1", "1.8").match?.should == false
-    BugGuard.new("#1", "1.8.6").match?.should == false
+    BugGuard.new("#1", "1.8.5").match?.should == false
+    BugGuard.new("#1", "1.8.6.113").match?.should == false
   end
 
   it "returns true when version argument is equal to RUBY_VERSION and RUBY_PATCHLEVEL" do
@@ -39,6 +55,11 @@ describe BugGuard, "#match? when #implementation? is 'ruby'" do
   it "returns true when version argument is greater than RUBY_VERSION and RUBY_PATCHLEVEL" do
     BugGuard.new("#1", "1.8.7").match?.should == true
     BugGuard.new("#1", "1.8.6.115").match?.should == true
+  end
+
+  it "returns true when version argument implicitly includes RUBY_VERSION and RUBY_PATCHLEVEL" do
+    BugGuard.new("#1", "1.8").match?.should == true
+    BugGuard.new("#1", "1.8.6").match?.should == true
   end
 end
 

@@ -6,6 +6,13 @@ class BugGuard < VersionGuard
     @version = to_v version
   end
 
+  def to_v(str)
+    major, minor, tiny, patch = str.split "."
+    tiny = 99 unless tiny
+    patch = 9999 unless patch
+    "%02d%02d%02d%04d" % [major, minor, tiny, patch].map { |x| x.to_i }
+  end
+
   def match?
     implementation?(:ruby, :ruby18, :ruby19) && ruby_version <= @version
   end
