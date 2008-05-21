@@ -1,19 +1,20 @@
-require 'mspec/guards/guard'
+require 'mspec/guards/version'
 
-class BugGuard < SpecGuard
-  def initialize(bug)
+class BugGuard < VersionGuard
+  def initialize(bug, version)
     @bug = bug
+    @version = to_v version
   end
 
   def match?
-    not implementation?(:ruby, :ruby18, :ruby19)
+    implementation?(:ruby, :ruby18, :ruby19) && ruby_version <= @version
   end
 end
 
 class Object
-  def ruby_bug(bug="Please add a bug tracker number")
-    g = BugGuard.new bug
-    yield if g.yield?
+  def ruby_bug(bug="Please add a bug tracker number", version="0")
+    g = BugGuard.new bug, version
+    yield if g.yield? true
     g.unregister
   end
 end

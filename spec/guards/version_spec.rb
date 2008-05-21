@@ -1,19 +1,17 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/guards/version'
 
-# These specs are very "brittle" and must be updated to
-# precisely those values that are expected for each of
-# the versions supported.
+# The VersionGuard specifies a version of Ruby with a String of
+# the form: v = 'major.minor.tiny.patchlevel'.
 #
-#   :standard - This (with rare exceptions) is the
-#   stable version of Ruby at ruby-lang.org
-#
-#   :development - This is the next version of Ruby
-#   in the same minor version as "standard" Ruby
-#
-#   :experimental - This is currently version 1.9
+# A VersionGuard instance can be created with a single String,
+# which means any version >= each component of v.
+# Or, the guard can be created with a Range, a..b, or a...b,
+# where a, b are of the same form as v. The meaning of the Range
+# is as typically understood: a..b means v >= a and v <= b;
+# a...b means v >= a and v < b.
 
-describe Object, "#ruby_version_is :standard" do
+describe VersionGuard, "#ruby_version" do
   before :all do
     @verbose = $VERBOSE
     $VERBOSE = nil
@@ -27,9 +25,10 @@ describe Object, "#ruby_version_is :standard" do
     @ruby_version = Object.const_get :RUBY_VERSION
     @ruby_patch = Object.const_get :RUBY_PATCHLEVEL
 
-    @guard = VersionGuard.new :standard
-    VersionGuard.stub!(:new).and_return(@guard)
-    ScratchPad.clear
+    Object.const_set :RUBY_VERSION, '1.8.6'
+    Object.const_set :RUBY_PATCHLEVEL, 114
+
+    @guard = VersionGuard.new 'x.x.x.x'
   end
 
   after :each do
@@ -37,43 +36,28 @@ describe Object, "#ruby_version_is :standard" do
     Object.const_set :RUBY_PATCHLEVEL, @ruby_patch
   end
 
-  it "yields when RUBY_VERSION == '1.8.6', RUBY_PATCHLEVEL == 114" do
-    Object.const_set :RUBY_VERSION, '1.8.6'
-    Object.const_set :RUBY_PATCHLEVEL, 114
-
-    ruby_version_is(:standard) { ScratchPad.record :yield }
-    ScratchPad.recorded.should == :yield
-  end
-
-  it "does not yield when RUBY_VERSION != '1.8.6'" do
-    Object.const_set :RUBY_VERSION, '1.8.5'
-    Object.const_set :RUBY_PATCHLEVEL, 114
-
-    ruby_version_is(:standard) { ScratchPad.record :yield }
-    ScratchPad.recorded.should_not == :yield
-  end
-
-  it "does not yield when RUBY_PATCHLEVEL != 114" do
-    Object.const_set :RUBY_VERSION, '1.8.6'
-    Object.const_set :RUBY_PATCHLEVEL, 111
-
-    ruby_version_is(:standard) { ScratchPad.record :yield }
-    ScratchPad.recorded.should_not == :yield
-  end
-
-  it "yields if any arg is :standard when RUBY_VERSION == '1.8.6', RUBY_PATCHLEVEL == 114" do
-    Object.const_set :RUBY_VERSION, '1.8.6'
-    Object.const_set :RUBY_PATCHLEVEL, 114
-
-    @guard = VersionGuard.new :extra, :standard, :nonstandard
-    VersionGuard.stub!(:new).and_return(@guard)
-
-    ruby_version_is(:standard) { ScratchPad.record :yield }
-    ScratchPad.recorded.should == :yield
+  it "returns 'RUBY_VERSION.RUBY_PATCHLEVEL'" do
+    @guard.ruby_version.should == '0108060114'
   end
 end
 
-describe Object, "#ruby_version_is :development" do
+describe VersionGuard, "#to_v" do
+  before :each do
+    @guard = VersionGuard.new 'x.x.x.x'
+  end
+
+  it "returns a version string containing only digits" do
+    @guard.to_v("1.8.6.22").should == "0108060022"
+  end
+
+  it "replaces missing version parts with zeros" do
+    @guard.to_v("1.8").should == "0108000000"
+    @guard.to_v("1.8.6").should == "0108060000"
+    @guard.to_v("1.8.7.333").should == "0108070333"
+  end
+end
+
+describe VersionGuard, "#match?" do
   before :all do
     @verbose = $VERBOSE
     $VERBOSE = nil
@@ -85,84 +69,65 @@ describe Object, "#ruby_version_is :development" do
 
   before :each do
     @ruby_version = Object.const_get :RUBY_VERSION
+    @ruby_patch = Object.const_get :RUBY_PATCHLEVEL
 
-    @guard = VersionGuard.new :development
-    VersionGuard.stub!(:new).and_return(@guard)
-    ScratchPad.clear
+    Object.const_set :RUBY_VERSION, '1.8.6'
+    Object.const_set :RUBY_PATCHLEVEL, 114
   end
 
   after :each do
     Object.const_set :RUBY_VERSION, @ruby_version
+    Object.const_set :RUBY_PATCHLEVEL, @ruby_patch
   end
 
-  it "yields when RUBY_VERSION == '1.8.7'" do
-    Object.const_set :RUBY_VERSION, '1.8.7'
-
-    ruby_version_is(:development) { ScratchPad.record :yield }
-    ScratchPad.recorded.should == :yield
+  it "returns true when the argument is equal to RUBY_VERSION and RUBY_PATCHLEVEL" do
+    VersionGuard.new('1.8.6.114').match?.should == true
   end
 
-  it "does not yield when RUBY_VERSION != '1.8.7'" do
-    Object.const_set :RUBY_VERSION, '1.8.6'
-
-    ruby_version_is(:development) { ScratchPad.record :yield }
-    ScratchPad.recorded.should_not == :yield
+  it "returns true when the argument is less than RUBY_VERSION and RUBY_PATCHLEVEL" do
+    VersionGuard.new('1.8').match?.should == true
+    VersionGuard.new('1.8.5').match?.should == true
   end
 
-  it "yields if any arg is :development when RUBY_VERSION == '1.8.7'" do
-    Object.const_set :RUBY_VERSION, '1.8.7'
+  it "returns false when the argument is greater than RUBY_VERSION and RUBY_PATCHLEVEL" do
+    VersionGuard.new('1.8.7').match?.should == false
+    VersionGuard.new('1.8.7.000').match?.should == false
+    VersionGuard.new('1.8.7.10').match?.should == false
+  end
 
-    @guard = VersionGuard.new :extra, :development, :standard
-    VersionGuard.stub!(:new).and_return(@guard)
+  it "returns true when the argument range includes RUBY_VERSION and RUBY_PATCHLEVEL" do
+    VersionGuard.new('1.8.5'..'1.8.7.111').match?.should == true
+    VersionGuard.new('1.8'..'1.9').match?.should == true
+    VersionGuard.new('1.8'...'1.9').match?.should == true
+    VersionGuard.new('1.8'..'1.8.6.114').match?.should == true
+    VersionGuard.new('1.8'...'1.8.6.115').match?.should == true
+  end
 
-    ruby_version_is(:standard) { ScratchPad.record :yield }
-    ScratchPad.recorded.should == :yield
+  it "returns false when the argument range does not include RUBY_VERSION and RUBY_PATCHLEVEL" do
+    VersionGuard.new('1.8.7'..'1.8.9').match?.should == false
+    VersionGuard.new('1.8.4'..'1.8.5').match?.should == false
+    VersionGuard.new('1.8.5'..'1.8.6.113').match?.should == false
+    VersionGuard.new('1.8.4'...'1.8.6').match?.should == false
+    VersionGuard.new('1.8.5'...'1.8.6.114').match?.should == false
   end
 end
 
-describe Object, "#ruby_version_is :experimental" do
-  before :all do
-    @verbose = $VERBOSE
-    $VERBOSE = nil
-  end
-
-  after :all do
-    $VERBOSE = @verbose
-  end
-
+describe Object, "#ruby_version_is" do
   before :each do
-    @ruby_version = Object.const_get :RUBY_VERSION
-
-    @guard = VersionGuard.new :experimental
+    @guard = VersionGuard.new 'x.x.x.x'
     VersionGuard.stub!(:new).and_return(@guard)
     ScratchPad.clear
   end
 
-  after :each do
-    Object.const_set :RUBY_VERSION, @ruby_version
-  end
-
-  it "yields when RUBY_VERSION == '1.9.0'" do
-    Object.const_set :RUBY_VERSION, '1.9.0'
-
-    ruby_version_is(:experimental) { ScratchPad.record :yield }
+  it "yields when #match? returns true" do
+    @guard.stub!(:match?).and_return(true)
+    ruby_version_is('x.x.x.x') { ScratchPad.record :yield }
     ScratchPad.recorded.should == :yield
   end
 
-  it "does not yield when RUBY_VERSION != '1.9.0'" do
-    Object.const_set :RUBY_VERSION, '1.8.7'
-
-    ruby_version_is(:experimental) { ScratchPad.record :yield }
+  it "does not yield when #match? returns false" do
+    @guard.stub!(:match?).and_return(false)
+    ruby_version_is('x.x.x.x') { ScratchPad.record :yield }
     ScratchPad.recorded.should_not == :yield
-  end
-
-  it "yields if any arg is :development when RUBY_VERSION == '1.9.0'" do
-    Object.const_set :RUBY_VERSION, '1.9.0'
-
-    @guard = VersionGuard.new :extra, :experimental, :standard
-    VersionGuard.stub!(:new).and_return(@guard)
-
-    ruby_version_is(:experimental) { ScratchPad.record :yield }
-    ScratchPad.recorded.should == :yield
   end
 end
