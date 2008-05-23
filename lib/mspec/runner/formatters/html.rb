@@ -14,7 +14,7 @@ class HtmlFormatter < DottedFormatter
 <html>
 <head>
 <title>Spec Output For #{RUBY_NAME} (#{RUBY_VERSION})</title>
-<script type="text/css">
+<style type="text/css">
 ul {
   list-style: none;
 }
@@ -24,7 +24,7 @@ ul {
 .pass {
   color: green;
 }
-</script>
+</style>
 </head>
 <body>
 EOH
