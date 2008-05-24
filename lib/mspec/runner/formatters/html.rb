@@ -26,6 +26,9 @@ ul {
 .pass {
   color: green;
 }
+#details :target {
+  background-color: #ffffe0;
+}
 </style>
 </head>
 <body>
@@ -59,7 +62,7 @@ EOH
     success = @states.empty?
     unless success
       print "<hr>\n"
-      print "<ol>"
+      print %[<ol id="details">]
       count = 0
       @states.each do |state|
         state.exceptions.each do |msg, exc|
