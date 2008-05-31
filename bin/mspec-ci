@@ -2,7 +2,7 @@
 
 $:.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 
-require 'mspec/commands/mspec-ci_command'
+require 'mspec/commands/mspec-ci'
 require 'mspec'
 
 MSpecCI.main

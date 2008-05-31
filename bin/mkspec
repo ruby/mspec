@@ -1,7 +1,7 @@
-#! /usr/bin/env ruby
+#!/usr/bin/env ruby
 
 $:.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 
-require 'mspec/commands/mkspec_command'
+require 'mspec/commands/mkspec'
 
 MkSpec.main

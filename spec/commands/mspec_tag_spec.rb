@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/runner/mspec'
-require 'lib/mspec/commands/mspec-tag_command'
+require 'mspec/commands/mspec-tag'
 
 describe MSpecTag, "#options" do
   before :each do

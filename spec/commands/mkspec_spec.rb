@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require 'lib/mspec/commands/mkspec_command'
+require 'mspec/commands/mkspec'
 
 
 describe "The -c, --constant CONSTANT option" do
