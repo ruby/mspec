@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/runner/mspec'
 require 'mspec/runner/filters/tag'
-load 'bin/mspec-ci'
+require 'lib/mspec/commands/mspec-ci_command'
 
 describe MSpecCI, "#options" do
   before :each do

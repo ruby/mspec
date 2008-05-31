@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/runner/mspec'
-load 'bin/mspec-run'
+require 'lib/mspec/commands/mspec-run_command'
 
 describe MSpecRun, "#options" do
   before :each do
