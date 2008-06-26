@@ -44,7 +44,7 @@ end
 
 class Object
   def match_yaml(expected)
-    BeEmptyMatcher.new(expected)
+    MatchYAMLMatcher.new(expected)
   end
 end
 
