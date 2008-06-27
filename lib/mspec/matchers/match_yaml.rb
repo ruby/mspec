@@ -1,8 +1,4 @@
-require 'yaml'
-
 class MatchYAMLMatcher
-
-  include YAML
 
   def initialize(expected)
     if valid_yaml?(expected)
@@ -18,11 +14,11 @@ class MatchYAMLMatcher
   end
 
   def failure_message
-    ["Expected #{@actual.inspect}", "to match #{@expected}"]
+    ["Expected #{@actual.inspect}", " to match #{@expected.inspec}"]
   end
 
   def negative_failure_message
-    ["Expected #{@actual.inspect}", "to match #{@expected}"]
+    ["Expected #{@actual.inspect}", " to match #{@expected.inspect}"]
   end
   
   protected
@@ -32,6 +28,7 @@ class MatchYAMLMatcher
   end
 
   def valid_yaml?(obj)
+    require 'yaml'
     begin
       YAML.load(obj)
     rescue
@@ -44,7 +41,7 @@ end
 
 class Object
   def match_yaml(expected)
-    BeEmptyMatcher.new(expected)
+    MatchYAMLMatcher.new(expected)
   end
 end
 
