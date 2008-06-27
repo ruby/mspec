@@ -14,7 +14,7 @@ class MatchYAMLMatcher
   end
 
   def failure_message
-    ["Expected #{@actual.inspect}", " to match #{@expected.inspec}"]
+    ["Expected #{@actual.inspect}", " to match #{@expected.inspect}"]
   end
 
   def negative_failure_message

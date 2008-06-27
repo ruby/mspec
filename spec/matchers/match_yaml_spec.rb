@@ -31,4 +31,9 @@ describe MatchYAMLMatcher do
     @matcher.matches?("--- \nfoo: bar   \n").should == true
     @matcher.matches?("---       \nfoo: bar   \n").should == true
   end
+
+  it "fails with a descriptive error message" do
+    @matcher.matches?("foo").should == false
+    @matcher.failure_message.should == ["Expected \"foo\"", " to match \"--- \\nfoo: bar\\n\""]
+  end
 end
