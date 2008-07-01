@@ -191,7 +191,7 @@ module MSpec
     patterns = retrieve(:tags_patterns) ||
                [[%r(spec/), 'spec/tags/'], [/_spec.rb$/, '_tags.txt']]
     patterns.inject(retrieve(:file).dup) do |file, pattern|
-      file.gsub *pattern
+      file.gsub(*pattern)
     end
   end
 
