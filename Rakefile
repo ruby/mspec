@@ -9,7 +9,7 @@ task :default => :spec
 
 spec = Gem::Specification.new do |s|
   s.name                      = %q{mspec}
-  s.version                   = "1.0.0"
+  s.version                   = "1.1.0"
 
   s.specification_version     = 2 if s.respond_to? :specification_version=
 
@@ -25,17 +25,17 @@ spec = Gem::Specification.new do |s|
   s.rubyforge_project         = 'http://rubyforge.org/projects/mspec'
   s.require_paths             = ["lib"]
   s.rubygems_version          = %q{1.1.1}
-  s.summary                   = <<EOS 
-MSpec is a specialized framework that is syntax-compatible 
-with RSpec for basic things like describe, it blocks and 
+  s.summary                   = <<EOS
+MSpec is a specialized framework that is syntax-compatible
+with RSpec for basic things like describe, it blocks and
 before, after actions.
 
-MSpec contains additional features that assist in writing 
-the RubySpecs used by multiple Ruby implementations. Also, 
-MSpec attempts to use the simplest Ruby language features 
+MSpec contains additional features that assist in writing
+the RubySpecs used by multiple Ruby implementations. Also,
+MSpec attempts to use the simplest Ruby language features
 so that beginning Ruby implementations can run it.
 EOS
-  
+
   s.rdoc_options << '--title' << 'MSpec Gem' <<
                    '--main' << 'README' <<
                    '--line-numbers'
