@@ -54,28 +54,4 @@ class DottedFormatter
   def print(*args)
     @out.print(*args)
   end
-
-  def message(exc)
-    if exc.message.empty?
-      "<No message>"
-    elsif exc.class == ExpectationNotMetError
-      exc.message
-    else
-      "#{exc.class}: #{exc.message}"
-    end
-  end
-
-  def failure?(state)
-    state.exceptions.all? { |msg, exc| state.failure?(exc) }
-  end
-  private :failure?
-
-  def backtrace(exc)
-    begin
-      return exc.awesome_backtrace.show
-    rescue Exception
-      return exc.backtrace && exc.backtrace.join("\n")
-    end
-  end
-  private :backtrace
 end

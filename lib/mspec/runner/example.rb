@@ -21,14 +21,6 @@ class ExampleState
     @description ||= "#{@describe} #{@it}"
   end
 
-  def exceptions
-    @exceptions ||= []
-  end
-
-  def exception?
-    not exceptions.empty?
-  end
-
   def unfiltered?
     unless @unfiltered
       incl = MSpec.retrieve(:include) || []
@@ -41,9 +33,5 @@ class ExampleState
 
   def filtered?
     not unfiltered?
-  end
-
-  def failure?(exception)
-    exception.is_a?(ExpectationNotMetError)
   end
 end

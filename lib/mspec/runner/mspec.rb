@@ -1,4 +1,5 @@
 require 'mspec/runner/context'
+require 'mspec/runner/exception'
 require 'mspec/runner/tag'
 require 'fileutils'
 
@@ -55,13 +56,13 @@ module MSpec
     actions.each { |obj| obj.send action, *args } if actions
   end
 
-  def self.protect(msg, &block)
+  def self.protect(location, &block)
     begin
       @env.instance_eval(&block)
       return true
     rescue Exception => exc
       register_exit 1
-      actions :exception, current && current.state, msg, exc
+      actions :exception, ExceptionState.new(current && current.state, location, exc)
       return false
     end
   end

@@ -89,6 +89,7 @@ describe MSpec, ".protect" do
   before :each do
     MSpec.stack.clear
     @es = mock('ExampleState')
+    @es.stub!(:description).and_return("C#m runs")
     @cs = mock('ContextState')
     @cs.stub!(:state).and_return(@es)
     MSpec.stack.push @cs
@@ -99,17 +100,19 @@ describe MSpec, ".protect" do
     MSpec.protect("passed") { 1 }.should be_true
   end
 
-  it "rescues any exceptions raised when evaluating the block argument" do
-    MSpec.protect("") { raise Exception, "Now you see me..." }
-  end
-
   it "returns false if an exception is raised" do
     MSpec.protect("testing") { raise ScratchPad.recorded }.should be_false
   end
 
+  it "rescues any exceptions raised when evaluating the block argument" do
+    MSpec.protect("") { raise Exception, "Now you see me..." }
+  end
+
   it "calls all the exception actions" do
+    exc = ExceptionState.new @es, "testing", ScratchPad.recorded
+    ExceptionState.stub!(:new).and_return(exc)
     action = mock("exception")
-    action.should_receive(:exception).with(@es, "testing", ScratchPad.recorded)
+    action.should_receive(:exception).with(exc)
     MSpec.register :exception, action
     MSpec.protect("testing") { raise ScratchPad.recorded }
     MSpec.unregister :exception, action
