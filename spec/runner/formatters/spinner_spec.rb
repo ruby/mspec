@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/formatters/spinner'
 require 'mspec/runner/mspec'
-require 'mspec/runner/state'
+require 'mspec/runner/example'
 
 describe SpinnerFormatter, "#initialize" do
   it "permits zero arguments" do

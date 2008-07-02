@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/formatters/dotted'
 require 'mspec/runner/mspec'
-require 'mspec/runner/state'
+require 'mspec/runner/example'
 
 describe DottedFormatter, "#initialize" do
   it "permits zero arguments" do

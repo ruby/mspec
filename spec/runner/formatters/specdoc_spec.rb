@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/formatters/specdoc'
-require 'mspec/runner/state'
+require 'mspec/runner/example'
 
 describe SpecdocFormatter do
   before :each do

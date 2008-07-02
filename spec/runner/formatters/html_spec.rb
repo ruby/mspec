@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/guards/guard'
 require 'mspec/runner/formatters/html'
 require 'mspec/runner/mspec'
-require 'mspec/runner/state'
+require 'mspec/runner/example'
 
 describe HtmlFormatter do
   before :each do

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/formatters/yaml'
-require 'mspec/runner/state'
+require 'mspec/runner/example'
 
 describe YamlFormatter, "#initialize" do
   it "permits zero arguments" do

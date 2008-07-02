@@ -1,4 +1,4 @@
-require 'mspec/runner/state'
+require 'mspec/runner/context'
 require 'mspec/runner/tag'
 require 'fileutils'
 

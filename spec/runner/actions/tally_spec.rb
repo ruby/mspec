@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/runner/actions/tally'
 require 'mspec/runner/mspec'
-require 'mspec/runner/state'
+require 'mspec/runner/example'
 
 describe Tally do
   before :each do

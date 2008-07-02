@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/formatters/unit'
-require 'mspec/runner/state'
+require 'mspec/runner/example'
 
 describe UnitdiffFormatter, "#finish" do
   before :each do

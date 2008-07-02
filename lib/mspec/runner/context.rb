@@ -1,4 +1,5 @@
 require 'mspec/runner/mspec'
+require 'mspec/runner/example'
 
 # Holds the state of the +describe+ block that is being
 # evaluated. Every example (i.e. +it+ block) is evaluated
@@ -81,50 +82,3 @@ class ContextState
   end
 end
 
-# Holds some of the state of the example (i.e. +it+ block) that is
-# being evaluated. See also +ContextState+.
-class ExampleState
-  def initialize(describe, it)
-    @describe = describe
-    @it = it
-    @unfiltered = nil
-  end
-
-  def describe
-    @describe
-  end
-
-  def it
-    @it
-  end
-
-  def description
-    @description ||= "#{@describe} #{@it}"
-  end
-
-  def exceptions
-    @exceptions ||= []
-  end
-
-  def exception?
-    not exceptions.empty?
-  end
-
-  def unfiltered?
-    unless @unfiltered
-      incl = MSpec.retrieve(:include) || []
-      excl = MSpec.retrieve(:exclude) || []
-      @unfiltered   = incl.empty? || incl.any? { |f| f === description }
-      @unfiltered &&= excl.empty? || !excl.any? { |f| f === description }
-    end
-    @unfiltered
-  end
-
-  def filtered?
-    not unfiltered?
-  end
-
-  def failure?(exception)
-    exception.is_a?(ExpectationNotMetError)
-  end
-end
