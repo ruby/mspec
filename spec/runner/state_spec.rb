@@ -45,12 +45,36 @@ describe ContextState do
 end
 
 describe ContextState, "#protect" do
-  it "calls MSpec.protect" do
+  before :each do
     ScratchPad.record []
-    a = lambda { ScratchPad << :a }
-    b = lambda { ScratchPad << :b }
-    ContextState.new.protect("message", [a, b])
+    @a = lambda { ScratchPad << :a }
+    @b = lambda { ScratchPad << :b }
+    @c = lambda { raise Exception, "Fail!" }
+  end
+
+  it "returns false and does execute any blocks if check is true and MSpec.pretend_mode? is true" do
+    MSpec.stub!(:pretend_mode?).and_return(true)
+    ContextState.new.protect("message", [@a, @b]).should be_false
+    ScratchPad.recorded.should == []
+  end
+
+  it "executes the blocks if MSpec.pretend_mode? is false" do
+    MSpec.stub!(:pretend_mode?).and_return(false)
+    ContextState.new.protect("message", [@a, @b])
     ScratchPad.recorded.should == [:a, :b]
+  end
+
+  it "executes the blocks if check is false" do
+    ContextState.new.protect("message", [@a, @b], false)
+    ScratchPad.recorded.should == [:a, :b]
+  end
+
+  it "returns true if none of the blocks raise an exception" do
+    ContextState.new.protect("message", [@a, @b]).should be_true
+  end
+
+  it "returns false if any of the blocks raise an exception" do
+    ContextState.new.protect("message", [@a, @c, @b]).should be_false
   end
 end
 
@@ -112,6 +136,13 @@ describe ContextState, "#process" do
     ScratchPad.recorded.should == [:a, :b]
   end
 
+  it "does not call the it block if an exception is raised in before(:each)" do
+    @state.before(:each) { raise Exception, "Fail!" }
+    @state.it("one", &@a)
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
   it "calls each before(:each) block" do
     @state.before(:each, &@a)
     @state.before(:each, &@b)
@@ -128,6 +159,14 @@ describe ContextState, "#process" do
     ScratchPad.recorded.should == [:a, :b]
   end
 
+  it "does not call after(:each) if an exception is raised in before(:each)" do
+    @state.before(:each) { raise Exception, "Fail!" }
+    @state.after(:each, &@a)
+    @state.it("") { }
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
   it "calls Mock.cleanup for each it block" do
     @state.it("") { }
     @state.it("") { }
@@ -139,6 +178,13 @@ describe ContextState, "#process" do
     @state.it("") { }
     @state.it("") { }
     Mock.should_receive(:verify_count).twice
+    @state.process
+  end
+
+  it "does not call Mock.verify_count if an exception is raised in before(:each)" do
+    @state.before(:each) { raise Exception, "Fail!" }
+    @state.it("") { }
+    Mock.should_not_receive(:verify_count)
     @state.process
   end
 
@@ -155,17 +201,6 @@ describe ContextState, "#process" do
     @state.it("it") { ScratchPad.record ScratchPad.recorded.state }
     @state.process
     ScratchPad.recorded.should be_kind_of(ExampleState)
-  end
-
-  it "records exceptions that occur while running the example" do
-    ScratchPad.record @state
-    exception = Exception.new("bump!")
-    MSpec.stack.push @state
-    @state.describe("describe") { }
-    @state.it("it") { raise exception }
-    @state.after(:each) { ScratchPad.record ScratchPad.recorded.state.exceptions }
-    @state.process
-    ScratchPad.recorded.should == [[nil, exception]]
   end
 
   it "shuffles the spec list if MSpec.randomize? is true" do

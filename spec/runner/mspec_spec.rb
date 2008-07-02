@@ -87,39 +87,36 @@ end
 
 describe MSpec, ".protect" do
   before :each do
-    @ss = mock('ExampleState')
-    @ss.stub!(:exceptions).and_return([])
-    @rs = mock('ContextState')
-    @rs.stub!(:state).and_return(@ss)
-    @exception = Exception.new("Sharp!")
-    ScratchPad.record @exception
-  end
-
-  it "rescues any exceptions raised when executing the block argument" do
-    MSpec.stack.push @rs
-    lambda {
-      MSpec.protect("") { raise Exception, "Now you see me..." }
-    }.should_not raise_error
-  end
-
-  it "records the exception in the current.state object's exceptions" do
-    MSpec.stack.push @rs
-    MSpec.protect("testing") { raise ScratchPad.recorded }
-    @ss.exceptions.should == [["testing", ScratchPad.recorded]]
-  end
-
-  it "writes a message to STDERR if current is nil" do
-    STDERR.stub!(:write)
-    STDERR.should_receive(:write).with("\nAn exception occurred in testing:\nException: \"Sharp!\"\n")
     MSpec.stack.clear
-    MSpec.protect("testing") { raise ScratchPad.recorded }
+    @es = mock('ExampleState')
+    @cs = mock('ContextState')
+    @cs.stub!(:state).and_return(@es)
+    MSpec.stack.push @cs
+    ScratchPad.record Exception.new("Sharp!")
   end
 
-  it "writes a message to STDERR if current.state is nil" do
-    STDERR.stub!(:write)
-    STDERR.should_receive(:write).with("\nAn exception occurred in testing:\nException: \"Sharp!\"\n")
-    @rs.stub!(:state).and_return(nil)
-    MSpec.stack.push @rs
+  it "returns true if no exception is raised" do
+    MSpec.protect("passed") { 1 }.should be_true
+  end
+
+  it "rescues any exceptions raised when evaluating the block argument" do
+    MSpec.protect("") { raise Exception, "Now you see me..." }
+  end
+
+  it "returns false if an exception is raised" do
+    MSpec.protect("testing") { raise ScratchPad.recorded }.should be_false
+  end
+
+  it "calls all the exception actions" do
+    action = mock("exception")
+    action.should_receive(:exception).with(@es, "testing", ScratchPad.recorded)
+    MSpec.register :exception, action
+    MSpec.protect("testing") { raise ScratchPad.recorded }
+    MSpec.unregister :exception, action
+  end
+
+  it "registers a non-zero exit code when an exception is raised" do
+    MSpec.should_receive(:register_exit).with(1)
     MSpec.protect("testing") { raise ScratchPad.recorded }
   end
 end

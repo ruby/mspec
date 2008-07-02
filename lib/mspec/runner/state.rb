@@ -53,8 +53,8 @@ class ContextState
   end
 
   def protect(what, blocks, check=true)
-    return if check and MSpec.pretend_mode?
-    Array(blocks).each { |block| MSpec.protect what, &block }
+    return false if check and MSpec.pretend_mode?
+    Array(blocks).all? { |block| MSpec.protect what, &block }
   end
 
   def process
@@ -67,10 +67,11 @@ class ContextState
     @spec.each do |desc, spec, state|
       @state = state
       MSpec.actions :before, state
-      protect "before :each", @before
-      protect nil, spec
-      protect "after :each", @after
-      protect "Mock.verify_count", lambda { Mock.verify_count }
+      if protect("before :each", @before)
+        protect nil, spec
+        protect "after :each", @after
+        protect "Mock.verify_count", lambda { Mock.verify_count }
+      end
       protect "Mock.cleanup", lambda { Mock.cleanup }
       MSpec.actions :after, state
       @state = nil

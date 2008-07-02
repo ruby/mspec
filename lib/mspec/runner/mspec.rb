@@ -55,6 +55,17 @@ module MSpec
     actions.each { |obj| obj.send action, *args } if actions
   end
 
+  def self.protect(msg, &block)
+    begin
+      @env.instance_eval(&block)
+      return true
+    rescue Exception => exc
+      register_exit 1
+      actions :exception, current && current.state, msg, exc
+      return false
+    end
+  end
+
   def self.register_exit(code)
     store :exit, code
   end
@@ -97,6 +108,7 @@ module MSpec
   #   :enter        before a describe block is run
   #   :before       before a single spec is run
   #   :expectation  before a 'should', 'should_receive', etc.
+  #   :exception    after an exception is rescued
   #   :after        after a single spec is run
   #   :leave        after a describe block is run
   #   :unload       after a spec file is run
@@ -122,20 +134,6 @@ module MSpec
   def self.unregister(symbol, action)
     if value = retrieve(symbol)
       value.delete action
-    end
-  end
-
-  def self.protect(msg, &block)
-    begin
-      @env.instance_eval(&block)
-    rescue Exception => e
-      register_exit 1
-      if current and current.state
-        current.state.exceptions << [msg, e]
-      else
-        STDERR.write "\nAn exception occurred in #{msg}:\n#{e.class}: #{e.message.inspect}\n"
-        STDERR.write "#{e.backtrace.join "\n"}"
-      end
     end
   end
 
