@@ -1,6 +1,17 @@
 require 'mspec/runner/mspec'
 
-class RunState
+# Holds the state of the +describe+ block that is being
+# evaluated. Every example (i.e. +it+ block) is evaluated
+# in a context, which may include state set up in <tt>before
+# :each</tt> or <tt>before :all</tt> blocks.
+#
+#--
+# A note on naming: this is named _ContextState_ rather
+# than _DescribeState_ because +describe+ is the keyword
+# in the DSL for refering to the context in which an example
+# is evaluated, just as +it+ refers to the example itself.
+#++
+class ContextState
   def initialize
     @start = []
     @before = []
@@ -32,7 +43,7 @@ class RunState
   end
 
   def it(desc, &block)
-    state = SpecState.new @describe, desc
+    state = ExampleState.new @describe, desc
     @spec << [desc, block, state] unless state.filtered?
   end
 
@@ -69,7 +80,9 @@ class RunState
   end
 end
 
-class SpecState
+# Holds some of the state of the example (i.e. +it+ block) that is
+# being evaluated. See also +ContextState+.
+class ExampleState
   def initialize(describe, it)
     @describe = describe
     @it = it

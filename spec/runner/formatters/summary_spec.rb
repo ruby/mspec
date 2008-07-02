@@ -6,7 +6,7 @@ describe SummaryFormatter, "#after" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = SummaryFormatter.new
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
   end
 
   after :each do

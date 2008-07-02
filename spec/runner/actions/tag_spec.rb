@@ -41,7 +41,7 @@ end
 describe TagAction, "#outcome?" do
   before :each do
     MSpec.stub!(:read_tags).and_return([])
-    @state = SpecState.new "describe", "it"
+    @state = ExampleState.new "describe", "it"
     @exception = [nil, Exception.new("failed")]
   end
 
@@ -77,7 +77,7 @@ end
 describe TagAction, "#after when action is :add" do
   before :each do
     MSpec.stub!(:read_tags).and_return([])
-    @state = SpecState.new "Catch#me", "if you can"
+    @state = ExampleState.new "Catch#me", "if you can"
     @tag = SpecTag.new "tag(comment):Catch#me if you can"
     SpecTag.stub!(:new).and_return(@tag)
     @exception = [nil, Exception.new("failed")]
@@ -125,7 +125,7 @@ end
 describe TagAction, "#after when action is :del" do
   before :each do
     MSpec.stub!(:read_tags).and_return([])
-    @state = SpecState.new "Catch#me", "if you can"
+    @state = ExampleState.new "Catch#me", "if you can"
     @tag = SpecTag.new "tag(comment):Catch#me if you can"
     SpecTag.stub!(:new).and_return(@tag)
     @exception = [nil, Exception.new("failed")]
@@ -173,7 +173,7 @@ end
 describe TagAction, "#finish" do
   before :each do
     $stdout = @out = IOStub.new
-    @state = SpecState.new "Catch#me", "if you can"
+    @state = ExampleState.new "Catch#me", "if you can"
     MSpec.stub!(:write_tag).and_return(true)
     MSpec.stub!(:delete_tag).and_return(true)
   end

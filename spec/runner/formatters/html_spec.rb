@@ -94,7 +94,7 @@ describe HtmlFormatter, "#after" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = HtmlFormatter.new
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
   end
 
   after :each do
@@ -127,7 +127,7 @@ describe HtmlFormatter, "#finish" do
     TimerAction.stub!(:new).and_return(@timer)
 
     $stdout = @out = IOStub.new
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
     MSpec.stub!(:register)
     @formatter = HtmlFormatter.new
     @formatter.register

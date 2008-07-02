@@ -4,9 +4,9 @@ require 'mspec/runner/mspec'
 require 'mspec/mocks/mock'
 require 'mspec/runner/state'
 
-describe RunState do
+describe ContextState do
   before :each do
-    @state = RunState.new
+    @state = ContextState.new
     @proc = lambda { }
   end
 
@@ -44,44 +44,44 @@ describe RunState do
   end
 end
 
-describe RunState, "#protect" do
+describe ContextState, "#protect" do
   it "calls MSpec.protect" do
     ScratchPad.record []
     a = lambda { ScratchPad << :a }
     b = lambda { ScratchPad << :b }
-    RunState.new.protect("message", [a, b])
+    ContextState.new.protect("message", [a, b])
     ScratchPad.recorded.should == [:a, :b]
   end
 end
 
-describe RunState, "#state" do
+describe ContextState, "#state" do
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
 
-    @state = RunState.new
+    @state = ContextState.new
   end
 
   it "returns nil if no spec is being executed" do
     @state.state.should == nil
   end
 
-  it "returns a SpecState instance if a spec is being executed" do
+  it "returns a ExampleState instance if an example is being executed" do
     ScratchPad.record @state
     @state.describe("") { }
     @state.it("") { ScratchPad.record ScratchPad.recorded.state }
     @state.process
     @state.state.should == nil
-    ScratchPad.recorded.should be_kind_of(SpecState)
+    ScratchPad.recorded.should be_kind_of(ExampleState)
   end
 end
 
-describe RunState, "#process" do
+describe ContextState, "#process" do
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
 
-    @state = RunState.new
+    @state = ContextState.new
     @state.describe("") { }
 
     @a = lambda { ScratchPad << :a }
@@ -149,15 +149,15 @@ describe RunState, "#process" do
     ScratchPad.recorded.should == [:a]
   end
 
-  it "creates a new SpecState instance for each spec" do
+  it "creates a new ExampleState instance for each example" do
     ScratchPad.record @state
     @state.describe("desc") { }
     @state.it("it") { ScratchPad.record ScratchPad.recorded.state }
     @state.process
-    ScratchPad.recorded.should be_kind_of(SpecState)
+    ScratchPad.recorded.should be_kind_of(ExampleState)
   end
 
-  it "records exceptions that occur while running the spec" do
+  it "records exceptions that occur while running the example" do
     ScratchPad.record @state
     exception = Exception.new("bump!")
     MSpec.stack.push @state
@@ -177,7 +177,7 @@ describe RunState, "#process" do
   end
 end
 
-describe RunState, "#process in pretend mode" do
+describe ContextState, "#process in pretend mode" do
   before :all do
     MSpec.register_mode :pretend
   end
@@ -190,7 +190,7 @@ describe RunState, "#process in pretend mode" do
     MSpec.store :before, []
     MSpec.store :after, []
 
-    @state = RunState.new
+    @state = ContextState.new
     @state.describe("") { }
 
     @a = lambda { ScratchPad << :a }
@@ -252,12 +252,12 @@ describe RunState, "#process in pretend mode" do
   end
 end
 
-describe RunState, "#process" do
+describe ContextState, "#process" do
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
 
-    @state = RunState.new
+    @state = ContextState.new
     @state.describe("") { }
     @state.it("") { }
   end
@@ -267,7 +267,7 @@ describe RunState, "#process" do
     MSpec.store :after, nil
   end
 
-  it "calls registered before actions with the current SpecState instance" do
+  it "calls registered before actions with the current ExampleState instance" do
     before = mock("before")
     before.should_receive(:before).and_return {
       ScratchPad.record :before
@@ -276,10 +276,10 @@ describe RunState, "#process" do
     MSpec.register :before, before
     @state.process
     ScratchPad.recorded.should == :before
-    @spec_state.should be_kind_of(SpecState)
+    @spec_state.should be_kind_of(ExampleState)
   end
 
-  it "calls registered after actions with the current SpecState instance" do
+  it "calls registered after actions with the current ExampleState instance" do
     after = mock("after")
     after.should_receive(:after).and_return {
       ScratchPad.record :after
@@ -288,11 +288,11 @@ describe RunState, "#process" do
     MSpec.register :after, after
     @state.process
     ScratchPad.recorded.should == :after
-    @spec_state.should be_kind_of(SpecState)
+    @spec_state.should be_kind_of(ExampleState)
   end
 end
 
-describe RunState, "#process in pretend mode" do
+describe ContextState, "#process in pretend mode" do
   before :all do
     MSpec.register_mode :pretend
   end
@@ -305,7 +305,7 @@ describe RunState, "#process in pretend mode" do
     MSpec.store :before, []
     MSpec.store :after, []
 
-    @state = RunState.new
+    @state = ContextState.new
     @state.describe("") { }
     @state.it("") { }
   end
@@ -315,7 +315,7 @@ describe RunState, "#process in pretend mode" do
     MSpec.store :after, nil
   end
 
-  it "calls registered before actions with the current SpecState instance" do
+  it "calls registered before actions with the current ExampleState instance" do
     before = mock("before")
     before.should_receive(:before).and_return {
       ScratchPad.record :before
@@ -324,10 +324,10 @@ describe RunState, "#process in pretend mode" do
     MSpec.register :before, before
     @state.process
     ScratchPad.recorded.should == :before
-    @spec_state.should be_kind_of(SpecState)
+    @spec_state.should be_kind_of(ExampleState)
   end
 
-  it "calls registered after actions with the current SpecState instance" do
+  it "calls registered after actions with the current ExampleState instance" do
     after = mock("after")
     after.should_receive(:after).and_return {
       ScratchPad.record :after
@@ -336,16 +336,16 @@ describe RunState, "#process in pretend mode" do
     MSpec.register :after, after
     @state.process
     ScratchPad.recorded.should == :after
-    @spec_state.should be_kind_of(SpecState)
+    @spec_state.should be_kind_of(ExampleState)
   end
 end
 
-describe RunState, "#process" do
+describe ContextState, "#process" do
   before :each do
     MSpec.store :enter, []
     MSpec.store :leave, []
 
-    @state = RunState.new
+    @state = ContextState.new
     @state.describe("") { }
     @state.it("") { }
   end
@@ -372,7 +372,7 @@ describe RunState, "#process" do
   end
 end
 
-describe RunState, "#process in pretend mode" do
+describe ContextState, "#process in pretend mode" do
   before :all do
     MSpec.register_mode :pretend
   end
@@ -385,7 +385,7 @@ describe RunState, "#process in pretend mode" do
     MSpec.store :enter, []
     MSpec.store :leave, []
 
-    @state = RunState.new
+    @state = ContextState.new
     @state.describe("") { }
     @state.it("") { }
   end
@@ -412,15 +412,15 @@ describe RunState, "#process in pretend mode" do
   end
 end
 
-describe SpecState do
+describe ExampleState do
   it "is initialized with the describe and it strings" do
-    SpecState.new("This", "does").should be_kind_of(SpecState)
+    ExampleState.new("This", "does").should be_kind_of(ExampleState)
   end
 end
 
-describe SpecState, "#describe" do
+describe ExampleState, "#describe" do
   before :each do
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
   end
 
   it "returns the arguments to the #describe block stringified and concatenated" do
@@ -428,9 +428,9 @@ describe SpecState, "#describe" do
   end
 end
 
-describe SpecState, "#it" do
+describe ExampleState, "#it" do
   before :each do
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
   end
 
   it "returns the argument to the #it block" do
@@ -438,9 +438,9 @@ describe SpecState, "#it" do
   end
 end
 
-describe SpecState, "#exceptions" do
+describe ExampleState, "#exceptions" do
   before :each do
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
   end
 
   it "returns an array" do
@@ -448,9 +448,9 @@ describe SpecState, "#exceptions" do
   end
 end
 
-describe SpecState, "#exception?" do
+describe ExampleState, "#exception?" do
   before :each do
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
   end
 
   it "returns false if no exceptions were recorded" do
@@ -463,12 +463,12 @@ describe SpecState, "#exception?" do
   end
 end
 
-describe SpecState, "#unfiltered?" do
+describe ExampleState, "#unfiltered?" do
   before :each do
     MSpec.store :include, nil
     MSpec.store :exclude, nil
 
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
     @filter = mock("filter")
   end
 
@@ -512,9 +512,9 @@ describe SpecState, "#unfiltered?" do
   end
 end
 
-describe SpecState, "#filtered?" do
+describe ExampleState, "#filtered?" do
   before :each do
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
   end
 
   it "returns true if #unfiltered returns false" do
@@ -528,8 +528,8 @@ describe SpecState, "#filtered?" do
   end
 end
 
-describe SpecState, "#failure?" do
+describe ExampleState, "#failure?" do
   before :each do
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
   end
 end

@@ -21,7 +21,7 @@ module MSpec
   @expectation = nil
 
   def self.describe(mod, msg=nil, &block)
-    stack.push RunState.new
+    stack.push ContextState.new
 
     current.describe(mod, msg, &block)
     current.process

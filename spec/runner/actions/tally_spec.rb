@@ -56,7 +56,7 @@ end
 describe TallyAction do
   before :each do
     @tally = TallyAction.new
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
     @state.exceptions << ["msg", Exception.new("it broke")]
     @state.exceptions << ["msg", ExpectationNotMetError.new("disappointment")]
   end

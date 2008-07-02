@@ -58,7 +58,7 @@ describe SpinnerFormatter, "#after" do
     MSpec.stub!(:retrieve).and_return(["a", "b"])
     @formatter = SpinnerFormatter.new
     @formatter.register
-    @state = SpecState.new("describe", "it")
+    @state = ExampleState.new("describe", "it")
   end
 
   after :each do

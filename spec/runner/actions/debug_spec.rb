@@ -18,7 +18,7 @@ end
 describe DebugAction, "#before" do
   before :each do
     MSpec.stub!(:read_tags).and_return([])
-    @state = SpecState.new "Catch#me", "if you can"
+    @state = ExampleState.new "Catch#me", "if you can"
   end
 
   it "does not invoke the debugger if the description does not match" do

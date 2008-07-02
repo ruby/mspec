@@ -87,9 +87,9 @@ end
 
 describe MSpec, ".protect" do
   before :each do
-    @ss = mock('SpecState')
+    @ss = mock('ExampleState')
     @ss.stub!(:exceptions).and_return([])
-    @rs = mock('RunState')
+    @rs = mock('ContextState')
     @rs.stub!(:state).and_return(@ss)
     @exception = Exception.new("Sharp!")
     ScratchPad.record @exception
@@ -193,17 +193,17 @@ describe MSpec, ".describe" do
 
   it "accepts one argument" do
     MSpec.describe(Object) { ScratchPad.record MSpec.current }
-    ScratchPad.recorded.should be_kind_of(RunState)
+    ScratchPad.recorded.should be_kind_of(ContextState)
   end
 
-  it "pushes a new RunState instance on the stack" do
+  it "pushes a new ContextState instance on the stack" do
     MSpec.describe(Object, "msg") { ScratchPad.record MSpec.current }
-    ScratchPad.recorded.should be_kind_of(RunState)
+    ScratchPad.recorded.should be_kind_of(ContextState)
   end
 
-  it "pops the RunState instance off the stack when finished" do
+  it "pops the ContextState instance off the stack when finished" do
     MSpec.describe(Object, "msg") { ScratchPad.record MSpec.current }
-    ScratchPad.recorded.should be_kind_of(RunState)
+    ScratchPad.recorded.should be_kind_of(ContextState)
     MSpec.stack.should == []
   end
 end
