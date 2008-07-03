@@ -32,6 +32,34 @@ describe ExceptionState, "#description" do
   end
 end
 
+describe ExceptionState, "#describe" do
+  before :each do
+    @state = ExampleState.new "Class#method", "does something"
+  end
+
+  it "returns the ExampleState#describe string if created with a non-nil state" do
+    ExceptionState.new(@state, nil, nil).describe.should == @state.describe
+  end
+
+  it "returns an empty string if created with a nil state" do
+    ExceptionState.new(nil, nil, nil).describe.should == ""
+  end
+end
+
+describe ExceptionState, "#it" do
+  before :each do
+    @state = ExampleState.new "Class#method", "does something"
+  end
+
+  it "returns the ExampleState#it string if created with a non-nil state" do
+    ExceptionState.new(@state, nil, nil).it.should == @state.it
+  end
+
+  it "returns an empty string if created with a nil state" do
+    ExceptionState.new(nil, nil, nil).it.should == ""
+  end
+end
+
 describe ExceptionState, "#failure?" do
   before :each do
     @state = ExampleState.new "C#m", "works"

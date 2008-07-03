@@ -58,12 +58,15 @@ describe YamlFormatter, "#finish" do
 
     $stdout = IOStub.new
     @state = ExampleState.new("describe", "it")
-    @state.exceptions << ["msg", MSpecExampleError.new("broken")]
 
     @formatter = YamlFormatter.new
     @formatter.stub!(:backtrace).and_return("")
     MSpec.stub!(:register)
     @formatter.register
+
+    exc = ExceptionState.new @state, nil, MSpecExampleError.new("broken")
+    exc.stub!(:backtrace).and_return("path/to/some/file.rb:35:in method")
+    @formatter.exception exc
     @formatter.after @state
   end
 
@@ -77,11 +80,9 @@ describe YamlFormatter, "#finish" do
   end
 
   it "outputs a failure message and backtrace" do
-    @formatter.should_receive(:backtrace).and_return("path/to/some/file.rb:35:in method")
     @formatter.finish
     $stdout.should =~ /describe it ERROR/
-    $stdout.should =~ /MSpecExampleError occurred during: msg/
-    $stdout.should =~ /MSpecExampleError: broken/
+    $stdout.should =~ /MSpecExampleError: broken\\n/
     $stdout.should =~ %r[path/to/some/file.rb:35:in method]
   end
 

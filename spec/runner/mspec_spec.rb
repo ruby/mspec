@@ -88,9 +88,8 @@ end
 describe MSpec, ".protect" do
   before :each do
     MSpec.stack.clear
-    @es = mock('ExampleState')
-    @es.stub!(:description).and_return("C#m runs")
-    @cs = mock('ContextState')
+    @es = ExampleState.new "C#m", "runs"
+    @cs = ContextState.new
     @cs.stub!(:state).and_return(@es)
     MSpec.stack.push @cs
     ScratchPad.record Exception.new("Sharp!")

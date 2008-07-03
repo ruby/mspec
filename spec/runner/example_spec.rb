@@ -30,31 +30,6 @@ describe ExampleState, "#it" do
   end
 end
 
-describe ExampleState, "#exceptions" do
-  before :each do
-    @state = ExampleState.new("describe", "it")
-  end
-
-  it "returns an array" do
-    @state.exceptions.should be_kind_of(Array)
-  end
-end
-
-describe ExampleState, "#exception?" do
-  before :each do
-    @state = ExampleState.new("describe", "it")
-  end
-
-  it "returns false if no exceptions were recorded" do
-    @state.exception?.should == false
-  end
-
-  it "returns true if any exceptions were recorded" do
-    @state.exceptions.push :a
-    @state.exception?.should == true
-  end
-end
-
 describe ExampleState, "#unfiltered?" do
   before :each do
     MSpec.store :include, nil
@@ -117,11 +92,5 @@ describe ExampleState, "#filtered?" do
   it "returns false if #unfiltered returns true" do
     @state.should_receive(:unfiltered?).and_return(true)
     @state.filtered?.should == false
-  end
-end
-
-describe ExampleState, "#failure?" do
-  before :each do
-    @state = ExampleState.new("describe", "it")
   end
 end

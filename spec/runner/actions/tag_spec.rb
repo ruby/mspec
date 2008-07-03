@@ -38,39 +38,73 @@ describe TagAction, "#===" do
   end
 end
 
+describe TagAction, "#exception?" do
+  before :each do
+    @action = TagAction.new :add, :fail, nil, nil, nil, nil
+  end
+
+  it "returns false if no exception has been raised while evaluating an example" do
+    @action.exception?.should be_false
+  end
+
+  it "returns true if an exception was raised while evaluating an example" do
+    @action.exception ExceptionState.new nil, nil, Exception.new("failed")
+    @action.exception?.should be_true
+  end
+end
+
 describe TagAction, "#outcome?" do
   before :each do
     MSpec.stub!(:read_tags).and_return([])
-    @state = ExampleState.new "describe", "it"
-    @exception = [nil, Exception.new("failed")]
+    @exception = ExceptionState.new nil, nil, Exception.new("failed")
   end
 
   it "returns true if outcome is :fail and the spec fails" do
     action = TagAction.new :add, :fail, nil, nil, nil, nil
-    @state.exceptions << @exception
-    action.outcome?(@state).should == true
+    action.exception @exception
+    action.outcome?.should == true
   end
 
   it "returns false if the outcome is :fail and the spec passes" do
     action = TagAction.new :add, :fail, nil, nil, nil, nil
-    action.outcome?(@state).should == false
+    action.outcome?.should == false
   end
 
   it "returns true if the outcome is :pass and the spec passes" do
     action = TagAction.new :del, :pass, nil, nil, nil, nil
-    action.outcome?(@state).should == true
+    action.outcome?.should == true
   end
 
   it "returns false if the outcome is :pass and the spec fails" do
     action = TagAction.new :del, :pass, nil, nil, nil, nil
-    @state.exceptions << @exception
-    action.outcome?(@state).should == false
+    action.exception @exception
+    action.outcome?.should == false
   end
 
   it "returns true if the outcome is :all" do
     action = TagAction.new :add, :all, nil, nil, nil, nil
-    @state.exceptions << @exception
-    action.outcome?(@state).should == true
+    action.exception @exception
+    action.outcome?.should == true
+  end
+end
+
+describe TagAction, "#before" do
+  it "resets the #exception? flag to false" do
+    action = TagAction.new :add, :fail, nil, nil, nil, nil
+    action.exception?.should be_false
+    action.exception ExceptionState.new(nil, nil, Exception.new("Fail!"))
+    action.exception?.should be_true
+    action.before(ExampleState.new("describe", "it"))
+    action.exception?.should be_false
+  end
+end
+
+describe TagAction, "#exception" do
+  it "sets the #exception? flag" do
+    action = TagAction.new :add, :fail, nil, nil, nil, nil
+    action.exception?.should be_false
+    action.exception ExceptionState.new(nil, nil, Exception.new("Fail!"))
+    action.exception?.should be_true
   end
 end
 
@@ -80,7 +114,7 @@ describe TagAction, "#after when action is :add" do
     @state = ExampleState.new "Catch#me", "if you can"
     @tag = SpecTag.new "tag(comment):Catch#me if you can"
     SpecTag.stub!(:new).and_return(@tag)
-    @exception = [nil, Exception.new("failed")]
+    @exception = ExceptionState.new nil, nil, Exception.new("failed")
   end
 
   it "does not write a tag if the description does not match" do
@@ -98,14 +132,14 @@ describe TagAction, "#after when action is :add" do
   it "writes a tag if the outcome is :fail and the spec failed" do
     MSpec.should_receive(:write_tag).with(@tag)
     action = TagAction.new :add, :fail, "tag", "comment", nil, "can"
-    @state.exceptions << @exception
+    action.exception @exception
     action.after @state
   end
 
   it "does not write a tag if outcome is :pass and the spec failed" do
     MSpec.should_not_receive(:write_tag)
     action = TagAction.new :add, :pass, "tag", "comment", nil, "can"
-    @state.exceptions << @exception
+    action.exception @exception
     action.after @state
   end
 
@@ -128,7 +162,7 @@ describe TagAction, "#after when action is :del" do
     @state = ExampleState.new "Catch#me", "if you can"
     @tag = SpecTag.new "tag(comment):Catch#me if you can"
     SpecTag.stub!(:new).and_return(@tag)
-    @exception = [nil, Exception.new("failed")]
+    @exception = ExceptionState.new nil, nil, Exception.new("failed")
   end
 
   it "does not delete a tag if the description does not match" do
@@ -146,14 +180,14 @@ describe TagAction, "#after when action is :del" do
   it "deletes a tag if the outcome is :fail and the spec failed" do
     MSpec.should_receive(:delete_tag).with(@tag)
     action = TagAction.new :del, :fail, "tag", "comment", nil, "can"
-    @state.exceptions << @exception
+    action.exception @exception
     action.after @state
   end
 
   it "does not delete a tag if outcome is :pass and the spec failed" do
     MSpec.should_not_receive(:delete_tag)
     action = TagAction.new :del, :pass, "tag", "comment", nil, "can"
-    @state.exceptions << @exception
+    action.exception @exception
     action.after @state
   end
 
@@ -232,8 +266,17 @@ describe TagAction, "#register" do
     @action = TagAction.new :add, :all, nil, nil, nil, nil
   end
 
-  it "registers itself with MSpec for the :after action" do
+  it "registers itself with MSpec for the :after event" do
     MSpec.should_receive(:register).with(:after, @action)
+    @action.register
+  end
+
+  it "registers itself with MSpec for the :exception event" do
+    MSpec.should_receive(:register).with(:exception, @action)
+    @action.register
+  end
+
+  it "registers itself with MSpec for the :finish event" do
     MSpec.should_receive(:register).with(:finish, @action)
     @action.register
   end
@@ -246,8 +289,19 @@ describe TagAction, "#unregister" do
     @action = TagAction.new :add, :all, nil, nil, nil, nil
   end
 
-  it "unregisters itself with MSpec for the :after action" do
+  it "unregisters itself with MSpec for the :after event" do
+    MSpec.should_receive(:unregister).with(:exception, @action)
     MSpec.should_receive(:unregister).with(:after, @action)
+    @action.unregister
+  end
+
+  it "unregisters itself with MSpec for the :exception event" do
+    MSpec.should_receive(:unregister).with(:exception, @action)
+    @action.unregister
+  end
+
+  it "unregisters itself with MSpec for the :finish event" do
+    MSpec.should_receive(:unregister).with(:finish, @action)
     @action.unregister
   end
 end

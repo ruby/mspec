@@ -1,5 +1,5 @@
 class ExceptionState
-  attr_reader :description
+  attr_reader :description, :describe, :it, :exception
 
   def initialize(state, location, exception)
     @exception = exception
@@ -8,6 +8,10 @@ class ExceptionState
     if state
       @description << "\n" unless @description.empty?
       @description << state.description
+      @describe = state.describe
+      @it = state.it
+    else
+      @describe = @it = ""
     end
   end
 
