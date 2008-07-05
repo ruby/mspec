@@ -18,6 +18,7 @@ module MSpec
   @mode    = nil
   @load    = nil
   @unload  = nil
+  @exception   = nil
   @randomize   = nil
   @expectation = nil
 
