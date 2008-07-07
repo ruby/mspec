@@ -54,7 +54,7 @@ class ContextState
   end
 
   def protect(what, blocks, check=true)
-    return false if check and MSpec.pretend_mode?
+    return true if check and MSpec.pretend_mode?
     Array(blocks).all? { |block| MSpec.protect what, &block }
   end
 
@@ -64,20 +64,23 @@ class ContextState
 
     MSpec.shuffle @spec if MSpec.randomize?
     MSpec.actions :enter, @describe
-    protect "before :all", @start
-    @spec.each do |desc, spec, state|
-      @state = state
-      MSpec.actions :before, state
-      if protect("before :each", @before)
-        protect nil, spec
-        protect "after :each", @after
-        protect "Mock.verify_count", lambda { Mock.verify_count }
+    if protect "before :all", @start
+      @spec.each do |desc, spec, state|
+        @state = state
+        MSpec.actions :before, state
+        if protect("before :each", @before)
+          protect nil, spec
+          protect "after :each", @after
+          protect "Mock.verify_count", lambda { Mock.verify_count }
+        end
+        protect "Mock.cleanup", lambda { Mock.cleanup }
+        MSpec.actions :after, state
+        @state = nil
       end
+      protect "after :all", @finish
+    else
       protect "Mock.cleanup", lambda { Mock.cleanup }
-      MSpec.actions :after, state
-      @state = nil
     end
-    protect "after :all", @finish
     MSpec.actions :leave
   end
 end

@@ -52,9 +52,9 @@ describe ContextState, "#protect" do
     @c = lambda { raise Exception, "Fail!" }
   end
 
-  it "returns false and does execute any blocks if check is true and MSpec.pretend_mode? is true" do
+  it "returns true and does execute any blocks if check is true and MSpec.pretend_mode? is true" do
     MSpec.stub!(:pretend_mode?).and_return(true)
-    ContextState.new.protect("message", [@a, @b]).should be_false
+    ContextState.new.protect("message", [@a, @b]).should be_true
     ScratchPad.recorded.should == []
   end
 
@@ -136,13 +136,6 @@ describe ContextState, "#process" do
     ScratchPad.recorded.should == [:a, :b]
   end
 
-  it "does not call the it block if an exception is raised in before(:each)" do
-    @state.before(:each) { raise Exception, "Fail!" }
-    @state.it("one", &@a)
-    @state.process
-    ScratchPad.recorded.should == []
-  end
-
   it "calls each before(:each) block" do
     @state.before(:each, &@a)
     @state.before(:each, &@b)
@@ -159,14 +152,6 @@ describe ContextState, "#process" do
     ScratchPad.recorded.should == [:a, :b]
   end
 
-  it "does not call after(:each) if an exception is raised in before(:each)" do
-    @state.before(:each) { raise Exception, "Fail!" }
-    @state.after(:each, &@a)
-    @state.it("") { }
-    @state.process
-    ScratchPad.recorded.should == []
-  end
-
   it "calls Mock.cleanup for each it block" do
     @state.it("") { }
     @state.it("") { }
@@ -178,13 +163,6 @@ describe ContextState, "#process" do
     @state.it("") { }
     @state.it("") { }
     Mock.should_receive(:verify_count).twice
-    @state.process
-  end
-
-  it "does not call Mock.verify_count if an exception is raised in before(:each)" do
-    @state.before(:each) { raise Exception, "Fail!" }
-    @state.it("") { }
-    Mock.should_not_receive(:verify_count)
     @state.process
   end
 
@@ -212,130 +190,7 @@ describe ContextState, "#process" do
   end
 end
 
-describe ContextState, "#process in pretend mode" do
-  before :all do
-    MSpec.register_mode :pretend
-  end
-
-  after :all do
-    MSpec.register_mode nil
-  end
-
-  before :each do
-    MSpec.store :before, []
-    MSpec.store :after, []
-
-    @state = ContextState.new
-    @state.describe("") { }
-
-    @a = lambda { ScratchPad << :a }
-    @b = lambda { ScratchPad << :b }
-    ScratchPad.record []
-  end
-
-  it "does not call any before(:all) block" do
-    @state.before(:all, &@a)
-    @state.before(:all, &@b)
-    @state.it("") { }
-    @state.process
-    ScratchPad.recorded.should == []
-  end
-
-  it "does not call any after(:all) block" do
-    @state.after(:all, &@a)
-    @state.after(:all, &@b)
-    @state.it("") { }
-    @state.process
-    ScratchPad.recorded.should == []
-  end
-
-  it "does not call any it block" do
-    @state.it("one", &@a)
-    @state.it("two", &@b)
-    @state.process
-    ScratchPad.recorded.should == []
-  end
-
-  it "does not call any before(:each) block" do
-    @state.before(:each, &@a)
-    @state.before(:each, &@b)
-    @state.it("") { }
-    @state.process
-    ScratchPad.recorded.should == []
-  end
-
-  it "does not call any after(:each) block" do
-    @state.after(:each, &@a)
-    @state.after(:each, &@b)
-    @state.it("") { }
-    @state.process
-    ScratchPad.recorded.should == []
-  end
-
-  it "does not call Mock.cleanup" do
-    @state.it("") { }
-    @state.it("") { }
-    Mock.should_not_receive(:cleanup)
-    @state.process
-  end
-
-  it "calls the describe block" do
-    ScratchPad.record []
-    @state.describe(Object, "msg") { ScratchPad << :a }
-    @state.process
-    ScratchPad.recorded.should == [:a]
-  end
-end
-
 describe ContextState, "#process" do
-  before :each do
-    MSpec.store :before, []
-    MSpec.store :after, []
-
-    @state = ContextState.new
-    @state.describe("") { }
-    @state.it("") { }
-  end
-
-  after :each do
-    MSpec.store :before, nil
-    MSpec.store :after, nil
-  end
-
-  it "calls registered before actions with the current ExampleState instance" do
-    before = mock("before")
-    before.should_receive(:before).and_return {
-      ScratchPad.record :before
-      @spec_state = @state.state
-    }
-    MSpec.register :before, before
-    @state.process
-    ScratchPad.recorded.should == :before
-    @spec_state.should be_kind_of(ExampleState)
-  end
-
-  it "calls registered after actions with the current ExampleState instance" do
-    after = mock("after")
-    after.should_receive(:after).and_return {
-      ScratchPad.record :after
-      @spec_state = @state.state
-    }
-    MSpec.register :after, after
-    @state.process
-    ScratchPad.recorded.should == :after
-    @spec_state.should be_kind_of(ExampleState)
-  end
-end
-
-describe ContextState, "#process in pretend mode" do
-  before :all do
-    MSpec.register_mode :pretend
-  end
-
-  after :all do
-    MSpec.register_mode nil
-  end
-
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
@@ -404,6 +259,230 @@ describe ContextState, "#process" do
     MSpec.register :leave, leave
     @state.process
     ScratchPad.recorded.should == :leave
+  end
+end
+
+describe ContextState, "#process when an exception is raised in before(:all)" do
+  before :each do
+    MSpec.store :before, []
+    MSpec.store :after, []
+
+    @state = ContextState.new
+    @state.describe("") { }
+
+    @a = lambda { ScratchPad << :a }
+    @b = lambda { ScratchPad << :b }
+    ScratchPad.record []
+
+    @state.before(:all) { raise Exception, "Fail!" }
+  end
+
+  after :each do
+    MSpec.store :before, nil
+    MSpec.store :after, nil
+  end
+
+  it "does not call before(:each)" do
+    @state.before(:each, &@a)
+    @state.it("") { }
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call the it block" do
+    @state.it("one", &@a)
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call after(:each)" do
+    @state.after(:each, &@a)
+    @state.it("") { }
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call after(:each)" do
+    @state.after(:all, &@a)
+    @state.it("") { }
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call Mock.verify_count" do
+    @state.it("") { }
+    Mock.should_not_receive(:verify_count)
+    @state.process
+  end
+
+  it "calls Mock.cleanup" do
+    @state.it("") { }
+    Mock.should_receive(:cleanup)
+    @state.process
+  end
+end
+
+describe ContextState, "#process when an exception is raised in before(:each)" do
+  before :each do
+    MSpec.store :before, []
+    MSpec.store :after, []
+
+    @state = ContextState.new
+    @state.describe("") { }
+
+    @a = lambda { ScratchPad << :a }
+    @b = lambda { ScratchPad << :b }
+    ScratchPad.record []
+
+    @state.before(:each) { raise Exception, "Fail!" }
+  end
+
+  after :each do
+    MSpec.store :before, nil
+    MSpec.store :after, nil
+  end
+
+  it "does not call the it block" do
+    @state.it("one", &@a)
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call after(:each)" do
+    @state.after(:each, &@a)
+    @state.it("") { }
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call Mock.verify_count" do
+    @state.it("") { }
+    Mock.should_not_receive(:verify_count)
+    @state.process
+  end
+end
+
+describe ContextState, "#process in pretend mode" do
+  before :all do
+    MSpec.register_mode :pretend
+  end
+
+  after :all do
+    MSpec.register_mode nil
+  end
+
+  before :each do
+    ScratchPad.clear
+    MSpec.store :before, []
+    MSpec.store :after, []
+
+    @state = ContextState.new
+    @state.describe("") { }
+    @state.it("") { }
+  end
+
+  after :each do
+    MSpec.store :before, nil
+    MSpec.store :after, nil
+  end
+
+  it "calls registered before actions with the current ExampleState instance" do
+    before = mock("before")
+    before.should_receive(:before).and_return {
+      ScratchPad.record :before
+      @spec_state = @state.state
+    }
+    MSpec.register :before, before
+    @state.process
+    ScratchPad.recorded.should == :before
+    @spec_state.should be_kind_of(ExampleState)
+  end
+
+  it "calls registered after actions with the current ExampleState instance" do
+    after = mock("after")
+    after.should_receive(:after).and_return {
+      ScratchPad.record :after
+      @spec_state = @state.state
+    }
+    MSpec.register :after, after
+    @state.process
+    ScratchPad.recorded.should == :after
+    @spec_state.should be_kind_of(ExampleState)
+  end
+end
+
+describe ContextState, "#process in pretend mode" do
+  before :all do
+    MSpec.register_mode :pretend
+  end
+
+  after :all do
+    MSpec.register_mode nil
+  end
+
+  before :each do
+    MSpec.store :before, []
+    MSpec.store :after, []
+
+    @state = ContextState.new
+    @state.describe("") { }
+
+    @a = lambda { ScratchPad << :a }
+    @b = lambda { ScratchPad << :b }
+    ScratchPad.record []
+  end
+
+  it "calls the describe block" do
+    ScratchPad.record []
+    @state.describe(Object, "msg") { ScratchPad << :a }
+    @state.process
+    ScratchPad.recorded.should == [:a]
+  end
+
+  it "does not call any before(:all) block" do
+    @state.before(:all, &@a)
+    @state.before(:all, &@b)
+    @state.it("") { }
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call any after(:all) block" do
+    @state.after(:all, &@a)
+    @state.after(:all, &@b)
+    @state.it("") { }
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call any it block" do
+    @state.it("one", &@a)
+    @state.it("two", &@b)
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call any before(:each) block" do
+    @state.before(:each, &@a)
+    @state.before(:each, &@b)
+    @state.it("") { }
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call any after(:each) block" do
+    @state.after(:each, &@a)
+    @state.after(:each, &@b)
+    @state.it("") { }
+    @state.process
+    ScratchPad.recorded.should == []
+  end
+
+  it "does not call Mock.cleanup" do
+    @state.it("") { }
+    @state.it("") { }
+    Mock.should_not_receive(:cleanup)
+    @state.process
   end
 end
 
