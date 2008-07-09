@@ -64,15 +64,22 @@ class ContextState
 
     MSpec.shuffle @spec if MSpec.randomize?
     MSpec.actions :enter, @describe
+
     if protect "before :all", @start
       @spec.each do |desc, spec, state|
         @state = state
         MSpec.actions :before, state
+
         if protect("before :each", @before)
+          MSpec.clear_expectations
           protect nil, spec
+          if spec and not MSpec.expectation?
+            protect nil, lambda { raise ExpectationNotFoundError }
+          end
           protect "after :each", @after
           protect "Mock.verify_count", lambda { Mock.verify_count }
         end
+
         protect "Mock.cleanup", lambda { Mock.cleanup }
         MSpec.actions :after, state
         @state = nil
@@ -81,7 +88,7 @@ class ContextState
     else
       protect "Mock.cleanup", lambda { Mock.cleanup }
     end
+
     MSpec.actions :leave
   end
 end
-

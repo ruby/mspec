@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper'
+require 'mspec/expectations/expectations'
 require 'mspec/matchers/base'
 require 'mspec/runner/mspec'
 require 'mspec/mocks/mock'
@@ -181,6 +182,14 @@ describe ContextState, "#process" do
     ScratchPad.recorded.should be_kind_of(ExampleState)
   end
 
+  it "clears the expectations flag before evaluating the #it block" do
+    MSpec.clear_expectations
+    MSpec.should_receive(:clear_expectations)
+    @state.it("it") { ScratchPad.record MSpec.expectation? }
+    @state.process
+    ScratchPad.recorded.should be_false
+  end
+
   it "shuffles the spec list if MSpec.randomize? is true" do
     MSpec.randomize
     MSpec.should_receive(:shuffle)
@@ -192,12 +201,40 @@ end
 
 describe ContextState, "#process" do
   before :each do
+    @state = ContextState.new
+    @state.describe("") { }
+
+    action = mock("action")
+    def action.exception(exc)
+      ScratchPad.record :exception if exc.exception.is_a? ExpectationNotFoundError
+    end
+    MSpec.register :exception, action
+
+    MSpec.clear_expectations
+    ScratchPad.clear
+  end
+
+  it "raises an ExpectationNotFoundError if an #it block does not contain an expectation" do
+    @state.it("it") { }
+    @state.process
+    ScratchPad.recorded.should == :exception
+  end
+
+  it "does not raise an ExpectationNotFoundError if an #it block does contain an expectation" do
+    @state.it("it") { MSpec.expectation }
+    @state.process
+    ScratchPad.recorded.should be_nil
+  end
+end
+
+describe ContextState, "#process" do
+  before :each do
     MSpec.store :before, []
     MSpec.store :after, []
 
     @state = ContextState.new
     @state.describe("") { }
-    @state.it("") { }
+    @state.it("") { MSpec.expectation }
   end
 
   after :each do
@@ -237,7 +274,7 @@ describe ContextState, "#process" do
 
     @state = ContextState.new
     @state.describe("") { }
-    @state.it("") { }
+    @state.it("") { MSpec.expectation }
   end
 
   after :each do

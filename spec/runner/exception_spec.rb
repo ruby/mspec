@@ -70,7 +70,12 @@ describe ExceptionState, "#failure?" do
     exc.failure?.should be_true
   end
 
-  it "returns false if the exception is not an ExpectationNotMetError" do
+  it "returns true if the exception is an ExpectationNotFoundError" do
+    exc = ExceptionState.new @state, "", ExpectationNotFoundError.new("Fail!")
+    exc.failure?.should be_true
+  end
+
+  it "returns false if the exception is not an ExpectationNotMetError or an ExpectationNotFoundError" do
     exc = ExceptionState.new @state, "", Exception.new("Fail!")
     exc.failure?.should be_false
   end
@@ -82,12 +87,18 @@ describe ExceptionState, "#message" do
     exc.message.should == "<No message>"
   end
 
-  it "returns the message without exception class when the exception is ExpectationNotMetError" do
+  it "returns the message without exception class when the exception is an ExpectationNotMetError" do
     exc = ExceptionState.new @state, "", ExpectationNotMetError.new("Fail!")
     exc.message.should == "Fail!"
   end
 
-  it "returns the message with exception class when the exception is not ExpectationNotMetError" do
+  it "returns ExpectationNotFoundError#message when the exception is an ExpectationNotFoundError" do
+    e = ExpectationNotFoundError.new
+    exc = ExceptionState.new @state, "", e
+    exc.message.should == e.message
+  end
+
+  it "returns the message with exception class when the exception is not an ExpectationNotMetError or an ExpectationNotFoundError" do
     exc = ExceptionState.new @state, "", Exception.new("Fail!")
     exc.message.should == "Exception: Fail!"
   end

@@ -16,13 +16,14 @@ class ExceptionState
   end
 
   def failure?
-    @exception.is_a? ExpectationNotMetError
+    [ExpectationNotMetError, ExpectationNotFoundError].any? { |e| @exception.is_a? e }
   end
 
   def message
     if @exception.message.empty?
       "<No message>"
-    elsif @exception.class == ExpectationNotMetError
+    elsif @exception.class == ExpectationNotMetError ||
+          @exception.class == ExpectationNotFoundError
       @exception.message
     else
       "#{@exception.class}: #{@exception.message}"
