@@ -106,16 +106,25 @@ end
 
 describe ExceptionState, "#backtrace" do
   before :each do
-    begin
-      raise Exception, "mock backtrace"
-    rescue Exception => @exception
+    @action = mock("action")
+    def @action.exception(exc)
+      ScratchPad.record exc.exception
     end
+    MSpec.register :exception, @action
+
+    ScratchPad.clear
+    MSpec.protect("") { raise Exception }
+
+    @exc = ExceptionState.new @state, "", ScratchPad.recorded
   end
 
   it "returns a string representation of the exception backtrace" do
-    exc = ExceptionState.new @state, "", @exception
-    exc.backtrace.should be_kind_of(String)
+    @exc.backtrace.should be_kind_of(String)
   end
 
-  # TODO: spec the filtering of the backtrace so mspec files don't display
+  it "strips MSpec files from the backtrace" do
+    @exc.backtrace.split("\n").each do |line|
+      line.should_not =~ ExceptionState::PATH
+    end
+  end
 end
