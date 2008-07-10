@@ -201,6 +201,8 @@ end
 
 describe ContextState, "#process" do
   before :each do
+    MSpec.store :exception, []
+
     @state = ContextState.new
     @state.describe("") { }
 
@@ -214,6 +216,10 @@ describe ContextState, "#process" do
     ScratchPad.clear
   end
 
+  after :each do
+    MSpec.store :exception, nil
+  end
+
   it "raises an ExpectationNotFoundError if an #it block does not contain an expectation" do
     @state.it("it") { }
     @state.process
@@ -224,6 +230,41 @@ describe ContextState, "#process" do
     @state.it("it") { MSpec.expectation }
     @state.process
     ScratchPad.recorded.should be_nil
+  end
+end
+
+describe ContextState, "#process" do
+  before :each do
+    MSpec.store :example, []
+
+    @state = ContextState.new
+    @state.describe("") { }
+
+    example = mock("example")
+    def example.example(state, spec)
+      ScratchPad << state << spec
+    end
+    MSpec.register :example, example
+
+    ScratchPad.record []
+  end
+
+  after :each do
+    MSpec.store :example, nil
+  end
+
+  it "calls registered example actions with the current ExampleState and block" do
+    @state.it("") { MSpec.expectation }
+    @state.process
+
+    ScratchPad.recorded.first.should be_kind_of(ExampleState)
+    ScratchPad.recorded.last.should be_kind_of(Proc)
+  end
+
+  it "does not call registered example actions if the example has no block" do
+    @state.it("empty example")
+    @state.process
+    ScratchPad.recorded.should == []
   end
 end
 
@@ -265,6 +306,9 @@ describe ContextState, "#process" do
     ScratchPad.recorded.should == :after
     @spec_state.should be_kind_of(ExampleState)
   end
+end
+
+describe ContextState, "#process" do
 end
 
 describe ContextState, "#process" do

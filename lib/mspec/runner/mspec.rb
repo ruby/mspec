@@ -111,6 +111,7 @@ module MSpec
   #   :enter        before a describe block is run
   #   :before       before a single spec is run
   #   :expectation  before a 'should', 'should_receive', etc.
+  #   :example      after an example block is run, passed the block
   #   :exception    after an exception is rescued
   #   :after        after a single spec is run
   #   :leave        after a describe block is run
