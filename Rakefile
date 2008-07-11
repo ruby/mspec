@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spec/rake/spectask'
 require 'rake/gempackagetask'
+require 'lib/mspec/version'
 
 Spec::Rake::SpecTask.new
 
@@ -9,7 +10,7 @@ task :default => :spec
 
 spec = Gem::Specification.new do |s|
   s.name                      = %q{mspec}
-  s.version                   = "1.3.0"
+  s.version                   = MSpec::VERSION
 
   s.specification_version     = 2 if s.respond_to? :specification_version=
 
