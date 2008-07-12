@@ -121,6 +121,13 @@ describe MSpecCI, "#run" do
     @script.run
   end
 
+  it "registers a tag filter for 'critical'" do
+    filter = mock("critical filter")
+    TagFilter.should_receive(:new).with(:exclude, 'critical').and_return(filter)
+    filter.should_receive(:register)
+    @script.run
+  end
+
   it "processes the files" do
     MSpec.should_receive(:process)
     @script.run
