@@ -24,7 +24,11 @@ class EqualElementMatcher
         matched &&= actual.scan(/\w+\=\"(.*)\"/).size == 0
       else
         @attributes.each do |key, value|
-          matched &&= (actual.scan(%Q{ #{key}="#{value}"}).size == 1)
+          if value == true
+            matched &&= (actual.scan(/#{Regexp.quote(key)}(\s|>)/).size == 1)
+          else
+            matched &&= (actual.scan(%Q{ #{key}="#{value}"}).size == 1)
+          end
         end        
       end
     end
