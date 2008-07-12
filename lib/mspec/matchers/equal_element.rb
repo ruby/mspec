@@ -1,16 +1,23 @@
 class EqualElementMatcher
-  def initialize(element, attributes = nil, content = nil)
+  def initialize(element, attributes = nil, content = nil, options = {})
     @element = element
     @attributes = attributes
     @content = content
+    @options = options
   end
  
   def matches?(actual)
     @actual = actual
     
-    matched = actual =~ /^#{Regexp.quote("<" + @element)}/
-    matched &&= actual =~ /#{Regexp.quote("</" + @element + ">")}$/
-    matched &&= actual =~ /#{Regexp.quote(">" + @content + "</")}/ if @content
+    matched = true
+    
+    if @options[:not_closed]
+      matched &&= actual =~ /^#{Regexp.quote("<" + @element)}.*#{Regexp.quote(">" + (@content || ''))}$/
+    else
+      matched &&= actual =~ /^#{Regexp.quote("<" + @element)}/
+      matched &&= actual =~ /#{Regexp.quote("</" + @element + ">")}$/
+      matched &&= actual =~ /#{Regexp.quote(">" + @content + "</")}/ if @content      
+    end
     
     if @attributes
       if @attributes.empty?
