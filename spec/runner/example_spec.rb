@@ -5,14 +5,15 @@ require 'mspec/mocks/mock'
 require 'mspec/runner/example'
 
 describe ExampleState do
-  it "is initialized with the describe and it strings" do
-    ExampleState.new("This", "does").should be_kind_of(ExampleState)
+  it "is initialized with the #describe and #it strings and #it block" do
+    prc = lambda { }
+    ExampleState.new("This", "does", prc).should be_kind_of(ExampleState)
   end
 end
 
 describe ExampleState, "#describe" do
   before :each do
-    @state = ExampleState.new("describe", "it")
+    @state = ExampleState.new "describe", "it"
   end
 
   it "returns the arguments to the #describe block stringified and concatenated" do
@@ -22,11 +23,22 @@ end
 
 describe ExampleState, "#it" do
   before :each do
-    @state = ExampleState.new("describe", "it")
+    @state = ExampleState.new "describe", "it"
   end
 
   it "returns the argument to the #it block" do
     @state.it.should == "it"
+  end
+end
+
+describe ExampleState, "#example" do
+  before :each do
+    @proc = lambda { }
+    @state = ExampleState.new "describe", "it", @proc
+  end
+
+  it "returns the #it block" do
+    @state.example.should == @proc
   end
 end
 
@@ -35,7 +47,7 @@ describe ExampleState, "#unfiltered?" do
     MSpec.store :include, nil
     MSpec.store :exclude, nil
 
-    @state = ExampleState.new("describe", "it")
+    @state = ExampleState.new "describe", "it"
     @filter = mock("filter")
   end
 
@@ -81,7 +93,7 @@ end
 
 describe ExampleState, "#filtered?" do
   before :each do
-    @state = ExampleState.new("describe", "it")
+    @state = ExampleState.new "describe", "it"
   end
 
   it "returns true if #unfiltered returns false" do

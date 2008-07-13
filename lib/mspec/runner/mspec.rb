@@ -18,18 +18,20 @@ module MSpec
   @mode    = nil
   @load    = nil
   @unload  = nil
+  @current = nil
   @exception    = nil
   @randomize    = nil
   @expectation  = nil
   @expectations = false
 
   def self.describe(mod, msg=nil, &block)
-    stack.push ContextState.new
+    state = ContextState.new
+    state.parent = current
 
-    current.describe(mod, msg, &block)
-    current.process
+    MSpec.register_current state
+    state.describe(mod, msg, &block)
 
-    stack.pop
+    state.process unless MSpec.current
   end
 
   def self.process
@@ -67,6 +69,21 @@ module MSpec
       actions :exception, ExceptionState.new(current && current.state, location, exc)
       return false
     end
+  end
+
+  # Sets the toplevel ContextState to +state+.
+  def self.register_current(state)
+    store :current, state
+  end
+
+  # Sets the toplevel ContextState to +nil+.
+  def self.clear_current
+    store :current, nil
+  end
+
+  # Returns the toplevel ContextState.
+  def self.current
+    retrieve :current
   end
 
   def self.register_exit(code)
@@ -139,14 +156,6 @@ module MSpec
     if value = retrieve(symbol)
       value.delete action
     end
-  end
-
-  def self.stack
-    @stack ||= []
-  end
-
-  def self.current
-    stack.last
   end
 
   def self.verify_mode?

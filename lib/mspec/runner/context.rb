@@ -13,45 +13,82 @@ require 'mspec/runner/example'
 # is evaluated, just as +it+ refers to the example itself.
 #++
 class ContextState
-  attr_reader :state
+  attr_reader :state, :parent, :parents, :children, :examples, :description
 
   def initialize
-    @start  = []
-    @before = []
-    @after  = []
-    @finish = []
-    @spec   = []
+    @parsed   = false
+    @before   = { :all => [], :each => [] }
+    @after    = { :all => [], :each => [] }
+    @pre      = {}
+    @post     = {}
+    @examples = []
+    @parent   = nil
+    @parents  = [self]
+    @children = []
     @mock_verify         = lambda { Mock.verify_count }
     @mock_cleanup        = lambda { Mock.cleanup }
     @expectation_missing = lambda { raise ExpectationNotFoundError }
   end
 
-  def before(at=:each, &block)
-    case at
-    when :each
-      @before << block
-    when :all
-      @start << block
+  # Set the parent (enclosing) +ContextState+ for this state. Creates
+  # the +parents+ list.
+  def parent=(parent)
+    @parent = parent
+    parent.child self if parent
+
+    state = parent
+    while state
+      parents.unshift state
+      state = state.parent
     end
   end
 
-  def after(at=:each, &block)
-    case at
-    when :each
-      @after << block
-    when :all
-      @finish << block
-    end
+  # Add the ContextState instance +child+ to the list of nested
+  # describe blocks.
+  def child(child)
+    @children << child
   end
 
+  # Returns a list of all before(+what+) blocks from self and any parents.
+  def pre(what)
+    @pre[what] ||= parents.inject([]) { |l, s| l.push(*s.before(what)) }
+  end
+
+  # Returns a list of all after(+what+) blocks from self and any parents.
+  # The list is in reverse order. In other words, the blocks defined in
+  # inner describes are in the list before those defined in outer describes,
+  # and in a particular describe block those defined later are in the list
+  # before those defined earlier.
+  def post(what)
+    @post[what] ||= parents.inject([]) { |l, s| l.unshift(*s.after(what)) }
+  end
+
+  # Records before(:each) and before(:all) blocks.
+  def before(what, &block)
+    block ? @before[what].push(block) : @before[what]
+  end
+
+  # Records after(:each) and after(:all) blocks.
+  def after(what, &block)
+    block ? @after[what].unshift(block) : @after[what]
+  end
+
+  # Creates an ExampleState instance for the block and stores it
+  # in a list of examples to evaluate unless the example is filtered.
   def it(desc, &block)
-    state = ExampleState.new @describe, desc
-    @spec << [desc, block, state] unless state.filtered?
+    example = ExampleState.new @description, desc, block
+    @examples << example unless example.filtered?
   end
 
+  # Evaluates the block and resets the toplevel +ContextState+ to #parent.
   def describe(mod, desc=nil, &block)
-    @describe = desc ? "#{mod} #{desc}" : mod.to_s
-    @block = block
+    description = parents.inject([]) { |l, s| l << s.description }.compact
+    sep = /^(::|[.#])/ =~ desc ? "" : " "
+    description << (desc ? "#{mod}#{sep}#{desc}" : mod.to_s)
+    @description = description.join " "
+
+    @parsed = protect @description, block, false
+    MSpec.register_current parent
   end
 
   def protect(what, blocks, check=true)
@@ -60,37 +97,42 @@ class ContextState
   end
 
   def process
-    protect @describe, @block, false
-    return unless @spec.any? { |desc, spec, state| state.unfiltered? }
+    MSpec.register_current self
 
-    MSpec.shuffle @spec if MSpec.randomize?
-    MSpec.actions :enter, @describe
+    if @parsed and @examples.any? { |example| example.unfiltered? }
+      MSpec.shuffle @examples if MSpec.randomize?
+      MSpec.actions :enter, @description
 
-    if protect "before :all", @start
-      @spec.each do |desc, spec, state|
-        @state = state
-        MSpec.actions :before, state
+      if protect "before :all", pre(:all)
+        @examples.each do |state|
+          @state  = state
+          example = state.example
+          MSpec.actions :before, state
 
-        if protect("before :each", @before)
-          MSpec.clear_expectations
-          passed = protect nil, spec
-          if spec
-            MSpec.actions :example, state, spec
-            protect nil, @expectation_missing unless MSpec.expectation? or not passed
+          if protect "before :each", pre(:each)
+            MSpec.clear_expectations
+            if example
+              passed = protect nil, example
+              MSpec.actions :example, state, example
+              protect nil, @expectation_missing unless MSpec.expectation? or not passed
+            end
+            protect "after :each", post(:each)
+            protect "Mock.verify_count", @mock_verify
           end
-          protect "after :each", @after
-          protect "Mock.verify_count", @mock_verify
-        end
 
+          protect "Mock.cleanup", @mock_cleanup
+          MSpec.actions :after, state
+          @state = nil
+        end
+        protect "after :all", post(:all)
+      else
         protect "Mock.cleanup", @mock_cleanup
-        MSpec.actions :after, state
-        @state = nil
       end
-      protect "after :all", @finish
-    else
-      protect "Mock.cleanup", @mock_cleanup
+
+      MSpec.actions :leave
     end
 
-    MSpec.actions :leave
+    MSpec.register_current nil
+    children.each { |child| child.process }
   end
 end

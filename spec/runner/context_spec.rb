@@ -5,43 +5,198 @@ require 'mspec/runner/mspec'
 require 'mspec/mocks/mock'
 require 'mspec/runner/context'
 
-describe ContextState do
+describe ContextState, "#describe" do
+  before :each do
+    @state = ContextState.new
+    @proc = lambda { ScratchPad.record :a }
+    ScratchPad.clear
+  end
+
+  it "evaluates the passed block" do
+    @state.describe(Object, &@proc)
+    ScratchPad.recorded.should == :a
+  end
+
+  it "sets the description string" do
+    @state.description.should be_nil
+    @state.describe("Object#to_s") { }
+    @state.description.should == "Object#to_s"
+  end
+
+  it "registers #parent as the current MSpec ContextState" do
+    parent = ContextState.new
+    @state.parent = parent
+    MSpec.should_receive(:register_current).with(parent)
+    @state.describe("C#m") { }
+  end
+
+  it "registers nil as the current MSpec ContextState if it has no parent" do
+    MSpec.should_receive(:register_current).with(nil)
+    @state.describe("C#m") { }
+  end
+end
+
+describe ContextState, "#description when there are no parents" do
+  before :each do
+    @state = ContextState.new
+  end
+
+  it "returns a description string for self when passed a Module" do
+    @state.describe(Object) { }
+    @state.description.should == "Object"
+  end
+
+  it "returns a description string for self when passed a String" do
+    @state.describe("SomeClass") { }
+    @state.description.should == "SomeClass"
+  end
+
+  it "returns a description string for self when passed a Module, String" do
+    @state.describe(Object, "when empty") { }
+    @state.description.should == "Object when empty"
+  end
+
+  it "returns a description string for self when passed a Module and String beginning with '#'" do
+    @state.describe(Object, "#to_s") { }
+    @state.description.should == "Object#to_s"
+  end
+
+  it "returns a description string for self when passed a Module and String beginning with '.'" do
+    @state.describe(Object, ".to_s") { }
+    @state.description.should == "Object.to_s"
+  end
+
+  it "returns a description string for self when passed a Module and String beginning with '::'" do
+    @state.describe(Object, "::to_s") { }
+    @state.description.should == "Object::to_s"
+  end
+end
+
+describe ContextState, "#description when there are parents" do
+  before :each do
+    @state = ContextState.new
+    @parent = ContextState.new
+    @state.parent = @parent
+  end
+
+  it "returns a composite description string from self and all parents" do
+    @parent.describe("Toplevel") { }
+    @state.describe("when empty") { }
+    @state.description.should == "Toplevel when empty"
+  end
+end
+
+describe ContextState, "#it" do
   before :each do
     @state = ContextState.new
     @proc = lambda { }
   end
 
-  it "records before(:all) blocks" do
-    @state.before(:all, &@proc)
-    @state.instance_variable_get(:@start).should == [@proc]
+  it "creates an ExampleState instance for the block" do
+    ex = ExampleState.new("", "", &@proc)
+    ExampleState.should_receive(:new).with("describe", "it", @proc).and_return(ex)
+    @state.describe("describe", &@proc)
+    @state.it("it", &@proc)
+  end
+end
+
+describe ContextState, "#examples" do
+  before :each do
+    @state = ContextState.new
   end
 
-  it "records before(:each) blocks" do
+  it "returns a list of all examples in this ContextState" do
+    @state.it("first") { }
+    @state.it("second") { }
+    @state.examples.size.should == 2
+  end
+end
+
+describe ContextState, "#before" do
+  before :each do
+    @state = ContextState.new
+    @proc = lambda { }
+  end
+
+  it "records the block for :each" do
     @state.before(:each, &@proc)
-    @state.instance_variable_get(:@before).should == [@proc]
+    @state.before(:each).should == [@proc]
   end
 
-  it "records after(:all) blocks" do
-    @state.after(:all, &@proc)
-    @state.instance_variable_get(:@finish).should == [@proc]
+  it "records the block for :all" do
+    @state.before(:all, &@proc)
+    @state.before(:all).should == [@proc]
+  end
+end
+
+describe ContextState, "#after" do
+  before :each do
+    @state = ContextState.new
+    @proc = lambda { }
   end
 
-  it "records after(:each) blocks" do
+  it "records the block for :each" do
     @state.after(:each, &@proc)
-    @state.instance_variable_get(:@after).should == [@proc]
+    @state.after(:each).should == [@proc]
   end
 
-  it "records it blocks" do
-    @state.it("message", &@proc)
-    msg, proc = @state.instance_variable_get(:@spec)[0]
-    msg.should == "message"
-    proc.should == @proc
+  it "records the block for :all" do
+    @state.after(:all, &@proc)
+    @state.after(:all).should == [@proc]
+  end
+end
+
+describe ContextState, "#pre" do
+  before :each do
+    @a = lambda { }
+    @b = lambda { }
+    @c = lambda { }
+
+    parent = ContextState.new
+    parent.before(:each, &@c)
+    parent.before(:all, &@c)
+
+    @state = ContextState.new
+    @state.parent = parent
   end
 
-  it "records describe blocks" do
-    @state.describe(Object, "message", &@proc)
-    @state.instance_variable_get(:@describe).should == "Object message"
-    @state.instance_variable_get(:@block).should == @proc
+  it "returns before(:each) actions in the order they were defined" do
+    @state.before(:each, &@a)
+    @state.before(:each, &@b)
+    @state.pre(:each).should == [@c, @a, @b]
+  end
+
+  it "returns before(:all) actions in the order they were defined" do
+    @state.before(:all, &@a)
+    @state.before(:all, &@b)
+    @state.pre(:all).should == [@c, @a, @b]
+  end
+end
+
+describe ContextState, "#post" do
+  before :each do
+    @a = lambda { }
+    @b = lambda { }
+    @c = lambda { }
+
+    parent = ContextState.new
+    parent.after(:each, &@c)
+    parent.after(:all, &@c)
+
+    @state = ContextState.new
+    @state.parent = parent
+  end
+
+  it "returns after(:each) actions in the reverse order they were defined" do
+    @state.after(:each, &@a)
+    @state.after(:each, &@b)
+    @state.post(:each).should == [@b, @a, @c]
+  end
+
+  it "returns after(:all) actions in the reverse order they were defined" do
+    @state.after(:all, &@a)
+    @state.after(:all, &@b)
+    @state.post(:all).should == [@b, @a, @c]
   end
 end
 
@@ -79,6 +234,89 @@ describe ContextState, "#protect" do
   end
 end
 
+describe ContextState, "#parent=" do
+  before :each do
+    @state = ContextState.new
+    @parent = mock("describe")
+    @parent.stub!(:parent).and_return(nil)
+    @parent.stub!(:child)
+  end
+
+  it "sets self as a child of parent" do
+    @parent.should_receive(:child).with(@state)
+    @state.parent = @parent
+  end
+
+  it "creates the list of parents" do
+    @state.parent = @parent
+    @state.parents.should == [@parent, @state]
+  end
+end
+
+describe ContextState, "#parent" do
+  before :each do
+    @state = ContextState.new
+    @parent = mock("describe")
+    @parent.stub!(:parent).and_return(nil)
+    @parent.stub!(:child)
+  end
+
+  it "returns nil if parent has not been set" do
+    @state.parent.should be_nil
+  end
+
+  it "returns the parent" do
+    @state.parent = @parent
+    @state.parent.should == @parent
+  end
+end
+
+describe ContextState, "#parents" do
+  before :each do
+    @first = ContextState.new
+    @second = ContextState.new
+    @parent = mock("describe")
+    @parent.stub!(:parent).and_return(nil)
+    @parent.stub!(:child)
+  end
+
+  it "returns a list of all enclosing ContextState instances" do
+    @first.parent = @parent
+    @second.parent = @first
+    @second.parents.should == [@parent, @first, @second]
+  end
+end
+
+describe ContextState, "#child" do
+  before :each do
+    @first = ContextState.new
+    @second = ContextState.new
+    @parent = mock("describe")
+    @parent.stub!(:parent).and_return(nil)
+    @parent.stub!(:child)
+  end
+
+  it "adds the ContextState to the list of contained ContextStates" do
+    @first.child @second
+    @first.children.should == [@second]
+  end
+end
+
+describe ContextState, "#children" do
+  before :each do
+    @parent = ContextState.new
+    @first = ContextState.new
+    @second = ContextState.new
+  end
+
+  it "returns the list of directly contained ContextStates" do
+    @first.parent = @parent
+    @second.parent = @first
+    @parent.children.should == [@first]
+    @first.children.should == [@second]
+  end
+end
+
 describe ContextState, "#state" do
   before :each do
     MSpec.store :before, []
@@ -105,6 +343,7 @@ describe ContextState, "#process" do
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
+    MSpec.stub!(:register_current)
 
     @state = ContextState.new
     @state.describe("") { }
@@ -127,7 +366,7 @@ describe ContextState, "#process" do
     @state.after(:all, &@b)
     @state.it("") { }
     @state.process
-    ScratchPad.recorded.should == [:a, :b]
+    ScratchPad.recorded.should == [:b, :a]
   end
 
   it "calls each it block" do
@@ -150,7 +389,7 @@ describe ContextState, "#process" do
     @state.after(:each, &@b)
     @state.it("") { }
     @state.process
-    ScratchPad.recorded.should == [:a, :b]
+    ScratchPad.recorded.should == [:b, :a]
   end
 
   it "calls Mock.cleanup for each it block" do
@@ -196,6 +435,37 @@ describe ContextState, "#process" do
     @state.it("") { }
     @state.process
     MSpec.randomize false
+  end
+
+  it "sets the current MSpec ContextState" do
+    MSpec.should_receive(:register_current).with(@state)
+    @state.process
+  end
+
+  it "resets the current MSpec ContextState to nil when there are examples" do
+    MSpec.should_receive(:register_current).with(nil)
+    @state.it("") { }
+    @state.process
+  end
+
+  it "resets the current MSpec ContextState to nil when there are no examples" do
+    MSpec.should_receive(:register_current).with(nil)
+    @state.process
+  end
+
+  it "call #process on children when there are examples" do
+    child = ContextState.new
+    child.should_receive(:process)
+    @state.child child
+    @state.it("") { }
+    @state.process
+  end
+
+  it "call #process on children when there are no examples" do
+    child = ContextState.new
+    child.should_receive(:process)
+    @state.child child
+    @state.process
   end
 end
 
