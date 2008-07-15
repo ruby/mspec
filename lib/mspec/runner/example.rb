@@ -3,30 +3,32 @@ require 'mspec/runner/mspec'
 # Holds some of the state of the example (i.e. +it+ block) that is
 # being evaluated. See also +ContextState+.
 class ExampleState
-  attr_reader :describe, :it, :example
+  attr_reader   :context, :it, :example
 
-  def initialize(describe, it, example=nil)
-    @describe   = describe
-    @it         = it
-    @example    = example
-    @unfiltered = nil
+  def initialize(context, it, example=nil)
+    @context  = context
+    @it       = it
+    @example  = example
+  end
+
+  def context=(context)
+    @description = nil
+    @context = context
+  end
+
+  def describe
+    @context.description
   end
 
   def description
-    @description ||= "#{@describe} #{@it}"
-  end
-
-  def unfiltered?
-    unless @unfiltered
-      incl = MSpec.retrieve(:include) || []
-      excl = MSpec.retrieve(:exclude) || []
-      @unfiltered   = incl.empty? || incl.any? { |f| f === description }
-      @unfiltered &&= excl.empty? || !excl.any? { |f| f === description }
-    end
-    @unfiltered
+    @description ||= "#{describe} #{@it}"
   end
 
   def filtered?
-    not unfiltered?
+    incl = MSpec.retrieve(:include) || []
+    excl = MSpec.retrieve(:exclude) || []
+    included   = incl.empty? || incl.any? { |f| f === description }
+    included &&= excl.empty? || !excl.any? { |f| f === description }
+    not included
   end
 end

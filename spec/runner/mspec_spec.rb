@@ -88,10 +88,11 @@ end
 describe MSpec, ".protect" do
   before :each do
     MSpec.clear_current
-    @es = ExampleState.new "C#m", "runs"
-    @cs = ContextState.new
+    @cs = ContextState.new "C#m"
     @cs.stub!(:state).and_return(@es)
     @cs.parent = MSpec.current
+
+    @es = ExampleState.new @cs, "runs"
     ScratchPad.record Exception.new("Sharp!")
   end
 
@@ -154,8 +155,8 @@ describe MSpec, ".current" do
   end
 
   it "returns the most recently registered ContextState" do
-    first = ContextState.new
-    second = ContextState.new
+    first = ContextState.new ""
+    second = ContextState.new ""
     MSpec.register_current first
     MSpec.current.should == first
     MSpec.register_current second
@@ -213,7 +214,7 @@ end
 describe MSpec, ".describe" do
   before :each do
     MSpec.clear_current
-    @cs = ContextState.new
+    @cs = ContextState.new ""
     ContextState.stub!(:new).and_return(@cs)
     MSpec.stub!(:current).and_return(nil)
     MSpec.stub!(:register_current)
@@ -234,9 +235,9 @@ describe MSpec, ".describe" do
     MSpec.describe(Object) { }
   end
 
-  it "invokes the ContextState#describe method with its arguments" do
+  it "invokes the ContextState#describe method" do
     prc = lambda { }
-    @cs.should_receive(:describe).with(Object, "msg", &prc)
+    @cs.should_receive(:describe).with(&prc)
     MSpec.describe(Object, "msg", &prc)
   end
 end
@@ -451,5 +452,25 @@ describe MSpec, ".clear_expectations" do
     MSpec.expectation?.should be_true
     MSpec.clear_expectations
     MSpec.expectation?.should be_false
+  end
+end
+
+describe MSpec, ".register_shared" do
+  it "stores a shared ContextState by description" do
+    parent = ContextState.new "container"
+    state = ContextState.new "shared"
+    state.parent = parent
+    prc = lambda { }
+    state.describe(&prc)
+    MSpec.register_shared(state)
+    MSpec.retrieve(:shared)["shared"].should == state
+  end
+end
+
+describe MSpec, ".retrieve_shared" do
+  it "retrieves the shared ContextState matching description" do
+    state = ContextState.new ""
+    MSpec.retrieve(:shared)["shared"] = state
+    MSpec.retrieve_shared(:shared).should == state
   end
 end

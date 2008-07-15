@@ -19,19 +19,20 @@ module MSpec
   @load    = nil
   @unload  = nil
   @current = nil
+  @shared  = {}
   @exception    = nil
   @randomize    = nil
   @expectation  = nil
   @expectations = false
 
-  def self.describe(mod, msg=nil, &block)
-    state = ContextState.new
+  def self.describe(mod, options=nil, &block)
+    state = ContextState.new mod, options
     state.parent = current
 
     MSpec.register_current state
-    state.describe(mod, msg, &block)
+    state.describe(&block)
 
-    state.process unless MSpec.current
+    state.process unless state.shared? or current
   end
 
   def self.process
@@ -86,14 +87,27 @@ module MSpec
     retrieve :current
   end
 
+  # Stores the shared ContextState keyed by description.
+  def self.register_shared(state)
+    @shared[state.to_s] = state
+  end
+
+  # Returns the shared ContextState matching description.
+  def self.retrieve_shared(desc)
+    @shared[desc.to_s]
+  end
+
+  # Stores the exit code used by the runner scripts.
   def self.register_exit(code)
     store :exit, code
   end
 
+  # Retrieves the stored exit code.
   def self.exit_code
     retrieve(:exit).to_i
   end
 
+  # Stores the list of files to be evaluated.
   def self.register_files(files)
     store :files, files
   end
