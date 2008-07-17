@@ -951,3 +951,29 @@ describe ContextState, "#it_should_behave_like" do
     @state.after(:all).should include(*@shared.after(:all))
   end
 end
+
+describe ContextState, "#filter_examples" do
+  before :each do
+    @state = ContextState.new ""
+    @state.it("one") { }
+    @state.it("two") { }
+  end
+
+  it "removes examples that are filtered" do
+    @state.examples.first.stub!(:filtered?).and_return(true)
+    @state.examples.size.should == 2
+    @state.filter_examples
+    @state.examples.size.should == 1
+  end
+
+  it "returns true if there are remaining examples to evaluate" do
+    @state.examples.first.stub!(:filtered?).and_return(true)
+    @state.filter_examples.should be_true
+  end
+
+  it "returns false if there are no remaining examples to evaluate" do
+    @state.examples.first.stub!(:filtered?).and_return(true)
+    @state.examples.last.stub!(:filtered?).and_return(true)
+    @state.filter_examples.should be_false
+  end
+end

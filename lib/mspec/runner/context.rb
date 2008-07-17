@@ -131,19 +131,24 @@ class ContextState
     Array(blocks).all? { |block| MSpec.protect what, &block }
   end
 
+  # Removes filtered examples. Returns true if there are examples
+  # left to evaluate.
+  def filter_examples
+    @examples.reject! { |ex| ex.filtered? }
+    not @examples.empty?
+  end
+
   # Evaluates the examples in a +ContextState+. Invokes the MSpec events
   # for :enter, :before, :after, :leave.
   def process
     MSpec.register_current self
 
-    if @parsed
+    if @parsed and filter_examples
       MSpec.shuffle @examples if MSpec.randomize?
       MSpec.actions :enter, description
 
       if protect "before :all", pre(:all)
         @examples.each do |state|
-          next if state.filtered?
-
           @state  = state
           example = state.example
           MSpec.actions :before, state
