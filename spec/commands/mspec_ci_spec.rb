@@ -128,6 +128,13 @@ describe MSpecCI, "#run" do
     @script.run
   end
 
+  it "registers a tag filter for 'unsupported'" do
+    filter = mock("unsupported filter")
+    TagFilter.should_receive(:new).with(:exclude, 'unsupported').and_return(filter)
+    filter.should_receive(:register)
+    @script.run
+  end
+
   it "processes the files" do
     MSpec.should_receive(:process)
     @script.run
