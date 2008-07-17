@@ -65,6 +65,8 @@ module MSpec
     begin
       @env.instance_eval(&block)
       return true
+    rescue SystemExit
+      raise
     rescue Exception => exc
       register_exit 1
       actions :exception, ExceptionState.new(current && current.state, location, exc)

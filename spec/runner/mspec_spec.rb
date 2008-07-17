@@ -108,6 +108,15 @@ describe MSpec, ".protect" do
     MSpec.protect("") { raise Exception, "Now you see me..." }
   end
 
+  it "does not rescue SystemExit" do
+    begin
+      MSpec.protect("") { exit 1 }
+    rescue SystemExit
+      ScratchPad.record :system_exit
+    end
+    ScratchPad.recorded.should == :system_exit
+  end
+
   it "calls all the exception actions" do
     exc = ExceptionState.new @es, "testing", ScratchPad.recorded
     ExceptionState.stub!(:new).and_return(exc)
