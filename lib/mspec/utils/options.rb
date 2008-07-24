@@ -96,6 +96,8 @@ class MSpecOptions
         @config[:target] = 'rbx'
       when 'j', 'jruby'
         @config[:target] = 'jruby'
+      when 'i','ironruby'
+        @config[:target] = 'ir'
       else
         @config[:target] = t
       end
@@ -107,6 +109,7 @@ class MSpecOptions
     separator "   'x' or 'rubinius' invokes ./shotgun/rubinius"
     separator "   'X' or 'rbx'      invokes rbx in PATH"
     separator "   'j' or 'jruby'    invokes jruby in PATH\n"
+    separator "   'i' or 'ironruby' invokes ir in PATH\n"
 
     on("-T", "--target-opt OPT", String,
        "Pass OPT as a flag to the target implementation") do |t|
