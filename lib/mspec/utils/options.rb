@@ -246,10 +246,10 @@ class MSpecOptions
   def add_verify
     on("-Y", "--verify",
        "Verify that guarded specs pass and fail as expected") do
-      MSpec.set_mode :verify
+      MSpec.register_mode :verify
     end
     on("-O", "--report", "Report guarded specs") do
-      MSpec.set_mode :report
+      MSpec.register_mode :report
     end
   end
 
