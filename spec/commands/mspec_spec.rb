@@ -35,6 +35,22 @@ describe MSpecMain, "#options" do
     @script.options [".", "-G", "fail"]
     @config[:options].sort.should == ["-G", ".", "fail"]
   end
+
+  it "passes -h, --help to the subscript" do
+    ["-h", "--help"].each do |opt|
+      @config[:options] = []
+      @script.options ["ci", opt]
+      @config[:options].sort.should == ["-h"]
+    end
+  end
+
+  it "passes -v, --version to the subscript" do
+    ["-v", "--version"].each do |opt|
+      @config[:options] = []
+      @script.options ["ci", opt]
+      @config[:options].sort.should == ["-v"]
+    end
+  end
 end
 
 describe MSpecMain, "#parallel" do
@@ -354,8 +370,8 @@ describe "The -h, --help option" do
   end
 
   it "prints help and exits" do
-    @options.should_receive(:puts).twice
-    @options.should_receive(:exit).twice
+    @script.should_receive(:puts).twice
+    @script.should_receive(:exit).twice
     ["-h", "--help"].each do |opt|
       @script.options [opt]
     end
