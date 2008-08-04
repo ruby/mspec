@@ -233,6 +233,13 @@ describe MSpecMain, "#run" do
     ENV["MSPEC_RUNNER"].should == "1"
   end
 
+  it "sets RUBY_EXE = config[:target] in the environment" do
+    @script.stub!(:exec)
+    ENV["RUBY_EXE"] = nil
+    @script.run
+    ENV["RUBY_EXE"].should == @config[:target]
+  end
+
   it "uses exec to invoke the runner script" do
     @script.should_receive(:exec).with("ruby", "-v", %r"mspec/bin/mspec-run$")
     @script.options

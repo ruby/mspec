@@ -132,6 +132,7 @@ class MSpecMain < MSpecScript
 
   def run
     ENV['MSPEC_RUNNER'] = '1'
+    ENV['RUBY_EXE'] = config[:target]
 
     argv = []
     argv.concat config[:flags]
