@@ -77,6 +77,9 @@ describe Object, "#ruby_exe" do
     @verbose = $VERBOSE
     $VERBOSE = nil
 
+    @ruby_flags = ENV["RUBY_FLAGS"]
+    ENV["RUBY_FLAGS"] = "-w -Q"
+
     @ruby_exe = Object.const_get :RUBY_EXE
     Object.const_set :RUBY_EXE, 'ruby_spec_exe'
 
@@ -85,6 +88,7 @@ describe Object, "#ruby_exe" do
 
   after :all do
     Object.const_set :RUBY_EXE, @ruby_exe
+    ENV["RUBY_FLAGS"] = @ruby_flags
     $VERBOSE = @verbose
   end
 
@@ -92,14 +96,14 @@ describe Object, "#ruby_exe" do
     code = "some/ruby/file.rb"
     File.should_receive(:exists?).with(code).and_return(true)
     File.should_receive(:executable?).with(code).and_return(true)
-    @script.should_receive(:`).with("ruby_spec_exe some/ruby/file.rb")
+    @script.should_receive(:`).with("ruby_spec_exe -w -Q some/ruby/file.rb")
     @script.ruby_exe code
   end
 
   it "executes the argument with -e" do
     code = %(some "real" 'ruby' code)
     File.should_receive(:exists?).with(code).and_return(false)
-    @script.should_receive(:`).with(%(ruby_spec_exe -e "some \\"real\\" 'ruby' code"))
+    @script.should_receive(:`).with(%(ruby_spec_exe -w -Q -e "some \\"real\\" 'ruby' code"))
     @script.ruby_exe code
   end
 end

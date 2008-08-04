@@ -91,9 +91,9 @@ class Object
 
   def ruby_exe(code)
     if File.exists?(code) and File.executable?(code)
-      `#{RUBY_EXE} #{code}`
+      `#{RUBY_EXE} #{ENV['RUBY_FLAGS']} #{code}`
     else
-      `#{RUBY_EXE} -e #{code.inspect}`
+      `#{RUBY_EXE} #{ENV['RUBY_FLAGS']} -e #{code.inspect}`
     end
   end
 end

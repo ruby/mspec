@@ -202,7 +202,6 @@ class MSpecOptions
       case t
       when 'r', 'ruby'
         config[:target] = 'ruby'
-        config[:flags] << '-v'
       when 'r19', 'ruby19'
         config[:target] = 'ruby19'
       when 'x', 'rubinius'

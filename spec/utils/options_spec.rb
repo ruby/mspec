@@ -506,7 +506,6 @@ describe "The -t, --target TARGET option" do
     ["-t", "--target"].each do |opt|
       @options.parse [opt, "ruby"]
       @config[:target].should == "ruby"
-      @config[:flags].should include("-v")
     end
   end
 

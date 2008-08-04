@@ -224,20 +224,27 @@ describe MSpecMain, "#run" do
     @options, @config = new_option
     MSpecOptions.stub!(:new).and_return(@options)
     @script = MSpecMain.new
+    @script.stub!(:config).and_return(@config)
+    @script.stub!(:exec)
   end
 
   it "sets MSPEC_RUNNER = '1' in the environment" do
-    @script.stub!(:exec)
     ENV["MSPEC_RUNNER"] = "0"
     @script.run
     ENV["MSPEC_RUNNER"].should == "1"
   end
 
   it "sets RUBY_EXE = config[:target] in the environment" do
-    @script.stub!(:exec)
     ENV["RUBY_EXE"] = nil
     @script.run
     ENV["RUBY_EXE"].should == @config[:target]
+  end
+
+  it "sets RUBY_FLAGS = config[:flags] in the environment" do
+    ENV["RUBY_FLAGS"] = nil
+    @config[:flags] = ["-w", "-Q"]
+    @script.run
+    ENV["RUBY_FLAGS"].should == "-w -Q"
   end
 
   it "uses exec to invoke the runner script" do
