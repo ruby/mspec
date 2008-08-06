@@ -27,6 +27,7 @@ class MSpecScript
     config[:xprofiles] = []
     config[:atags]     = []
     config[:astrings]  = []
+    config[:ltags]     = []
     config[:abort]     = true
   end
 
@@ -51,7 +52,7 @@ class MSpecScript
   end
 
   def register
-    config[:formatter].new(config[:output]).register
+    config[:formatter].new(config[:output]).register if config[:formatter]
 
     MatchFilter.new(:include, *config[:includes]).register    unless config[:includes].empty?
     MatchFilter.new(:exclude, *config[:excludes]).register    unless config[:excludes].empty?

@@ -369,29 +369,6 @@ class MSpecOptions
     end
   end
 
-  def tagging
-    on("-N", "--add", "TAG",
-       "Add TAG with format 'tag' or 'tag(comment)' (see -Q, -F, -L)") do |o|
-      config[:tagger] = :add
-      config[:tag] = "#{o}:"
-    end
-    on("-R", "--del", "TAG",
-       "Delete TAG (see -Q, -F, -L)") do |o|
-      config[:tagger] = :del
-      config[:tag] = "#{o}:"
-      config[:outcome] = :pass
-    end
-    on("-Q", "--pass", "Apply action to specs that pass (default for --del)") do
-      config[:outcome] = :pass
-    end
-    on("-F", "--fail", "Apply action to specs that fail (default for --add)") do
-      config[:outcome] = :fail
-    end
-    on("-L", "--all", "Apply action to all specs") do
-      config[:outcome] = :all
-    end
-  end
-
   def action_filters
     on("-K", "--action-tag", "TAG",
        "Spec descriptions marked with TAG will trigger the specified action") do |o|

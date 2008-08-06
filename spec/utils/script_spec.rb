@@ -161,6 +161,11 @@ describe MSpecScript, "#register" do
     @formatter.should_receive(:register)
     @script.register
   end
+
+  it "does not register the formatter if config[:formatter] is nil" do
+    @script.config[:formatter] = nil
+    @script.register
+  end
 end
 
 describe MSpecScript, "#register" do
