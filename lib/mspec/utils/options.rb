@@ -33,12 +33,16 @@ class MSpecOptions
   attr_accessor :config, :banner, :width, :options
 
   def initialize(banner="", width=30, config=nil)
-    @banner  = banner
-    @config  = config
-    @width   = width
-    @options = []
-    @doc     = []
-    @extra   = lambda { |opt| raise ParseError, "Unrecognized option: #{opt}" }
+    @banner   = banner
+    @config   = config
+    @width    = width
+    @options  = []
+    @doc      = []
+    @extra    = []
+    @on_extra = lambda { |x|
+      raise ParseError, "Unrecognized option: #{x}" if x[0] == ?-
+      @extra << x
+    }
 
     yield self if block_given?
   end
@@ -93,7 +97,7 @@ class MSpecOptions
   # argument and invokes the option's block if it is not nil.
   def process(argv, entry, opt, arg)
     unless option = match?(opt)
-      @extra[entry]
+      @on_extra[entry]
     else
       if option.arg?
         arg = argv.shift if arg.nil?
@@ -117,12 +121,11 @@ class MSpecOptions
   # registered options.
   def parse(argv=ARGV)
     argv = Array(argv).dup
-    remaining = []
 
     while entry = argv.shift
       # collect everything that is not an option
       if entry[0] != ?- or entry.size < 2
-        remaining << entry
+        @on_extra[entry]
         next
       end
 
@@ -149,7 +152,7 @@ class MSpecOptions
       end
     end
 
-    remaining
+    @extra
   end
 
   # Adds a string of documentation text inline in the text generated
@@ -172,7 +175,7 @@ class MSpecOptions
 
   # Stores a block that will be called with unrecognized options
   def on_extra(&block)
-    @extra = block
+    @on_extra = block
   end
 
   # Returns a string representation of the options and doc strings.

@@ -442,7 +442,6 @@ EOD
   end
 end
 
-
 describe "The -B, --config FILE option" do
   before :each do
     @options, @config = new_option

@@ -32,8 +32,9 @@ describe MSpecMain, "#options" do
   end
 
   it "sets config[:options] to all argv entries that are not registered options" do
-    @script.options [".", "-G", "fail"]
-    @config[:options].sort.should == ["-G", ".", "fail"]
+    @options.on "-X", "--exclude", "ARG", "description"
+    @script.options [".", "-G", "fail", "-X", "ARG", "--list", "unstable", "some/file.rb"]
+    @config[:options].should == [".", "-G", "fail", "--list", "unstable", "some/file.rb"]
   end
 
   it "passes -h, --help to the subscript" do
