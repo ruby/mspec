@@ -317,7 +317,10 @@ describe MSpecOptions, "#parse" do
   end
 
   it "raises MSpecOptions::ParseError if passed an unrecognized option" do
-    lambda { @opt.parse ["-u"] }.should raise_error(MSpecOptions::ParseError)
+    @opt.should_receive(:raise).with(MSpecOptions::ParseError, an_instance_of(String))
+    @opt.stub!(:puts)
+    @opt.stub!(:exit)
+    @opt.parse "-u"
   end
 end
 

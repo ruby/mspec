@@ -153,6 +153,10 @@ class MSpecOptions
     end
 
     @extra
+  rescue ParseError => e
+    puts self
+    puts e
+    exit 1
   end
 
   # Adds a string of documentation text inline in the text generated
