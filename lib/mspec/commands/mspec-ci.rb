@@ -53,11 +53,9 @@ class MSpecCI < MSpecScript
   def run
     MSpec.register_tags_patterns config[:tags_patterns]
     MSpec.register_files files(@patterns)
-    TagFilter.new(:exclude, "fails").register
-    TagFilter.new(:exclude, "critical").register
-    TagFilter.new(:exclude, "unstable").register
-    TagFilter.new(:exclude, "incomplete").register
-    TagFilter.new(:exclude, "unsupported").register
+    filter = TagFilter.new(:exclude,
+        "fails", "critical", "unstable", "incomplete", "unsupported")
+    filter.register
 
     MSpec.process
     exit MSpec.exit_code
