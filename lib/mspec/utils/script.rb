@@ -76,6 +76,15 @@ class MSpecScript
     end
   end
 
+  def files(list)
+    list.inject([]) do |files, item|
+      stat = File.stat(File.expand_path(item))
+      files << item if stat.file?
+      files.concat(Dir[item+"/**/*_spec.rb"].sort) if stat.directory?
+      files
+    end
+  end
+
   def self.main
     $VERBOSE = nil unless ENV['OUTPUT_WARNINGS']
     script = new
