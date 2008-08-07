@@ -80,6 +80,7 @@ class Object
       exe = ruby_exe_options option
       return exe if exe and File.exists?(exe) and File.executable?(exe)
     end
+    nil
   end
 
   unless Object.const_defined?(:RUBY_EXE) and RUBY_EXE
