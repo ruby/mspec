@@ -87,7 +87,7 @@ module Mock
   end
 
   def self.verify_call(obj, sym, *args, &block)
-    compare = *args
+    compare, = *args
 
     key = replaced_key obj, sym
     proxies = mocks[key] + stubs[key]
