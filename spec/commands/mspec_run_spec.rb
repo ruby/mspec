@@ -100,12 +100,6 @@ describe MSpecRun, "#run" do
   before :each do
     MSpec.stub!(:process)
 
-    stat = mock("stat")
-    stat.stub!(:file?).and_return(true)
-    stat.stub!(:directory?).and_return(false)
-    File.stub!(:expand_path)
-    File.stub!(:stat).and_return(stat)
-
     options = mock("MSpecOptions", :null_object => true)
     options.stub!(:parse).and_return(["one", "two"])
     MSpecOptions.stub!(:new).and_return(options)
@@ -114,6 +108,7 @@ describe MSpecRun, "#run" do
     @script = MSpecRun.new
     @script.stub!(:exit)
     @script.stub!(:config).and_return(@config)
+    @script.stub!(:files).and_return(["one", "two"])
     @script.options
   end
 
