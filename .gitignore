@@ -4,3 +4,6 @@ pkg/*
 *.iws
 *.ipr
 *.sw?
+
+# ctags dir
+/tags
