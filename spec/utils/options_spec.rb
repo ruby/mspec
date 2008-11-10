@@ -664,6 +664,16 @@ describe "The -f, --format FORMAT option" do
     end
   end
 
+  it "sets the FileFormatter with FORMAT 'f', 'file'" do
+    ["-f", "--format"].each do |opt|
+      ["f", "file"].each do |f|
+        @config[:formatter] = nil
+        @options.parse [opt, f]
+        @config[:formatter].should == FileFormatter
+      end
+    end
+  end
+
   it "sets the UnitdiffFormatter with FORMAT 'u', 'unit', or 'unitdiff'" do
     ["-f", "--format"].each do |opt|
       ["u", "unit", "unitdiff"].each do |f|
