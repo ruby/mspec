@@ -8,6 +8,12 @@ require 'mspec/utils/script'
 
 
 class MSpecRun < MSpecScript
+  def initialize
+    super
+
+    config[:files] = []
+  end
+
   def options(argv=ARGV)
     options = MSpecOptions.new "mspec run [options] (FILE|DIRECTORY|GLOB)+", 30, config
 
@@ -54,6 +60,7 @@ class MSpecRun < MSpecScript
     options.doc ""
 
     @patterns = options.parse argv
+    @patterns = config[:files] if @patterns.empty?
     if @patterns.empty?
       puts options
       puts "No files specified."
