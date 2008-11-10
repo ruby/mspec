@@ -98,6 +98,7 @@ class MSpecScript
     $VERBOSE = nil unless ENV['OUTPUT_WARNINGS']
     script = new
     script.load 'default.mspec'
+    script.load RUBY_VERSION.split('.')[0,2].join('.') + ".mspec"
     script.load '~/.mspecrc'
     script.options
     script.signals

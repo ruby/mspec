@@ -33,6 +33,34 @@ describe MSpecScript, "#config" do
 end
 
 describe MSpecScript, ".main" do
+  before :all do
+    @verbose = $VERBOSE
+    $VERBOSE = nil
+  end
+
+  after :all do
+    $VERBOSE = @verbose
+  end
+
+  before :each do
+    @version = RUBY_VERSION
+    @script = mock("MSpecScript", :null_object => true)
+    MSpecScript.stub!(:new).and_return(@script)
+  end
+
+  after :each do
+    Object.const_set :RUBY_VERSION, @version
+  end
+
+  it "attempts to load a config file based on RUBY_VERSION" do
+    Object.const_set :RUBY_VERSION, "1.8.9"
+    version = "1.8.mspec"
+    @script.should_receive(:load).with(version)
+    MSpecScript.main
+  end
+end
+
+describe MSpecScript, ".main" do
   before :each do
     @script = mock("MSpecScript", :null_object => true)
     MSpecScript.stub!(:new).and_return(@script)
