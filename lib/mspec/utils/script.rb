@@ -16,7 +16,7 @@ class MSpecScript
 
   def initialize
     config[:tags_dir]  = 'spec/tags'
-    config[:formatter] = DottedFormatter
+    config[:formatter] = nil
     config[:includes]  = []
     config[:excludes]  = []
     config[:patterns]  = []
@@ -52,6 +52,9 @@ class MSpecScript
   end
 
   def register
+    if config[:formatter].nil?
+      config[:formatter] = @files.size < 50 ? DottedFormatter : FileFormatter
+    end
     config[:formatter].new(config[:output]).register if config[:formatter]
 
     MatchFilter.new(:include, *config[:includes]).register    unless config[:includes].empty?

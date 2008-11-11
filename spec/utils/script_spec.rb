@@ -109,7 +109,7 @@ describe MSpecScript, "#initialize" do
 
   it "sets the default config values" do
     @config[:tags_dir].should   == 'spec/tags'
-    @config[:formatter].should  == DottedFormatter
+    @config[:formatter].should  == nil
     @config[:includes].should   == []
     @config[:excludes].should   == []
     @config[:patterns].should   == []
@@ -190,8 +190,8 @@ describe MSpecScript, "#register" do
     @script.register
   end
 
-  it "does not register the formatter if config[:formatter] is nil" do
-    @script.config[:formatter] = nil
+  it "does not register the formatter if config[:formatter] is false" do
+    @script.config[:formatter] = false
     @script.register
   end
 end

@@ -278,6 +278,9 @@ describe MSpecTag, "#register" do
     @config[:astrings] = []
     @config[:ltags] = ["fails", "unstable"]
 
+    @script.stub!(:files).and_return([])
+    @script.options "fake"
+
     @t = mock("TagAction")
     @t.stub!(:register)
 
@@ -324,9 +327,9 @@ describe MSpecTag, "#register" do
       @script.register
     end
 
-    it "sets config[:formatter] to nil" do
+    it "sets config[:formatter] to false" do
       @script.register
-      @config[:formatter].should be_nil
+      @config[:formatter].should be_false
     end
   end
 
@@ -346,9 +349,9 @@ describe MSpecTag, "#register" do
       @script.register
     end
 
-    it "sets config[:formatter] to nil" do
+    it "sets config[:formatter] to false" do
       @script.register
-      @config[:formatter].should be_nil
+      @config[:formatter].should be_false
     end
   end
 end

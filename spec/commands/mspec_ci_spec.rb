@@ -10,6 +10,7 @@ describe MSpecCI, "#options" do
 
     @script = MSpecCI.new
     @script.stub!(:config).and_return(@config)
+    @script.stub!(:files).and_return([])
   end
 
   it "enables the config option" do
