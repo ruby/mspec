@@ -264,6 +264,8 @@ class MSpecOptions
         config[:formatter] = SummaryFormatter
       when 'a', '*', 'spin'
         config[:formatter] = SpinnerFormatter
+      when 't', 'method'
+        config[:formatter] = MethodFormatter
       when 'y', 'yaml'
         config[:formatter] = YamlFormatter
       else
@@ -281,6 +283,7 @@ class MSpecOptions
     doc "       u, unit, unitdiff        UnitdiffFormatter"
     doc "       m, summary               SummaryFormatter"
     doc "       a, *, spin               SpinnerFormatter"
+    doc "       t, method                MethodFormatter"
     doc "       y, yaml                  YamlFormatter\n"
 
     on("-o", "--output", "FILE",
