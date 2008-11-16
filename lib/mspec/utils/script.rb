@@ -35,10 +35,10 @@ class MSpecScript
     MSpecScript.config
   end
 
-  def load(name)
-    names = [name]
-    unless name[-6..-1] == config[:config_ext]
-      names << name + config[:config_ext]
+  def load(target)
+    names = [target]
+    unless target[-6..-1] == config[:config_ext]
+      names << target + config[:config_ext]
     end
 
     names.each do |name|
