@@ -108,7 +108,6 @@ describe MSpecScript, "#initialize" do
   end
 
   it "sets the default config values" do
-    @config[:tags_dir].should   == 'spec/tags'
     @config[:formatter].should  == nil
     @config[:includes].should   == []
     @config[:excludes].should   == []

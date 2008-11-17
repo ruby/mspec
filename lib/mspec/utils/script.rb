@@ -15,7 +15,6 @@ class MSpecScript
   end
 
   def initialize
-    config[:tags_dir]  = 'spec/tags'
     config[:formatter] = nil
     config[:includes]  = []
     config[:excludes]  = []
