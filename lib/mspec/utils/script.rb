@@ -50,6 +50,17 @@ class MSpecScript
     end
   end
 
+  def load_default
+    if Object.const_defined?(:RUBY_ENGINE)
+      engine = RUBY_ENGINE
+    else
+      engine = 'ruby'
+    end
+    version = RUBY_VERSION.split('.')[0,2].join('.')
+
+    load "#{engine}.#{version}.mspec"
+  end
+
   def register
     if config[:formatter].nil?
       config[:formatter] = @files.size < 50 ? DottedFormatter : FileFormatter
@@ -99,8 +110,7 @@ class MSpecScript
   def self.main
     $VERBOSE = nil unless ENV['OUTPUT_WARNINGS']
     script = new
-    script.load 'default.mspec'
-    script.load RUBY_VERSION.split('.')[0,2].join('.') + ".mspec"
+    script.load_default
     script.load '~/.mspecrc'
     script.options
     script.signals
