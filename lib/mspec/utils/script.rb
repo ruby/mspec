@@ -3,6 +3,9 @@ require 'mspec/runner/formatters/dotted'
 # MSpecScript provides a skeleton for all the MSpec runner scripts.
 
 class MSpecScript
+  # Returns the config object. Maintained at the class
+  # level to easily enable simple config files. See the
+  # class method +set+.
   def self.config
     @config ||= {
       :path => ['.', 'spec'],
@@ -10,6 +13,13 @@ class MSpecScript
     }
   end
 
+  # Associates +value+ with +key+ in the config object. Enables
+  # simple config files of the form:
+  #
+  #   class MSpecScript
+  #     set :target, "ruby"
+  #     set :files, ["one_spec.rb", "two_spec.rb"]
+  #   end
   def self.set(key, value)
     config[key] = value
   end
@@ -30,10 +40,15 @@ class MSpecScript
     config[:abort]     = true
   end
 
+  # Returns the config object maintained by the instance's class.
+  # See the class methods +set+ and +config+.
   def config
     MSpecScript.config
   end
 
+  # Returns +true+ if the file was located in +config[:path]+,
+  # possibly appending +config[:config_ext]. Returns +false+
+  # otherwise.
   def load(target)
     names = [target]
     unless target[-6..-1] == config[:config_ext]
@@ -48,9 +63,18 @@ class MSpecScript
         return Kernel.load(file) if File.exist? file
       end
     end
+
+    false
   end
 
+  # Attempts to load a default config file. First tries to load
+  # 'default.mspec'. If that fails, attempts to load a config
+  # file name constructed from the value of RUBY_ENGINE and the
+  # first two numbers in RUBY_VERSION. For example, on MRI 1.8.6,
+  # the file name would be 'ruby.1.8.mspec'.
   def load_default
+    return if load 'default.mspec'
+
     if Object.const_defined?(:RUBY_ENGINE)
       engine = RUBY_ENGINE
     else
@@ -61,6 +85,7 @@ class MSpecScript
     load "#{engine}.#{version}.mspec"
   end
 
+  # Registers all filters and actions.
   def register
     if config[:formatter].nil?
       config[:formatter] = @files.size < 50 ? DottedFormatter : FileFormatter
@@ -80,6 +105,8 @@ class MSpecScript
     GdbAction.new(config[:atags], config[:astrings]).register   if config[:gdb]
   end
 
+  # Sets up signal handlers. Only a handler for SIGINT is
+  # registered currently.
   def signals
     if config[:abort]
       Signal.trap "INT" do
@@ -89,6 +116,10 @@ class MSpecScript
     end
   end
 
+  # Resolves +pattern+ as a file name, directory name or pattern.
+  # If it is a file name, returns the name as an entry in an array.
+  # If it is a directory, returns all *_spec.rb files in the
+  # directory and subdirectory. Otherwise, passes +pattern+ to +Dir[]+.
   def entries(pattern)
     expanded = File.expand_path(pattern)
     return [pattern] if File.file?(expanded)
@@ -96,6 +127,9 @@ class MSpecScript
     Dir[pattern]
   end
 
+  # Resolves each entry in +list+ to a set of files. If the entry
+  # has a leading '^' character, the list of files is subtracted
+  # from the list of files accumulated to that point.
   def files(list)
     list.inject([]) do |files, item|
       if item[0] == ?^
@@ -107,6 +141,8 @@ class MSpecScript
     end
   end
 
+  # Instantiates an instance and calls the series of methods to
+  # invoke the script.
   def self.main
     $VERBOSE = nil unless ENV['OUTPUT_WARNINGS']
     script = new

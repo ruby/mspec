@@ -56,10 +56,16 @@ describe MSpecScript, "#load_default" do
     Object.const_set :RUBY_ENGINE, @engine if @engine
   end
 
+  it "attempts to load 'default.mspec'" do
+    @script.should_receive(:load).with('default.mspec').and_return(true)
+    @script.load_default
+  end
+
   it "attempts to load a config file based on RUBY_ENGINE and RUBY_VERSION" do
     Object.const_set :RUBY_ENGINE, "ybur"
     Object.const_set :RUBY_VERSION, "1.8.9"
     default = "ybur.1.8.mspec"
+    @script.should_receive(:load).with('default.mspec').and_return(false)
     @script.should_receive(:load).with(default)
     @script.load_default
   end
