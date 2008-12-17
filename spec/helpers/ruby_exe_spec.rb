@@ -65,11 +65,16 @@ describe "#resolve_ruby_exe" do
   end
 
   it "returns the value returned by #ruby_exe_options if it exists and is executable" do
-    name = "ruby_spec_exe"
-    @script.should_receive(:ruby_exe_options).and_return(name)
-    File.should_receive(:exists?).with(name).and_return(true)
-    File.should_receive(:executable?).with(name).and_return(true)
-    @script.resolve_ruby_exe.should == name
+    begin
+      old_platform, RUBY_PLATFORM = RUBY_PLATFORM,'notwindows' 
+      name = "ruby_spec_exe"
+      @script.should_receive(:ruby_exe_options).and_return(name)
+      File.should_receive(:exists?).with(name).and_return(true)
+      File.should_receive(:executable?).with(name).and_return(true)
+      @script.resolve_ruby_exe.should == name
+    ensure
+      RUBY_PLATFORM = old_platform
+    end
   end
 
   it "returns nil if no exe is found" do

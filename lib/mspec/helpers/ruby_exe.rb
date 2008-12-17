@@ -91,7 +91,7 @@ class Object
   def resolve_ruby_exe
     [:env, :engine, :name, :install_name].each do |option|
       exe = ruby_exe_options option
-      return exe if exe and File.exists?(exe) and File.executable?(exe)
+      return exe if exe and File.exists?(exe) and (RUBY_PLATFORM.match(/win32/) || File.executable?(exe))
     end
     nil
   end
