@@ -19,6 +19,10 @@ class SpecGuard
     print "\n#{self.class}\n#{@tally.format}\n"
   end
 
+  def self.windows?(key = RUBY_PLATFORM)
+    !!key.match(/(mswin|mingw)/)
+  end
+
   def initialize(*args)
     @args = args
   end
@@ -75,7 +79,7 @@ class SpecGuard
   end
 
   def windows?(sym, key)
-    sym == :windows && !!key.match(/(mswin|mingw)/)
+    sym == :windows && SpecGuard.windows?(key)
   end
 
   def platform?(*args)

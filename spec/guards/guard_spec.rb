@@ -38,6 +38,33 @@ describe SpecGuard, ".unregister" do
   end
 end
 
+describe SpecGuard, ".windows?" do
+  before(:all) do
+    @ruby_platform = Object.const_get :RUBY_PLATFORM
+  end
+
+  after(:all) do
+    Object.const_set :RUBY_PLATFORM, @ruby_platform
+  end
+
+  it "returns true if key is mswin32" do
+    SpecGuard.windows?("mswin32").should be_true
+  end
+
+  it "returns true if key is mingw" do
+    SpecGuard.windows?("mingw").should be_true
+  end
+
+  it "returns false for non-windows" do
+    SpecGuard.windows?("notwindows").should be_false
+  end
+
+  it "uses RUBY_PLATFORM by default" do
+    Object.const_set :RUBY_PLATFORM, "mswin32"
+    SpecGuard.windows?.should be_true
+  end
+end
+
 describe SpecGuard, "#yield?" do
   before :each do
     MSpec.store :mode, nil
