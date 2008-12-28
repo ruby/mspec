@@ -28,11 +28,11 @@ class SpecGuard
   end
 
   def yield?(invert=false)
-    if MSpec.report_mode?
+    if MSpec.mode? :report
       self.class.register
       MSpec.register :before, self
       return true
-    elsif MSpec.verify_mode?
+    elsif MSpec.mode? :verify
       self.class.register
       MSpec.register :after, self
       return true

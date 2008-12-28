@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper'
+require 'mspec/ruby_name'
 require 'mspec/guards/guard'
 require 'rbconfig'
 
@@ -67,27 +68,27 @@ end
 
 describe SpecGuard, "#yield?" do
   before :each do
-    MSpec.store :mode, nil
+    MSpec.clear_modes
     @guard = SpecGuard.new
   end
 
-  it "returns true if MSpec.verify_mode? is true" do
-    MSpec.should_receive(:verify_mode?).and_return(true)
+  it "returns true if MSpec.mode?(:verify) is true" do
+    MSpec.register_mode :verify
     @guard.yield?.should == true
   end
 
-  it "returns true if MSpec.verify_mode? is true regardless of invert being true" do
-    MSpec.should_receive(:verify_mode?).and_return(true)
+  it "returns true if MSpec.mode?(:verify) is true regardless of invert being true" do
+    MSpec.register_mode :verify
     @guard.yield?(true).should == true
   end
 
-  it "returns true if MSpec.report_mode? is true" do
-    MSpec.should_receive(:report_mode?).and_return(true)
+  it "returns true if MSpec.mode?(:report) is true" do
+    MSpec.register_mode :report
     @guard.yield?.should == true
   end
 
-  it "returns true if MSpec.report_mode? is true regardless of invert being true" do
-    MSpec.should_receive(:report_mode?).and_return(true)
+  it "returns true if MSpec.mode?(:report) is true regardless of invert being true" do
+    MSpec.register_mode :report
     @guard.yield?(true).should == true
   end
 
