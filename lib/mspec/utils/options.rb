@@ -334,6 +334,12 @@ class MSpecOptions
     end
   end
 
+  def unguarded
+    on("--unguarded", "Turn off all guards") do
+      MSpec.register_mode :unguarded
+    end
+  end
+
   def randomize
     on("-H", "--random",
        "Randomize the list of spec files") do

@@ -125,9 +125,13 @@ module MSpec
     store :tags_patterns, patterns
   end
 
-  # Registers an operating mode. For example, :pretend mode
-  # processes the specs without actually calling the example
-  # blocks but actions like formatters still execute.
+  # Registers an operating mode. Modes recognized by MSpec:
+  #
+  #   :pretend - actions execute but specs are not run
+  #   :verify - specs are run despite guards and the result is
+  #             verified to match the expectation of the guard
+  #   :report - specs that are guarded are reported
+  #   :unguarded - all guards are forced off
   def self.register_mode(mode)
     modes = retrieve :modes
     modes << mode unless modes.include? mode

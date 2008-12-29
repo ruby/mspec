@@ -72,6 +72,11 @@ describe SpecGuard, "#yield?" do
     @guard = SpecGuard.new
   end
 
+  it "returns true if MSpec.mode?(:unguarded) is true" do
+    MSpec.register_mode :unguarded
+    @guard.yield?.should == true
+  end
+
   it "returns true if MSpec.mode?(:verify) is true" do
     MSpec.register_mode :verify
     @guard.yield?.should == true

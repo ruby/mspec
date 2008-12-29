@@ -58,6 +58,11 @@ describe MSpecRun, "#options" do
     @script.options @argv
   end
 
+  it "enables the unguarded option" do
+    @options.should_receive(:unguarded)
+    @script.options @argv
+  end
+
   it "enables the interrupt single specs option" do
     @options.should_receive(:interrupt)
     @script.options @argv

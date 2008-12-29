@@ -33,6 +33,11 @@ describe MSpecCI, "#options" do
     @script.options
   end
 
+  it "enables the unguarded option" do
+    @options.should_receive(:unguarded)
+    @script.options
+  end
+
   it "enables the interrupt single specs option" do
     @options.should_receive(:interrupt)
     @script.options

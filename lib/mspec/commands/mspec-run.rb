@@ -32,6 +32,7 @@ class MSpecRun < MSpecScript
     options.name
     options.randomize
     options.pretend
+    options.unguarded
     options.interrupt
 
     options.doc "\n How to display their output"
