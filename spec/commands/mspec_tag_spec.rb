@@ -392,6 +392,11 @@ describe MSpecTag, "#register" do
       @script.register
     end
 
+    it "registers MSpec in unguarded mode" do
+      MSpec.should_receive(:register_mode).with(:unguarded)
+      @script.register
+    end
+
     it "sets config[:formatter] to false" do
       @script.register
       @config[:formatter].should be_false

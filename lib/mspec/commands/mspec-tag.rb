@@ -106,6 +106,7 @@ class MSpecTag < MSpecScript
     when :purge
       tagger = TagPurgeAction.new
       MSpec.register_mode :pretend
+      MSpec.register_mode :unguarded
       config[:formatter] = false
     else
       raise ArgumentError, "No recognized action given"
