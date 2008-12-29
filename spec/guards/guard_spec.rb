@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require 'mspec/ruby_name'
+require 'mspec/utils/ruby_name'
 require 'mspec/guards/guard'
 require 'rbconfig'
 
@@ -39,12 +39,51 @@ describe SpecGuard, ".unregister" do
   end
 end
 
+describe SpecGuard, ".ruby_version" do
+  before :all do
+    @ruby_version = Object.const_get :RUBY_VERSION
+    @ruby_patchlevel = Object.const_get :RUBY_PATCHLEVEL
+
+    Object.const_set :RUBY_VERSION, "8.2.3"
+    Object.const_set :RUBY_PATCHLEVEL, 71
+  end
+
+  after :all do
+    Object.const_set :RUBY_VERSION, @ruby_version
+    Object.const_set :RUBY_PATCHLEVEL, @ruby_patchlevel
+  end
+
+  it "returns the version and patchlevel for :full" do
+    SpecGuard.ruby_version(:full).should == "8.2.3.71"
+  end
+
+  it "returns major.minor.tiny for :tiny" do
+    SpecGuard.ruby_version(:tiny).should == "8.2.3"
+  end
+
+  it "returns major.minor.tiny for :teeny" do
+    SpecGuard.ruby_version(:tiny).should == "8.2.3"
+  end
+
+  it "returns major.minor for :minor" do
+    SpecGuard.ruby_version(:minor).should == "8.2"
+  end
+
+  it "defaults to :minor" do
+    SpecGuard.ruby_version.should == "8.2"
+  end
+
+  it "returns major for :major" do
+    SpecGuard.ruby_version(:major).should == "8"
+  end
+end
+
 describe SpecGuard, ".windows?" do
-  before(:all) do
+  before :all do
     @ruby_platform = Object.const_get :RUBY_PLATFORM
   end
 
-  after(:all) do
+  after :all do
     Object.const_set :RUBY_PLATFORM, @ruby_platform
   end
 

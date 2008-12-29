@@ -1,3 +1,4 @@
+require 'mspec/guards/guard'
 require 'mspec/runner/formatters/dotted'
 
 # MSpecScript provides a skeleton for all the MSpec runner scripts.
@@ -80,9 +81,7 @@ class MSpecScript
     else
       engine = 'ruby'
     end
-    version = RUBY_VERSION.split('.')[0,2].join('.')
-
-    load "#{engine}.#{version}.mspec"
+    load "#{engine}.#{SpecGuard.ruby_version}.mspec"
   end
 
   # Registers all filters and actions.

@@ -1,4 +1,4 @@
-require 'mspec/ruby_name'
+require 'mspec/utils/ruby_name'
 require 'mspec/guards/guard'
 
 # The ruby_exe helper provides a wrapper for invoking the

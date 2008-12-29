@@ -18,7 +18,7 @@ class VersionGuard < SpecGuard
   end
 
   def ruby_version
-    to_v("#{RUBY_VERSION}.#{RUBY_PATCHLEVEL}")
+    to_v self.class.ruby_version(:full)
   end
 
   def match?
