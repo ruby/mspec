@@ -140,7 +140,9 @@ class MSpecScript
     patterns.each do |pattern|
       expanded = File.expand_path(pattern)
       return [pattern] if File.file?(expanded)
-      return Dir[pattern+"/**/*_spec.rb"].sort if File.directory?(expanded)
+
+      specs = File.join pattern, "/**/*_spec.rb"
+      return Dir[specs].sort if File.directory?(expanded)
     end
 
     Dir[partial]
