@@ -1,9 +1,7 @@
 require 'mspec/guards/guard'
 
-# Some specs will block if run under as subprocess where STDOUT is not a TTY.
-# For most specs, there is probably a way to provide an IOStub that could
-# pretend to be a TTY. See the IOStub helper. That helper needs combined with
-# the output_to_fd helper.
+# If a spec depends on STDOUT being a tty, use this guard. For specs that may
+# block if run as a background process, see BackgroundGuard.
 
 class TTYGuard < SpecGuard
   def match?

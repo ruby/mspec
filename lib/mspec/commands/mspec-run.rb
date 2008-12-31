@@ -34,6 +34,7 @@ class MSpecRun < MSpecScript
     options.name
     options.randomize
     options.pretend
+    options.background
     options.unguarded
     options.interrupt
 

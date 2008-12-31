@@ -23,6 +23,7 @@ class MSpecCI < MSpecScript
     options.configure { |f| load f }
     options.name
     options.pretend
+    options.background
     options.unguarded
     options.interrupt
 

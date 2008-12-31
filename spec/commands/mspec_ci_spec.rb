@@ -43,6 +43,11 @@ describe MSpecCI, "#options" do
     @script.options
   end
 
+  it "enables the background option" do
+    @options.should_receive(:background)
+    @script.options
+  end
+
   it "enables the unguarded option" do
     @options.should_receive(:unguarded)
     @script.options

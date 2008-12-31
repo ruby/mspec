@@ -68,6 +68,11 @@ describe MSpecRun, "#options" do
     @script.options @argv
   end
 
+  it "enables the background option" do
+    @options.should_receive(:background)
+    @script.options @argv
+  end
+
   it "enables the unguarded option" do
     @options.should_receive(:unguarded)
     @script.options @argv

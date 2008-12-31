@@ -980,6 +980,23 @@ describe "The -Z, --dry-run option" do
   end
 end
 
+describe "The --background option" do
+  before :each do
+    @options, @config = new_option
+  end
+
+  it "is enabled with #background" do
+    @options.should_receive(:on).with("--background", an_instance_of(String))
+    @options.background
+  end
+
+  it "registers the MSpec background mode" do
+    MSpec.should_receive(:register_mode).with(:background)
+    @options.background
+    @options.parse "--background"
+  end
+end
+
 describe "The --unguarded option" do
   before :each do
     @options, @config = new_option

@@ -347,6 +347,13 @@ class MSpecOptions
     end
   end
 
+  def background
+    on("--background",
+       "Enable guard for specs that may hang in background processes") do
+      MSpec.register_mode :background
+    end
+  end
+
   def unguarded
     on("--unguarded", "Turn off all guards") do
       MSpec.register_mode :unguarded
