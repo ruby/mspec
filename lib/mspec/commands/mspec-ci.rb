@@ -18,6 +18,7 @@ class MSpecCI < MSpecScript
     options.doc "  4. When to perform it?"
 
     options.doc "\n How to run the specs"
+    options.chdir
     options.prefix
     options.configure { |f| load f }
     options.name

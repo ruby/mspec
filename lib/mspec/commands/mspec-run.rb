@@ -28,6 +28,7 @@ class MSpecRun < MSpecScript
     options.filters
 
     options.doc "\n How to modify the execution"
+    options.chdir
     options.prefix
     options.configure { |f| load f }
     options.name

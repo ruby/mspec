@@ -13,6 +13,11 @@ describe MSpecCI, "#options" do
     @script.stub!(:files).and_return([])
   end
 
+  it "enables the chdir option" do
+    @options.should_receive(:chdir)
+    @script.options
+  end
+
   it "enables the prefix option" do
     @options.should_receive(:prefix)
     @script.options

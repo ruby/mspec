@@ -467,13 +467,34 @@ describe "The -B, --config FILE option" do
   end
 end
 
+describe "The -C, --chdir DIR option" do
+  before :each do
+    @options, @config = new_option
+    @options.chdir
+  end
+
+  it "is enabled with #chdir" do
+    @options.should_receive(:on).with("-C", "--chdir", "DIR",
+        an_instance_of(String))
+    @options.chdir
+  end
+
+  it "changes the working directory to DIR" do
+    Dir.should_receive(:chdir).with("dir").twice
+    ["-C", "--chdir"].each do |opt|
+      @options.parse [opt, "dir"]
+    end
+  end
+end
+
 describe "The --prefix STR option" do
   before :each do
     @options, @config = new_option
   end
 
   it "is enabled with #prefix" do
-    @options.should_receive(:on).with("--prefix", "STR", an_instance_of(String))
+    @options.should_receive(:on).with("--prefix", "STR",
+       an_instance_of(String))
     @options.prefix
   end
 

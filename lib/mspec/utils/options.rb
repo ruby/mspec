@@ -327,6 +327,13 @@ class MSpecOptions
     end
   end
 
+  def chdir
+    on("-C", "--chdir", "DIR",
+       "Change the working directory to DIR before running specs") do |d|
+      Dir.chdir d
+    end
+  end
+
   def prefix
     on("--prefix", "STR", "Prepend STR when resolving spec file names") do |p|
       config[:prefix] = p

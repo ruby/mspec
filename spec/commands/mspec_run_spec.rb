@@ -33,6 +33,11 @@ describe MSpecRun, "#options" do
     @script.options @argv
   end
 
+  it "enables the chdir option" do
+    @options.should_receive(:chdir)
+    @script.options @argv
+  end
+
   it "enables the prefix option" do
     @options.should_receive(:prefix)
     @script.options @argv
