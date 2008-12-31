@@ -33,6 +33,11 @@ describe MSpecRun, "#options" do
     @script.options @argv
   end
 
+  it "enables the prefix option" do
+    @options.should_receive(:prefix)
+    @script.options @argv
+  end
+
   it "enables the configure option" do
     @options.should_receive(:configure)
     @script.options @argv

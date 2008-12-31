@@ -327,6 +327,12 @@ class MSpecOptions
     end
   end
 
+  def prefix
+    on("--prefix", "STR", "Prepend STR when resolving spec file names") do |p|
+      config[:prefix] = p
+    end
+  end
+
   def pretend
     on("-Z", "--dry-run",
        "Invoke formatters and other actions, but don't execute the specs") do

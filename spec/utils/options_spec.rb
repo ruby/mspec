@@ -467,6 +467,23 @@ describe "The -B, --config FILE option" do
   end
 end
 
+describe "The --prefix STR option" do
+  before :each do
+    @options, @config = new_option
+  end
+
+  it "is enabled with #prefix" do
+    @options.should_receive(:on).with("--prefix", "STR", an_instance_of(String))
+    @options.prefix
+  end
+
+  it "sets the prefix config value" do
+    @options.prefix
+    @options.parse ["--prefix", "some/dir"]
+    @config[:prefix].should == "some/dir"
+  end
+end
+
 describe "The -n, --name RUBY_NAME option" do
   before :each do
     @verbose, $VERBOSE = $VERBOSE, nil
