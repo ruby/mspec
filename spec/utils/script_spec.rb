@@ -19,6 +19,13 @@ describe MSpecScript, ".set" do
   end
 end
 
+describe MSpecScript, ".get" do
+  it "gets the config hash value for a key" do
+    MSpecScript.set :a, 10
+    MSpecScript.get(:a).should == 10
+  end
+end
+
 describe MSpecScript, "#config" do
   it "returns the MSpecScript config hash" do
     MSpecScript.set :b, 5

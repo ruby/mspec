@@ -25,6 +25,18 @@ class MSpecScript
     config[key] = value
   end
 
+  # Gets the value of +key+ from the config object. Simplifies
+  # getting values in a config file:
+  #
+  #   class MSpecScript
+  #     set :a, 1
+  #     set :b, 2
+  #     set :c, get(:a) + get(:b)
+  #   end
+  def self.get(key)
+    config[key]
+  end
+
   def initialize
     config[:formatter] = nil
     config[:includes]  = []
