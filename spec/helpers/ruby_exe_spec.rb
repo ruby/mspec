@@ -84,7 +84,7 @@ describe "#resolve_ruby_exe" do
   it "returns the value returned by #ruby_exe_options if it exists and is executable" do
     Object.const_set :RUBY_PLATFORM, "notwindows"
     @script.should_receive(:ruby_exe_options).and_return(@name)
-    File.should_receive(:exist?).with(@name).and_return(true)
+    File.should_receive(:exists?).with(@name).and_return(true)
     File.should_receive(:executable?).with(@name).and_return(true)
     @script.resolve_ruby_exe.should == @name
   end
@@ -92,13 +92,13 @@ describe "#resolve_ruby_exe" do
   it "returns the value returned by #ruby_exe_options if it exists on Windows platforms" do
     Object.const_set :RUBY_PLATFORM, "mswin"
     @script.should_receive(:ruby_exe_options).and_return(@name)
-    File.should_receive(:exist?).with(@name).and_return(true)
+    File.should_receive(:exists?).with(@name).and_return(true)
     File.should_not_receive(:executable?)
     @script.resolve_ruby_exe.should == @name
   end
 
   it "returns nil if no exe is found" do
-    File.should_receive(:exist?).at_least(:once).and_return(false)
+    File.should_receive(:exists?).at_least(:once).and_return(false)
     @script.resolve_ruby_exe.should be_nil
   end
 end
