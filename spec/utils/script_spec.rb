@@ -387,3 +387,24 @@ describe MSpecScript, "#files" do
     @script.files(["^a", "a", "b"]).should == ["file1", "file2"]
   end
 end
+
+describe MSpecScript, "#files" do
+  before :each do
+    MSpecScript.set :files, ["file1", "file2"]
+
+    @script = MSpecScript.new
+  end
+
+  after :each do
+    MSpecScript.config.delete :files
+  end
+
+  it "looks up items with leading ':' in the config object" do
+    @script.should_receive(:entries).and_return(["file1"], ["file2"])
+    @script.files(":files").should == ["file1", "file2"]
+  end
+
+  it "returns an empty list if the config key is not set" do
+    @script.files(":all_files").should == []
+  end
+end
