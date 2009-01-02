@@ -97,7 +97,7 @@ class Object
       # It has been reported that File.executable is not reliable
       # on Windows platforms (see commit 56bc555c). So, we check the
       # platform. 
-      if File.exists?(exe) and (SpecGuard.windows? or File.executable?(exe))
+      if File.exist?(exe) and (SpecGuard.windows? or File.executable?(exe))
         return cmd
       end
     end
