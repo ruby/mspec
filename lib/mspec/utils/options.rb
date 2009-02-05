@@ -256,6 +256,8 @@ class MSpecOptions
         config[:formatter] = HtmlFormatter
       when 'd', 'dot', 'dotted'
         config[:formatter] = DottedFormatter
+      when 'b', 'describe'
+        config[:formatter] = DescribeFormatter
       when 'f', 'file'
         config[:formatter] = FileFormatter
       when 'u', 'unit', 'unitdiff'
