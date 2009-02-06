@@ -549,11 +549,11 @@ describe "The -t, --target TARGET option" do
     end
   end
 
-  it "sets the target to 'ruby19' with TARGET 'r19' or 'ruby19'" do
+  it "sets the target to 'ruby1.9' with TARGET 'r19', 'ruby19' or 'ruby1.9'" do
     ["-t", "--target"].each do |opt|
-      ["r19", "ruby19"].each do |t|
+      ["r19", "ruby19", "ruby1.9"].each do |t|
         @options.parse [opt, t]
-        @config[:target].should == "ruby19"
+        @config[:target].should == "ruby1.9"
       end
     end
   end
