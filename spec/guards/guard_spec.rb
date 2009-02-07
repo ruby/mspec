@@ -170,11 +170,13 @@ describe SpecGuard, "#implementation?" do
 
   before :each do
     @ruby_name = Object.const_get :RUBY_NAME
+    @ruby_version = Object.const_get :RUBY_VERSION
     @guard = SpecGuard.new
   end
 
   after :each do
     Object.const_set :RUBY_NAME, @ruby_name
+    Object.const_set :RUBY_VERSION, @ruby_version
   end
 
   it "returns true if passed :ruby and RUBY_NAME == 'ruby'" do
@@ -200,6 +202,64 @@ describe SpecGuard, "#implementation?" do
   it "returns false when passed an unrecognized name" do
     Object.const_set :RUBY_NAME, 'ruby'
     @guard.implementation?(:python).should == false
+  end
+
+  describe "when passed :ruby18" do
+    it "returns true if RUBY_NAME == 'ruby' and RUBY_VERSION matches /^1.8/" do
+      Object.const_set :RUBY_NAME, 'ruby'
+      Object.const_set :RUBY_VERSION, '1.8.6'
+      @guard.implementation?(:ruby18).should == true
+    end
+
+    it "returns true if RUBY_NAME == 'ruby1.8' and RUBY_VERSION matches /^1.8/" do
+      Object.const_set :RUBY_NAME, 'ruby1.8'
+      Object.const_set :RUBY_VERSION, '1.8.6'
+      @guard.implementation?(:ruby18).should == true
+    end
+
+    it "returns false if RUBY_NAME == 'ruby1.8' and RUBY_VERSION does not match /^1.8/" do
+      Object.const_set :RUBY_NAME, 'ruby1.8'
+      Object.const_set :RUBY_VERSION, '1.9.1'
+      @guard.implementation?(:ruby18).should == false
+    end
+  end
+
+  describe "when passed :ruby19" do
+    it "returns true if RUBY_NAME == 'ruby' and RUBY_VERSION matches /^1.9/" do
+      Object.const_set :RUBY_NAME, 'ruby'
+      Object.const_set :RUBY_VERSION, '1.9.1'
+      @guard.implementation?(:ruby19).should == true
+    end
+
+    it "returns true if RUBY_NAME == 'ruby1.9' and RUBY_VERSION matches /^1.9/" do
+      Object.const_set :RUBY_NAME, 'ruby'
+      Object.const_set :RUBY_VERSION, '1.9.1'
+      @guard.implementation?(:ruby19).should == true
+    end
+
+    it "returns false if RUBY_NAME == 'ruby1.9' and RUBY_VERSION does not match /^1.9/" do
+      Object.const_set :RUBY_NAME, 'ruby1.9'
+      Object.const_set :RUBY_VERSION, '1.8.6'
+      @guard.implementation?(:ruby19).should == false
+    end
+  end
+end
+
+describe SpecGuard, "#standard?" do
+  before :each do
+    @guard = SpecGuard.new
+  end
+
+  it "returns true if #implementation? returns true" do
+    @guard.should_receive(:implementation?).with(
+        :ruby, :ruby18, :ruby19).and_return(true)
+    @guard.standard?.should be_true
+  end
+
+  it "returns false if #implementation? returns false" do
+    @guard.should_receive(:implementation?).with(
+        :ruby, :ruby18, :ruby19).and_return(false)
+    @guard.standard?.should be_false
   end
 end
 

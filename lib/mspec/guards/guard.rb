@@ -105,6 +105,10 @@ class SpecGuard
     end
   end
 
+  def standard?
+    implementation? :ruby, :ruby18, :ruby19
+  end
+
   def windows?(sym, key)
     sym == :windows && SpecGuard.windows?(key)
   end
