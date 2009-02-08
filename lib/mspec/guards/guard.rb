@@ -39,7 +39,9 @@ class SpecGuard
       n = 4
     end
 
-    version = "#{RUBY_VERSION}.#{RUBY_PATCHLEVEL}"
+    patch = RUBY_PATCHLEVEL.to_i
+    patch = 0 if patch < 0
+    version = "#{RUBY_VERSION}.#{patch}"
     version.split('.')[0,n].join('.')
   end
 

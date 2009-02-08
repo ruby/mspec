@@ -57,6 +57,11 @@ describe SpecGuard, ".ruby_version" do
     SpecGuard.ruby_version(:full).should == "8.2.3.71"
   end
 
+  it "returns 0 for negative RUBY_PATCHLEVEL values" do
+    Object.const_set :RUBY_PATCHLEVEL, -1
+    SpecGuard.ruby_version(:full).should == "8.2.3.0"
+  end
+
   it "returns major.minor.tiny for :tiny" do
     SpecGuard.ruby_version(:tiny).should == "8.2.3"
   end
