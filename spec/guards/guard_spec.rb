@@ -189,11 +189,6 @@ describe SpecGuard, "#implementation?" do
     @guard.implementation?(:ruby).should == true
   end
 
-  it "returns true if passed :rbx and RUBY_NAME == 'rbx'" do
-    Object.const_set :RUBY_NAME, 'rbx'
-    @guard.implementation?(:rbx).should == true
-  end
-
   it "returns true if passed :rubinius and RUBY_NAME == 'rbx'" do
     Object.const_set :RUBY_NAME, 'rbx'
     @guard.implementation?(:rubinius).should == true
@@ -202,6 +197,11 @@ describe SpecGuard, "#implementation?" do
   it "returns true if passed :jruby and RUBY_NAME == 'jruby'" do
     Object.const_set :RUBY_NAME, 'jruby'
     @guard.implementation?(:jruby).should == true
+  end
+
+  it "returns true if passed :ironruby and RUBY_NAME == 'ironruby'" do
+    Object.const_set :RUBY_NAME, 'ironruby'
+    @guard.implementation?(:ironruby).should == true
   end
 
   it "returns false when passed an unrecognized name" do

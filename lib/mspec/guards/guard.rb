@@ -89,7 +89,7 @@ class SpecGuard
   def implementation?(*args)
     args.any? do |name|
       !!case name
-      when :rbx, :rubinius
+      when :rubinius
         RUBY_NAME =~ /^rbx/
       when :ruby
         RUBY_NAME =~ /^ruby/
@@ -99,7 +99,7 @@ class SpecGuard
         RUBY_NAME =~ /^ruby(1.9)?/ and RUBY_VERSION =~ /^1.9/
       when :jruby
         RUBY_NAME =~ /^jruby/
-      when :ironruby, :ir
+      when :ironruby
         RUBY_NAME =~ /^ironruby/
       else
         false
