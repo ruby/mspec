@@ -2,13 +2,13 @@ require 'mspec/guards/guard'
 
 class CompliantOnGuard < SpecGuard
   def match?
-    standard? or implementation?(*@args) or platform?(*@args)
+    standard? or implementation?(*@args)
   end
 end
 
 class NotCompliantOnGuard < SpecGuard
   def match?
-    standard? or !(implementation?(*@args) or platform?(*@args))
+    standard? or !implementation?(*@args)
   end
 end
 

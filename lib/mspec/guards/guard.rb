@@ -93,14 +93,12 @@ class SpecGuard
         RUBY_NAME =~ /^rbx/
       when :ruby
         RUBY_NAME =~ /^ruby/
-      when :ruby18
-        RUBY_NAME =~ /^ruby(1.8)?/ and RUBY_VERSION =~ /^1.8/
-      when :ruby19
-        RUBY_NAME =~ /^ruby(1.9)?/ and RUBY_VERSION =~ /^1.9/
       when :jruby
         RUBY_NAME =~ /^jruby/
       when :ironruby
         RUBY_NAME =~ /^ironruby/
+      when :macruby
+        RUBY_NAME =~ /^macruby/
       else
         false
       end
@@ -108,7 +106,7 @@ class SpecGuard
   end
 
   def standard?
-    implementation? :ruby, :ruby18, :ruby19
+    implementation? :ruby
   end
 
   def windows?(sym, key)
