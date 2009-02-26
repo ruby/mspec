@@ -363,6 +363,7 @@ describe MSpecScript, "#entries" do
 
   it "returns Dir['pattern/**/*_spec.rb'] if pattern is a directory" do
     File.should_receive(:directory?).with("name").and_return(true)
+    File.stub!(:expand_path).and_return("name","name/**/*_spec.rb")
     Dir.should_receive(:[]).with("name/**/*_spec.rb").and_return(["dir1", "dir2"])
     @script.entries("name").should == ["dir1", "dir2"]
   end
@@ -386,7 +387,7 @@ describe MSpecScript, "#entries" do
     end
 
     it "returns Dir['pattern/**/*_spec.rb'] if pattern is a directory" do
-      File.should_receive(:expand_path).with(@name).and_return(@name)
+      File.stub!(:expand_path).and_return(@name, @name+"/**/*_spec.rb")
       File.should_receive(:directory?).with(@name).and_return(true)
       Dir.should_receive(:[]).with(@name + "/**/*_spec.rb").and_return(["dir1", "dir2"])
       @script.entries("name").should == ["dir1", "dir2"]
