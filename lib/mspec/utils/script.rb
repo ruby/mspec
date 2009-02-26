@@ -173,7 +173,8 @@ class MSpecScript
       expanded = File.expand_path(pattern)
       return [pattern] if File.file?(expanded)
 
-      specs = File.join pattern, "/**/*_spec.rb"
+      specs = File.join(pattern, "/**/*_spec.rb")
+      specs = File.expand_path(specs) rescue specs
       return Dir[specs].sort if File.directory?(expanded)
     end
 
