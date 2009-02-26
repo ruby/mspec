@@ -360,6 +360,9 @@ class MSpecOptions
     on("--unguarded", "Turn off all guards") do
       MSpec.register_mode :unguarded
     end
+    on("--no-ruby_bug", "Turn off the ruby_bug guard") do
+      MSpec.register_mode :no_ruby_bug
+    end
   end
 
   def randomize

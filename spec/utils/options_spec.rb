@@ -1014,6 +1014,7 @@ describe "The --unguarded option" do
   end
 
   it "is enabled with #unguarded" do
+    @options.stub!(:on)
     @options.should_receive(:on).with("--unguarded", an_instance_of(String))
     @options.unguarded
   end
@@ -1021,6 +1022,24 @@ describe "The --unguarded option" do
   it "registers the MSpec unguarded mode" do
     MSpec.should_receive(:register_mode).with(:unguarded)
     @options.parse "--unguarded"
+  end
+end
+
+describe "The --no-ruby_guard option" do
+  before :each do
+    @options, @config = new_option
+    @options.unguarded
+  end
+
+  it "is enabled with #unguarded" do
+    @options.stub!(:on)
+    @options.should_receive(:on).with("--no-ruby_bug", an_instance_of(String))
+    @options.unguarded
+  end
+
+  it "registers the MSpec no_ruby_bug mode" do
+    MSpec.should_receive(:register_mode).with(:no_ruby_bug)
+    @options.parse "--no-ruby_bug"
   end
 end
 
