@@ -125,4 +125,16 @@ describe Object, "#ruby_bug" do
     lambda { ruby_bug { }          }.should raise_error(ArgumentError)
     lambda { ruby_bug("#1234") { } }.should raise_error(ArgumentError)
   end
+
+  it "sets the name of the guard to :ruby_bug" do
+    ruby_bug("#1234", "1.8.6") { }
+    @guard.name.should == :ruby_bug
+  end
+
+  it "calls #unregister even when an exception is raised in the guard block" do
+    @guard.should_receive(:unregister)
+    lambda do
+      ruby_bug("", "") { raise Exception }
+    end.should raise_error(Exception)
+  end
 end

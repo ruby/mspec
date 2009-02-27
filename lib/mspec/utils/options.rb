@@ -404,12 +404,12 @@ class MSpecOptions
   end
 
   def verify
+    on("-O", "--report", "Report guarded specs") do
+      MSpec.register_mode :report
+    end
     on("-Y", "--verify",
        "Verify that guarded specs pass and fail as expected") do
       MSpec.register_mode :verify
-    end
-    on("-O", "--report", "Report guarded specs") do
-      MSpec.register_mode :report
     end
   end
 

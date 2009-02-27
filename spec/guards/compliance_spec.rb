@@ -46,6 +46,25 @@ describe Object, "#compliant_on" do
   end
 end
 
+describe Object, "#compliant_on" do
+  before :each do
+    @guard = CompliantOnGuard.new :any
+    CompliantOnGuard.stub!(:new).and_return(@guard)
+  end
+
+  it "sets the name of the guard to :compliant_on" do
+    compliant_on(:rubinius) { }
+    @guard.name.should == :compliant_on
+  end
+
+  it "calls #unregister even when an exception is raised in the guard block" do
+    @guard.should_receive(:unregister)
+    lambda do
+      compliant_on(:rubinius) { raise Exception }
+    end.should raise_error(Exception)
+  end
+end
+
 describe Object, "#not_compliant_on" do
   before :all do
     @verbose = $VERBOSE
@@ -82,5 +101,24 @@ describe Object, "#not_compliant_on" do
     Object.const_set :RUBY_NAME, "jruby "
     not_compliant_on(:rubinius) { ScratchPad.record :yield }
     ScratchPad.recorded.should == :yield
+  end
+end
+
+describe Object, "#not_compliant_on" do
+  before :each do
+    @guard = NotCompliantOnGuard.new :any
+    NotCompliantOnGuard.stub!(:new).and_return(@guard)
+  end
+
+  it "sets the name of the guard to :not_compliant_on" do
+    not_compliant_on(:rubinius) { }
+    @guard.name.should == :not_compliant_on
+  end
+
+  it "calls #unregister even when an exception is raised in the guard block" do
+    @guard.should_receive(:unregister)
+    lambda do
+      not_compliant_on(:rubinius) { raise Exception }
+    end.should raise_error(Exception)
   end
 end

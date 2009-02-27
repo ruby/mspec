@@ -3,42 +3,6 @@ require 'mspec/utils/ruby_name'
 require 'mspec/guards/guard'
 require 'rbconfig'
 
-describe SpecGuard, ".register" do
-  before :each do
-    @tally = mock("tally")
-    @tally.stub!(:register)
-    TallyAction.stub!(:new).and_return(@tally)
-    SpecGuard.instance_variable_set(:@registered, nil)
-  end
-
-  it "creates a new TallyAction if one does not exist" do
-    TallyAction.should_receive(:new).and_return(@tally)
-    @tally.should_receive(:register)
-    SpecGuard.register
-    SpecGuard.register
-  end
-
-  it "registers itself with MSpec :finish actions" do
-    MSpec.should_receive(:register).with(:finish, SpecGuard)
-    SpecGuard.register
-  end
-end
-
-describe SpecGuard, ".unregister" do
-  before :each do
-    @tally = mock("tally")
-    @tally.stub!(:register)
-    TallyAction.stub!(:new).and_return(@tally)
-    SpecGuard.instance_variable_set(:@registered, nil)
-  end
-
-  it "unregisters its tally action" do
-    @tally.should_receive(:unregister)
-    SpecGuard.register
-    SpecGuard.unregister
-  end
-end
-
 describe SpecGuard, ".ruby_version" do
   before :all do
     @ruby_version = Object.const_get :RUBY_VERSION
@@ -114,6 +78,10 @@ describe SpecGuard, "#yield?" do
   before :each do
     MSpec.clear_modes
     @guard = SpecGuard.new
+  end
+
+  after :each do
+    MSpec.unregister :add, @guard
   end
 
   it "returns true if MSpec.mode?(:unguarded) is true" do
@@ -430,30 +398,54 @@ end
 
 describe SpecGuard, "#unregister" do
   before :each do
-    @tally = mock("tally")
-    @tally.stub!(:register)
-    TallyAction.stub!(:new).and_return(@tally)
     MSpec.stub!(:unregister)
     @guard = SpecGuard.new
-
-    SpecGuard.instance_variable_set(:@registered, nil)
-    SpecGuard.register
   end
 
-  it "unregisters from MSpec :exclude actions" do
-    MSpec.should_receive(:unregister).with(:exclude, @guard)
-    @tally.should_receive(:unregister)
+  it "unregisters from MSpec :add actions" do
+    MSpec.should_receive(:unregister).with(:add, @guard)
     @guard.unregister
   end
+end
 
-  it "unregisters from MSpec :after actions" do
-    MSpec.should_receive(:unregister).with(:after, @guard)
-    @tally.should_receive(:unregister)
-    @guard.unregister
+describe SpecGuard, "#record" do
+  after :each do
+    SpecGuard.clear
   end
 
-  it "invokes the class's unregister method" do
-    SpecGuard.should_receive(:unregister)
-    @guard.unregister
+  it "saves the name of the guarded spec under the name of the guard" do
+    guard = SpecGuard.new "a", "1.8"..."1.9"
+    guard.name = :named_guard
+    guard.record "SomeClass#action returns true"
+    SpecGuard.report.should == {
+      'named_guard a, 1.8...1.9' => ["SomeClass#action returns true"]
+    }
+  end
+end
+
+describe SpecGuard, ".finish" do
+  before :each do
+    $stdout = @out = IOStub.new
+  end
+
+  after :each do
+    $stdout = STDOUT
+    SpecGuard.clear
+  end
+
+  it "prints the descriptions of the guarded specs" do
+    guard = SpecGuard.new "a", "1.8"..."1.9"
+    guard.name = :named_guard
+    guard.record "SomeClass#action returns true"
+    guard.record "SomeClass#reverse returns false"
+    SpecGuard.finish
+    $stdout.should == %[
+
+2 specs omitted by guard: named_guard a, 1.8...1.9:
+
+SomeClass#action returns true
+SomeClass#reverse returns false
+
+]
   end
 end
