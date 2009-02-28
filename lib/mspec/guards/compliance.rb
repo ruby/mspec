@@ -2,12 +2,18 @@ require 'mspec/guards/guard'
 
 class CompliantOnGuard < SpecGuard
   def match?
+    if @args.include? :ruby
+      raise Exception, "improper use of compliant_on guard"
+    end
     standard? or implementation?(*@args)
   end
 end
 
 class NotCompliantOnGuard < SpecGuard
   def match?
+    if @args.include? :ruby
+      raise Exception, "improper use of not_compliant_on guard"
+    end
     standard? or !implementation?(*@args)
   end
 end

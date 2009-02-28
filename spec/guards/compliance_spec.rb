@@ -21,6 +21,14 @@ describe Object, "#compliant_on" do
     ScratchPad.clear
   end
 
+  it "raises an Exception when passed :ruby" do
+    Object.const_set :RUBY_NAME, "jruby"
+    lambda {
+      compliant_on(:ruby) { ScratchPad.record :yield }
+    }.should raise_error(Exception)
+    ScratchPad.recorded.should_not == :yield
+  end
+
   it "does not yield when #standard? and #implementation? return false" do
     Object.const_set :RUBY_NAME, "jruby"
     compliant_on(:rubinius, :ironruby) { ScratchPad.record :yield }
@@ -83,6 +91,14 @@ describe Object, "#not_compliant_on" do
 
   before :each do
     ScratchPad.clear
+  end
+
+  it "raises an Exception when passed :ruby" do
+    Object.const_set :RUBY_NAME, "jruby"
+    lambda {
+      not_compliant_on(:ruby) { ScratchPad.record :yield }
+    }.should raise_error(Exception)
+    ScratchPad.recorded.should_not == :yield
   end
 
   it "yields when #standard? returns true" do
