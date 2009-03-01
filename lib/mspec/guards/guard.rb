@@ -93,6 +93,7 @@ class SpecGuard
 
   def add(example)
     record example.description
+    MSpec.retrieve(:formatter).tally.counter.guards!
   end
 
   def unregister
