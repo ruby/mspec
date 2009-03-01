@@ -55,7 +55,7 @@ class Tally
 
   def format
     results = [ file, example, expectation, failure, error ]
-    results << guard if MSpec.mode? :report or MSpec.mode? :verify
+    results << guard if [:report, :report_on, :verify].any? { |m| MSpec.mode? m }
     results.join(", ")
   end
 

@@ -82,6 +82,8 @@ describe SpecGuard, "#yield?" do
 
   after :each do
     MSpec.unregister :add, @guard
+    MSpec.clear_modes
+    SpecGuard.clear_guards
   end
 
   it "returns true if MSpec.mode?(:unguarded) is true" do
@@ -107,6 +109,14 @@ describe SpecGuard, "#yield?" do
   it "returns true if MSpec.mode?(:report) is true regardless of invert being true" do
     MSpec.register_mode :report
     @guard.yield?(true).should == true
+  end
+
+  it "returns true if MSpec.mode?(:report_on) is true and SpecGuards.guards contains the named guard" do
+    MSpec.register_mode :report_on
+    SpecGuard.guards << :guard_name
+    @guard.yield?.should == false
+    @guard.name = :guard_name
+    @guard.yield?.should == true
   end
 
   it "returns #match? if neither report nor verify mode are true" do
@@ -420,6 +430,21 @@ describe SpecGuard, "#record" do
     SpecGuard.report.should == {
       'named_guard a, 1.8...1.9' => ["SomeClass#action returns true"]
     }
+  end
+end
+
+describe SpecGuard, ".guards" do
+  it "returns an Array" do
+    SpecGuard.guards.should be_kind_of(Array)
+  end
+end
+
+describe SpecGuard, ".clear_guards" do
+  it "resets the array to empty" do
+    SpecGuard.guards << :guard
+    SpecGuard.guards.should == [:guard]
+    SpecGuard.clear_guards
+    SpecGuard.guards.should == []
   end
 end
 

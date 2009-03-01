@@ -22,6 +22,14 @@ class SpecGuard
     print "\n\n"
   end
 
+  def self.guards
+    @guards ||= []
+  end
+
+  def self.clear_guards
+    @guards = []
+  end
+
   # Returns a partial Ruby version string based on +which+. For example,
   # if RUBY_VERSION = 8.2.3 and RUBY_PATCHLEVEL = 71:
   #
@@ -63,7 +71,7 @@ class SpecGuard
 
     allow = match? ^ invert
 
-    if reporting? allow
+    if not allow and reporting?
       MSpec.guard
       MSpec.register :finish, SpecGuard
       MSpec.register :add,    self
@@ -79,8 +87,9 @@ class SpecGuard
     true
   end
 
-  def reporting?(allow)
-    MSpec.mode? :report and not allow
+  def reporting?
+    MSpec.mode?(:report) or
+      (MSpec.mode?(:report_on) and SpecGuard.guards.include?(name))
   end
 
   def report_key

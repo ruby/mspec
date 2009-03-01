@@ -204,6 +204,17 @@ describe Tally, "#format" do
     @tally.format.should ==
       "1 file, 2 examples, 4 expectations, 0 failures, 1 error, 2 guards"
   end
+
+  it "includes guards if MSpec is in report_on mode" do
+    MSpec.register_mode :report_on
+    @tally.files!
+    @tally.examples! 2
+    @tally.expectations! 4
+    @tally.errors!
+    @tally.guards! 2
+    @tally.format.should ==
+      "1 file, 2 examples, 4 expectations, 0 failures, 1 error, 2 guards"
+  end
 end
 
 describe TallyAction, "#counter" do

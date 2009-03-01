@@ -404,6 +404,10 @@ class MSpecOptions
   end
 
   def verify
+    on("--report-on", "GUARD", "Report specs guarded by GUARD") do |g|
+      MSpec.register_mode :report_on
+      SpecGuard.guards << g.to_sym
+    end
     on("-O", "--report", "Report guarded specs") do
       MSpec.register_mode :report
     end
