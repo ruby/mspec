@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers/have_instance_variable'
 
-shared_examples_for "on all Ruby versions" do
+shared_examples_for "have_instance_variable, on all Ruby versions" do
   after :all do
     Object.const_set :RUBY_VERSION, @ruby_version
   end
@@ -14,8 +14,6 @@ shared_examples_for "on all Ruby versions" do
 
   it "matches when object has the instance variable, given as symbol" do
     matcher = HaveInstanceVariableMatcher.new(:@foo)
-    # p @object.instance_variables
-    # p matcher.instance_variable_get(:@variable)
     matcher.matches?(@object).should be_true
   end
 
@@ -59,7 +57,7 @@ describe HaveInstanceVariableMatcher, "on RUBY_VERSION < 1.9" do
     end
   end
 
-  it_should_behave_like "on all Ruby versions"
+  it_should_behave_like "have_instance_variable, on all Ruby versions"
 end
 
 describe HaveInstanceVariableMatcher, "on RUBY_VERSION >= 1.9" do
@@ -73,5 +71,5 @@ describe HaveInstanceVariableMatcher, "on RUBY_VERSION >= 1.9" do
     end
   end
 
-  it_should_behave_like "on all Ruby versions"
+  it_should_behave_like "have_instance_variable, on all Ruby versions"
 end
