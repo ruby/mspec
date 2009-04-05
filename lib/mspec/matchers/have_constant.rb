@@ -1,20 +1,8 @@
 require 'mspec/matchers/variable'
 
 class HaveConstantMatcher < VariableMatcher
-  def matches?(mod)
-    @mod = mod
-    @mod.constants.include? @variable
-  end
-
-  def failure_message
-    ["Expected #{@mod} to have constant '#{@variable}'",
-     "but it does not"]
-  end
-
-  def negative_failure_message
-    ["Expected #{@mod} NOT to have constant '#{@variable}'",
-     "but it does"]
-  end
+  self.variables_method = :constants
+  self.description      = 'constant'
 end
 
 class Object
