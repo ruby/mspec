@@ -1,6 +1,7 @@
 require 'mspec/helpers/argv'
 require 'mspec/helpers/bignum'
 require 'mspec/helpers/const_lookup'
+require 'mspec/helpers/enumerator_class'
 require 'mspec/helpers/environment'
 require 'mspec/helpers/fixture'
 require 'mspec/helpers/flunk'
