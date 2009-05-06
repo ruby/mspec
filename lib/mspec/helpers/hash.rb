@@ -12,7 +12,7 @@ class Object
   # Returns a new instance of hash_class.
   def new_hash(*args, &block)
     if block
-      hash_class.new &block
+      hash_class.new(&block)
     elsif args.size == 1
       value = args.first
       if value.is_a?(Hash) or value.is_a?(hash_class)
