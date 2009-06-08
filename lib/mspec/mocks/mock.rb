@@ -1,4 +1,5 @@
 require 'mspec/expectations/expectations'
+require 'mspec/helpers/metaclass'
 
 module Mock
   def self.reset
@@ -43,7 +44,7 @@ module Mock
   end
 
   def self.install_method(obj, sym, type=nil)
-    meta = class << obj; self; end
+    meta = obj.metaclass
 
     key = replaced_key obj, sym
     sym = sym.to_sym
@@ -163,7 +164,7 @@ module Mock
     objects.each do |key, obj|
       replaced = key.first
       sym = key.last
-      meta = class << obj; self; end
+      meta = obj.metaclass
 
       if meta.instance_methods.map { |x| x.to_sym }.include?(replaced)
         meta.__send__ :alias_method, sym, replaced
