@@ -1,6 +1,30 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'mspec/guards/feature'
 
+describe FeatureGuard, ".enabled?" do
+  it "returns true if the feature is enabled" do
+    MSpec.should_receive(:feature_enabled?).with(:encoding).and_return(true)
+    FeatureGuard.enabled?(:encoding).should be_true
+  end
+
+  it "returns false if the feature is not enabled" do
+    MSpec.should_receive(:feature_enabled?).with(:encoding).and_return(false)
+    FeatureGuard.enabled?(:encoding).should be_false
+  end
+
+  it "returns true if all the features are enabled" do
+    MSpec.should_receive(:feature_enabled?).with(:one).and_return(true)
+    MSpec.should_receive(:feature_enabled?).with(:two).and_return(true)
+    FeatureGuard.enabled?(:one, :two).should be_true
+  end
+
+  it "returns false if any of the features are not enabled" do
+    MSpec.should_receive(:feature_enabled?).with(:one).and_return(true)
+    MSpec.should_receive(:feature_enabled?).with(:two).and_return(false)
+    FeatureGuard.enabled?(:one, :two).should be_false
+  end
+end
+
 describe Object, "#with_feature" do
   before :each do
     ScratchPad.clear

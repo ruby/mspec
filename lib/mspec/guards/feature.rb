@@ -1,6 +1,10 @@
 require 'mspec/guards/guard'
 
 class FeatureGuard < SpecGuard
+  def self.enabled?(*features)
+    new(*features).match?
+  end
+
   def match?
     @parameters.all? { |f| MSpec.feature_enabled? f }
   end
