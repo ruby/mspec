@@ -5,7 +5,7 @@
 
 SPEC_TEMP_DIR = "#{File.expand_path(Dir.pwd)}/rubyspec_temp"
 
-SPEC_TEMP_UNIQUIFIER = 0
+SPEC_TEMP_UNIQUIFIER = "0"
 
 at_exit do
   begin
@@ -32,7 +32,7 @@ class Object
     if uniquify and !name.empty?
       slash = name.rindex "/"
       index = slash ? slash + 1 : 0
-      name.insert index, "#{SPEC_TEMP_UNIQUIFIER.succ}-"
+      name.insert index, "#{SPEC_TEMP_UNIQUIFIER.succ!}-"
     end
 
     File.join SPEC_TEMP_DIR, name
