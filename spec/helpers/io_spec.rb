@@ -59,7 +59,7 @@ describe Object, "#new_fd" do
     fd = new_fd @name
     fd.should be_an_instance_of(Fixnum)
 
-    @io = IO.new fd
+    @io = IO.new fd, "w"
     @io.sync = true
     @io.print "io data"
 
