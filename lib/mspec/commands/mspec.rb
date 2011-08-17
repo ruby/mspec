@@ -45,7 +45,7 @@ class MSpecMain < MSpecScript
       config[:flags] << '--valgrind'
     end
 
-    options.on("--warnings", "Don't supress warnings") do
+    options.on("--warnings", "Don't suppress warnings") do
       config[:flags] << '-w'
       ENV['OUTPUT_WARNINGS'] = '1'
     end
