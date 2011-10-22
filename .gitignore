@@ -5,5 +5,7 @@ pkg/*
 *.ipr
 *.sw?
 
+.rbx
+
 # ctags dir
 /tags
