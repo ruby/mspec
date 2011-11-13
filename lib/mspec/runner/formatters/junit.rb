@@ -22,7 +22,7 @@ class JUnitFormatter < YamlFormatter
     switch
 
     time = @timer.elapsed
-    tests = @tally.counter.expectations
+    tests = @tally.counter.examples
     errors = @tally.counter.errors
     failures = @tally.counter.failures
 

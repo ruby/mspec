@@ -5,11 +5,11 @@ require 'mspec/runner/example'
 
 describe JUnitFormatter, "#initialize" do
   it "permits zero arguments" do
-    JUnitFormatter.new
+    proc { JUnitFormatter.new }.should_not raise_error
   end
 
   it "accepts one argument" do
-    JUnitFormatter.new nil
+    proc { JUnitFormatter.new nil }.should_not raise_error
   end
 end
 
@@ -109,14 +109,14 @@ describe JUnitFormatter, "#finish" do
     $stdout.should =~ /timeCount="4.2"/
   end
 
-  it "outputs an expectation as test count" do
-    @counter.should_receive(:expectations).and_return(9)
+  it "outputs the number of examples as test count" do
+    @counter.should_receive(:examples).and_return(9)
     @formatter.finish
     $stdout.should =~ /tests="9"/
   end
 
-  it "outputs overall expectation as test count" do
-    @counter.should_receive(:expectations).and_return(9)
+  it "outputs overall number of examples as test count" do
+    @counter.should_receive(:examples).and_return(9)
     @formatter.finish
     $stdout.should =~ /testCount="9"/
   end
