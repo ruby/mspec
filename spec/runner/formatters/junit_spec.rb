@@ -5,11 +5,11 @@ require 'mspec/runner/example'
 
 describe JUnitFormatter, "#initialize" do
   it "permits zero arguments" do
-    proc { JUnitFormatter.new }.should_not raise_error
+    lambda { JUnitFormatter.new }.should_not raise_error
   end
 
   it "accepts one argument" do
-    proc { JUnitFormatter.new nil }.should_not raise_error
+    lambda { JUnitFormatter.new nil }.should_not raise_error
   end
 end
 
