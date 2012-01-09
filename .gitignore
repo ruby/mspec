@@ -1,4 +1,4 @@
-pkg/*
+pkg
 *.rbc
 *.iml
 *.iws
@@ -9,3 +9,19 @@ pkg/*
 
 # ctags dir
 /tags
+
+*.gem
+.bundle
+.config
+.yardoc
+Gemfile.lock
+InstalledFiles
+_yardoc
+coverage
+doc/
+lib/bundler/man
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp
