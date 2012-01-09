@@ -177,15 +177,36 @@ describe Object, "#ruby_exe" do
     @script.ruby_exe nil, :options => "-c", :args => "> file.txt"
   end
 
-  it "executes with env but without code or file" do
-    ENV.should_receive(:[]).with("RUBY_FLAGS").and_return("-w -Q")
-    ENV.should_receive(:[]).with("baz").and_return("a")
-    ENV.should_receive(:[]=).with("baz", "b")
-    ENV.should_receive(:[]).with("foo")
-    ENV.should_receive(:[]=).with("foo", "bar")
-    ENV.should_receive(:[]=).with("baz", "a")
-    ENV.should_receive(:[]=).with("foo", nil)
-    @script.should_receive(:`).with("ruby_spec_exe -w -Q -c")
-    @script.ruby_exe nil, :env => { "foo" => "bar", :baz => "b" }, :options => "-c"
+  describe "with :env option" do
+    before :each do
+      @script.stub!(:`)
+    end
+
+    after :each do
+      ENV.delete "ABC"
+    end
+
+    it "preserves the values of existing ENV keys" do
+      ENV["ABC"] = "123"
+      ENV.should_receive(:[]).with("RUBY_FLAGS")
+      ENV.should_receive(:[]).with("ABC")
+      @script.ruby_exe nil, :env => { :ABC => "xyz" }
+    end
+
+    it "adds the :env entries to ENV" do
+      ENV.should_receive(:[]=).with("ABC", "xyz")
+      @script.ruby_exe nil, :env => { :ABC => "xyz" }
+    end
+
+    it "resets the values of existing ENV keys when an exception is raised" do
+      ENV["ABC"] = "123"
+      ENV.should_receive(:[]=).with("ABC", "xyz")
+      ENV.should_receive(:[]=).with("ABC", "123")
+
+      @script.should_receive(:`).and_raise(Exception)
+      lambda do
+        @script.ruby_exe nil, :env => { :ABC => "xyz" }
+      end.should raise_error(Exception)
+    end
   end
 end
