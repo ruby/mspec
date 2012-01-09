@@ -1,7 +1,7 @@
 1. Overview
 
 MSpec is a specialized framework that is syntax-compatible with RSpec for
-basic things like +describe+, +it+ blocks and +before+, +after+ actions. MSpec
+basic things like 'describe', 'it' blocks and 'before', 'after' actions. MSpec
 contains additional features that assist in writing the RubySpecs used by
 multiple Ruby implementations.
 
