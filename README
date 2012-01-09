@@ -51,15 +51,15 @@ MSpec specs runnable by MSpec.
 
 After installing the gem dependencies, the specs can be run as follows:
 
-  $ RUBYLIB=lib:spec ruby -S rspec
+  $ ruby -S rspec
 
 Or
 
-  $ RUBYLIB=lib:spec ruby -S rake
+  $ ruby -S rake
 
 To run an individual spec file, use the following example:
 
-  $ RUBYLIB=lib:spec ruby -S rspec spec/helpers/ruby_exe_spec.rb
+  $ ruby -S rspec spec/helpers/ruby_exe_spec.rb
 
 
 4. Documentation
