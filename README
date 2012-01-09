@@ -34,8 +34,14 @@ specs in a manner compatible with multiple Ruby implementations.
 
 2. Bundler
 
-A Gemfile and Gemfile.lock is checked in. Use Bundler to install gem
-dependencies.
+A Gemfile and Gemfile.lock is provide. Use Bundler to install gem
+dependencies. To install Bundler, run the following:
+
+  $ gem install bundler
+
+To install the gem dependencies with Bundler, run the following:
+
+  $ RUBYLIB=lib ruby -S bundle install
 
 
 3. Running Specs
