@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require 'mspec/guards/runner'
+require 'mspec/guards'
 
 describe RunnerGuard, "#match?" do
   before :all do

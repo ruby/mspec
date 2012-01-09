@@ -336,7 +336,7 @@ end
 
 describe MkSpec, ".main" do
   before :each do
-    @script = mock("MkSpec", :null_object => true)
+    @script = mock("MkSpec").as_null_object
     MkSpec.stub!(:new).and_return(@script)
   end
 

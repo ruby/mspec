@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require 'mspec/guards/platform'
-require 'mspec/helpers/environment'
+require 'mspec/guards'
+require 'mspec/helpers'
 
 describe "#env" do
   it "returns a hash of variables" do

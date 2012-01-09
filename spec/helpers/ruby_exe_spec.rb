@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require 'mspec/helpers/ruby_exe'
+require 'mspec/guards'
+require 'mspec/helpers'
 require 'rbconfig'
 
 class RubyExeSpecs

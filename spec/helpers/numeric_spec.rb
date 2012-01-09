@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require 'mspec/helpers/numeric'
+require 'mspec/guards'
+require 'mspec/helpers'
 
 describe Object, "#bignum_value" do
   it "returns a value that is an instance of Bignum on any platform" do

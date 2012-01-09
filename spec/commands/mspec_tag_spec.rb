@@ -264,7 +264,7 @@ describe MSpecTag, "#run" do
   before :each do
     MSpec.stub!(:process)
 
-    options = mock("MSpecOptions", :null_object => true)
+    options = mock("MSpecOptions").as_null_object
     options.stub!(:parse).and_return(["one", "two"])
     MSpecOptions.stub!(:new).and_return(options)
 
