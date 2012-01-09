@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 require 'mspec/guards'
 
 # The VersionGuard specifies a version of Ruby with a String of

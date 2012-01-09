@@ -2,7 +2,7 @@
 # opposites are true (for example a failure when the specified
 # arguments are NOT provided) is to simply alter the particular
 # spec to a failure condition.
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 require 'mspec/runner/mspec'
 require 'mspec/mocks/mock'
 require 'mspec/mocks/proxy'
