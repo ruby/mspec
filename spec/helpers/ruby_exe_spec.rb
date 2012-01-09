@@ -176,4 +176,16 @@ describe Object, "#ruby_exe" do
     @script.should_receive(:`).with("ruby_spec_exe -w -Q -c > file.txt")
     @script.ruby_exe nil, :options => "-c", :args => "> file.txt"
   end
+
+  it "executes with env but without code or file" do
+    ENV.should_receive(:[]).with("RUBY_FLAGS").and_return("-w -Q")
+    ENV.should_receive(:[]).with("baz").and_return("a")
+    ENV.should_receive(:[]=).with("baz", "b")
+    ENV.should_receive(:[]).with("foo")
+    ENV.should_receive(:[]=).with("foo", "bar")
+    ENV.should_receive(:[]=).with("baz", "a")
+    ENV.should_receive(:[]=).with("foo", nil)
+    @script.should_receive(:`).with("ruby_spec_exe -w -Q -c")
+    @script.ruby_exe nil, :env => { "foo" => "bar", :baz => "b" }, :options => "-c"
+  end
 end
