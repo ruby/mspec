@@ -1,7 +1,4 @@
-source "http://rubygems.org"
+source 'https://rubygems.org'
 
+# Specify your gem's dependencies in mspec.gemspec
 gemspec
-
-gem "rake",   "~> 0.9"
-gem "rspec",  "~> 2.8"
-gem "ruby-debug", "~> 0.10"
