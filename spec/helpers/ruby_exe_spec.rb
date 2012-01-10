@@ -196,7 +196,6 @@ describe Object, "#ruby_exe" do
 
     context "when an exception is raised" do
       it "deletes the :env entries in ENV" do
-        ENV.should_receive(:key?).with("XYZ").twice.and_return(true)
         ENV.should_receive(:delete).with("XYZ")
         @script.ruby_exe nil, :env => { :XYZ => "xyz" }
       end
