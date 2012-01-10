@@ -182,10 +182,6 @@ describe Object, "#ruby_exe" do
       @script.stub!(:`)
     end
 
-    after :each do
-      ENV.delete "ABC"
-    end
-
     it "preserves the values of existing ENV keys" do
       ENV["ABC"] = "123"
       ENV.should_receive(:[]).with("RUBY_FLAGS")
@@ -198,15 +194,24 @@ describe Object, "#ruby_exe" do
       @script.ruby_exe nil, :env => { :ABC => "xyz" }
     end
 
-    it "resets the values of existing ENV keys when an exception is raised" do
-      ENV["ABC"] = "123"
-      ENV.should_receive(:[]=).with("ABC", "xyz")
-      ENV.should_receive(:[]=).with("ABC", "123")
+    context "when an exception is raised" do
+      it "deletes the :env entries in ENV" do
+        ENV.should_receive(:key?).with("XYZ").twice.and_return(true)
+        ENV.should_receive(:delete).with("XYZ")
+        @script.ruby_exe nil, :env => { :XYZ => "xyz" }
+      end
 
-      @script.should_receive(:`).and_raise(Exception)
-      lambda do
-        @script.ruby_exe nil, :env => { :ABC => "xyz" }
-      end.should raise_error(Exception)
+      it "resets the values of existing ENV keys" do
+        ENV["ABC"] = "123"
+        ENV.should_receive(:[]=).with("ABC", "xyz")
+        ENV.should_receive(:[]=).with("ABC", "123")
+
+        @script.should_receive(:`).and_raise(Exception)
+        lambda do
+          @script.ruby_exe nil, :env => { :ABC => "xyz" }
+        end.should raise_error(Exception)
+      end
     end
+
   end
 end
