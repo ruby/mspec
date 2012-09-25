@@ -9,16 +9,26 @@ describe Object, "#with_block_device" do
     BlockDeviceGuard.stub!(:new).and_return(@guard)
   end
 
-  it "yields if block device is available" do
-    @guard.should_receive(:`).and_return("block devices")
-    with_block_device { ScratchPad.record :yield }
-    ScratchPad.recorded.should == :yield
+  platform_is_not :freebsd, :windows do
+    it "yields if block device is available" do
+      @guard.should_receive(:`).and_return("block devices")
+      with_block_device { ScratchPad.record :yield }
+      ScratchPad.recorded.should == :yield
+    end
+
+    it "does not yield if block device is not available" do
+      @guard.should_receive(:`).and_return(nil)
+      with_block_device { ScratchPad.record :yield }
+      ScratchPad.recorded.should_not == :yield
+    end
   end
 
-  it "does not yield if block device is not available" do
-    @guard.should_receive(:`).and_return(nil)
-    with_block_device { ScratchPad.record :yield }
-    ScratchPad.recorded.should_not == :yield
+  platform_is :freebsd, :windows do
+    it "does not yield, since platform does not support block devices" do
+      @guard.should_not_receive(:`)
+      with_block_device { ScratchPad.record :yield }
+      ScratchPad.recorded.should_not == :yield
+    end
   end
 
   it "sets the name of the guard to :with_block_device" do

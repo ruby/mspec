@@ -2,8 +2,12 @@ require 'mspec/guards/guard'
 
 class BlockDeviceGuard < SpecGuard
   def match?
-    block = `find /dev /devices -type b 2> /dev/null`
-    !(block.nil? || block.empty?)
+    platform_is_not :freebsd, :windows do
+      block = `find /dev /devices -type b 2> /dev/null`
+      return !(block.nil? || block.empty?)
+    end
+
+    false
   end
 end
 
