@@ -34,6 +34,7 @@ class MSpecRun < MSpecScript
     options.configure { |f| load f }
     options.name
     options.randomize
+    options.repeat
     options.pretend
     options.background
     options.interrupt
