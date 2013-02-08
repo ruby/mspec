@@ -604,6 +604,16 @@ describe "The -t, --target TARGET option" do
     end
   end
 
+  it "sets the target to 'topaz' with TARGET 't' or 'topaz'" do
+    ["-t", "--target"].each do |opt|
+      ["t", "topaz"].each do |t|
+        @config[:target] = nil
+        @options.parse [opt, t]
+        @config[:target].should == "topaz"
+      end
+    end
+  end
+
   it "sets the target to TARGET" do
     ["-t", "--target"].each do |opt|
       @config[:target] = nil
