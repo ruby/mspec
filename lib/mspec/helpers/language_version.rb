@@ -17,9 +17,9 @@ class Object
   def language_version(dir, name)
     dirpath = File.dirname(File.expand_path(dir))
     pattern = File.join dirpath, "versions", "#{name}_*.rb"
-    versions = Dir[pattern].map{|path| path[/([\d.]+).rb\z/, 1] }
+    versions = Dir[pattern].map{|path| path[/([\d.]+).rb\z/, 1] }.sort
     target = SpecGuard.ruby_version(:tiny)
-    versions.each do |version|
+    versions.reverse_each do |version|
       if (version <=> target) < 1
         file = File.join dirpath, "versions", "#{name}_#{version}.rb"
         if File.exists? file
