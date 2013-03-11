@@ -15,13 +15,17 @@ class Object
   # "method_1.8.6.rb" will be loaded if it exists, otherwise "method_1.8.rb"
   # will be loaded if it exists.
   def language_version(dir, name)
-    path = File.dirname(File.expand_path(dir))
-
-    [SpecGuard.ruby_version(:tiny), SpecGuard.ruby_version, SpecGuard.ruby_version(:major)].each do |version|
-      file = File.join path, "versions", "#{name}_#{version}.rb"
-      if File.exists? file
-        require file
-        break
+    dirpath = File.dirname(File.expand_path(dir))
+    pattern = File.join dirpath, "versions", "#{name}_*.rb"
+    versions = Dir[pattern].map{|path| path[/([\d.]+).rb\z/, 1] }
+    target = SpecGuard.ruby_version(:tiny)
+    versions.each do |version|
+      if (version <=> target) < 1
+        file = File.join dirpath, "versions", "#{name}_#{version}.rb"
+        if File.exists? file
+          require file
+          break
+        end
       end
     end
 
