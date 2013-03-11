@@ -17,7 +17,7 @@ class Object
   def language_version(dir, name)
     path = File.dirname(File.expand_path(dir))
 
-    [SpecGuard.ruby_version(:tiny), SpecGuard.ruby_version].each do |version|
+    [SpecGuard.ruby_version(:tiny), SpecGuard.ruby_version, SpecGuard.ruby_version(:major)].each do |version|
       file = File.join path, "versions", "#{name}_#{version}.rb"
       if File.exists? file
         require file
