@@ -209,9 +209,9 @@ class ContextState
                 MSpec.actions :example, state, example
                 protect nil, @expectation_missing unless MSpec.expectation? or not passed
               end
-              protect "after :each", post(:each)
-              protect "Mock.verify_count", @mock_verify
             end
+            protect "after :each", post(:each)
+            protect "Mock.verify_count", @mock_verify
 
             protect "Mock.cleanup", @mock_cleanup
             MSpec.actions :after, state
