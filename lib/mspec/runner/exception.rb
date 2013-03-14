@@ -39,6 +39,6 @@ class ExceptionState
       bt = @exception.backtrace || []
     end
 
-    #bt.select { |line| $MSPEC_DEBUG or @backtrace_filter !~ line }.join("\n")
+    bt.select { |line| $MSPEC_DEBUG or @backtrace_filter !~ line }.join("\n")
   end
 end
