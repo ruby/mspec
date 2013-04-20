@@ -76,7 +76,7 @@ class MSpecRun < MSpecScript
 
     patterns = options.parse argv
     patterns = config[:files] if patterns.empty?
-    patterns = "spec/" if patterns.empty? and File.directory? "./spec"
+    patterns = ["spec/"] if patterns.empty? and File.directory? "./spec"
     if patterns.empty?
       puts options
       puts "No files specified."

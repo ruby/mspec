@@ -126,6 +126,13 @@ describe MSpecRun, "#options" do
     $stdout.should =~ /No files specified/
   end
 
+  it "process 'spec/' if it is a directory and no files were specified" do
+    File.should_receive(:directory?).with("./spec").and_return(true)
+    @options.should_receive(:parse).and_return([])
+    @script.should_receive(:files).with(["spec/"])
+    @script.options
+  end
+
   it "calls #custom_options" do
     @script.should_receive(:custom_options).with(@options)
     @script.options @argv
