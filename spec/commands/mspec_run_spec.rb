@@ -118,7 +118,8 @@ describe MSpecRun, "#options" do
     @script.options @argv
   end
 
-  it "exits if there are no files to process" do
+  it "exits if there are no files to process and './spec' is not a directory" do
+    File.should_receive(:directory?).with("./spec").and_return(false)
     @options.should_receive(:parse).and_return([])
     @script.should_receive(:exit)
     @script.options
