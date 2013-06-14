@@ -30,9 +30,11 @@ end
 class Object
   def ruby_version_is(*args)
     g = VersionGuard.new(*args)
-    g.name = :ruby_version_is
-    yield if g.yield?
-  ensure
-    g.unregister
+    begin
+      g.name = :ruby_version_is
+      yield if g.yield?
+    ensure
+      g.unregister
+    end
   end
 end
