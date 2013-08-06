@@ -7,8 +7,8 @@ class VersionGuard < SpecGuard
     when String
       @version = SpecVersion.new version
     when Range
-      a = SpecVersion.new version.first
-      b = SpecVersion.new version.last
+      a = SpecVersion.new version.begin
+      b = SpecVersion.new version.end
       @version = version.exclude_end? ? a...b : a..b
     end
     self.parameters = [version]
