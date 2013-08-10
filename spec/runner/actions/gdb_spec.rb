@@ -5,11 +5,11 @@ require 'mspec/runner/example'
 
 describe GdbAction do
   before :each do
-    MSpec.stub(:read_tags).and_return([])
+    MSpec.stub!(:read_tags).and_return([])
   end
 
   it "creates an MatchFilter with its tag and desc arguments" do
-    filter = double('action filter').as_null_object
+    filter = mock('action filter').as_null_object
     MatchFilter.should_receive(:new).with(nil, "some", "thing").and_return(filter)
     GdbAction.new ["tag", "key"], ["some", "thing"]
   end
@@ -17,7 +17,7 @@ end
 
 describe GdbAction, "#before" do
   before :each do
-    MSpec.stub(:read_tags).and_return([])
+    MSpec.stub!(:read_tags).and_return([])
     @state = ExampleState.new ContextState.new("Catch#me"), "if you can"
   end
 
@@ -36,8 +36,8 @@ end
 
 describe GdbAction, "#register" do
   before :each do
-    MSpec.stub(:read_tags).and_return([])
-    MSpec.stub(:register)
+    MSpec.stub!(:read_tags).and_return([])
+    MSpec.stub!(:register)
     @action = GdbAction.new nil, nil
   end
 
@@ -49,8 +49,8 @@ end
 
 describe GdbAction, "#unregister" do
   before :each do
-    MSpec.stub(:read_tags).and_return([])
-    MSpec.stub(:unregister)
+    MSpec.stub!(:read_tags).and_return([])
+    MSpec.stub!(:unregister)
     @action = GdbAction.new nil, nil
   end
 

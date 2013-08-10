@@ -340,7 +340,7 @@ describe MockProxy, "#raising" do
   end
 
   it "returns the exception object passed to #and_raise" do
-    exc = double("exception")
+    exc = mock("exception")
     @proxy.and_raise(exc)
     @proxy.raising.should equal(exc)
   end

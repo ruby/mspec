@@ -18,7 +18,7 @@ describe HaveSingletonMethodMatcher do
   end
 
   it "matches when the object has a singleton method" do
-    obj = double("HSMMSpecs")
+    obj = mock("HSMMSpecs")
     def obj.singleton_method; end
 
     matcher = HaveSingletonMethodMatcher.new :singleton_method

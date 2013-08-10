@@ -106,7 +106,7 @@ describe "#resolve_ruby_exe" do
   end
 
   it "returns the value returned by #ruby_exe_options if it exists and is executable" do
-    PlatformGuard.stub(:windows?).and_return(false)
+    PlatformGuard.stub!(:windows?).and_return(false)
     @script.should_receive(:ruby_exe_options).and_return(@name)
     File.should_receive(:exists?).with(@name).and_return(true)
     File.should_receive(:executable?).with(@name).and_return(true)
@@ -115,7 +115,7 @@ describe "#resolve_ruby_exe" do
   end
 
   it "returns the value returned by #ruby_exe_options if it exists on Windows platforms" do
-    PlatformGuard.stub(:windows?).and_return(true)
+    PlatformGuard.stub!(:windows?).and_return(true)
     @script.should_receive(:ruby_exe_options).and_return(@name)
     File.should_receive(:exists?).with(@name).and_return(true)
     File.should_not_receive(:executable?)
@@ -124,7 +124,7 @@ describe "#resolve_ruby_exe" do
   end
 
   it "expands the path portion of the result of #ruby_exe_options" do
-    PlatformGuard.stub(:windows?).and_return(false)
+    PlatformGuard.stub!(:windows?).and_return(false)
     @script.should_receive(:ruby_exe_options).and_return("#{@name} -Xfoo")
     File.should_receive(:exists?).with(@name).and_return(true)
     File.should_receive(:executable?).with(@name).and_return(true)
@@ -195,7 +195,7 @@ describe Object, "#ruby_exe" do
   end
 
   before :each do
-    @script.stub(:`)
+    @script.stub!(:`)
   end
 
   it "executes (using `) the result of calling #ruby_cmd with the given arguments" do
