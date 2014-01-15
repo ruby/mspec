@@ -22,7 +22,7 @@ class Object
     versions.reverse_each do |version|
       if (version <=> target) < 1
         file = File.join dirpath, "versions", "#{name}_#{version}.rb"
-        if File.exists? file
+        if File.exist? file
           require file
           break
         end
