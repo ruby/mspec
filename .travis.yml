@@ -7,14 +7,12 @@ rvm:
   - 1.8.7
   - 1.9.3
   - 2.0.0
+  - 2.1.0
   - ruby-head
-  - rbx-18mode
-  - rbx-19mode
-  - jruby-18mode
-  - jruby-19mode
+  - rbx-2
+  - jruby-head
 allow_failures:
-  - rvm: jruby-18mode
-  - rvm: jruby-19mode
+  - rvm: jruby-head
 notifications:
   recipients:
     - brixen@gmail.com
