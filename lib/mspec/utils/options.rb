@@ -81,7 +81,7 @@ class MSpecOptions
   # instance to the list of registered options.
   def add(short, long, arg, description, block)
     s = short ? short.dup : "  "
-    s << (short ? ", " : "  ") if long
+    s += (short ? ", " : "  ") if long
     doc "   #{s}#{long} #{arg}".ljust(@width-1) + " #{description}"
     @options << MSpecOption.new(short, long, arg, description, block)
   end
