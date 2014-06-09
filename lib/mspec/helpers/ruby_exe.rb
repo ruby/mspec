@@ -128,7 +128,9 @@ class Object
       end
 
       begin
-        `#{ruby_cmd(code, opts)}`
+        platform_is_not :opal do
+          `#{ruby_cmd(code, opts)}`
+        end
       ensure
         saved_env.each { |key, value| ENV[key] = value }
         env.keys.each do |key|
