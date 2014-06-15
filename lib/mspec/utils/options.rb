@@ -231,6 +231,8 @@ class MSpecOptions
         config[:target] = 'maglev-ruby'
       when 't','topaz'
         config[:target] = 'topaz'
+      when 'o','opal'
+        config[:target] = './bin/opal -syaml -siconv -sfileutils -rfile -rnodejs -rnodejs/yaml -rprocess -Dwarning -I/Users/elia/Code/mspec/lib/ -I./lib/ -I. -rmspec/opal/mspec_fixes.rb'
       else
         config[:target] = t
       end
@@ -248,6 +250,7 @@ class MSpecOptions
     doc "     i or ironruby     invokes ir in PATH"
     doc "     m or maglev       invokes maglev-ruby in PATH"
     doc "     t or topaz        invokes topaz in PATH"
+    doc "     o or opal         invokes ./bin/opal with options"
     doc "     full path to EXE  invokes EXE directly\n"
 
     on("-T", "--target-opt", "OPT",
