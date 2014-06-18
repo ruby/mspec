@@ -232,7 +232,8 @@ class MSpecOptions
       when 't','topaz'
         config[:target] = 'topaz'
       when 'o','opal'
-        config[:target] = './bin/opal -syaml -siconv -sfileutils -rfile -rnodejs -rnodejs/yaml -rprocess -Dwarning -I/Users/elia/Code/mspec/lib/ -I./lib/ -I. -rmspec/opal/mspec_fixes.rb'
+        mspec_lib = File.expand_path('../../../', __FILE__)
+        config[:target] = "bundle exec ./bin/opal -syaml -siconv -sfileutils -rfile -rnodejs -rnodejs/require -rnodejs/yaml -rprocess -Derror -I#{mspec_lib} -I./lib/ -I. "
       else
         config[:target] = t
       end
