@@ -231,6 +231,9 @@ class MSpecOptions
         config[:target] = 'maglev-ruby'
       when 't','topaz'
         config[:target] = 'topaz'
+      when 'o','opal'
+        mspec_lib = File.expand_path('../../../', __FILE__)
+        config[:target] = "./bin/opal -syaml -siconv -sfileutils -rnodejs -rnodejs/require -rnodejs/yaml -rprocess -Derror -I#{mspec_lib} -I./lib/ -I. "
       else
         config[:target] = t
       end
@@ -247,7 +250,8 @@ class MSpecOptions
     doc "     j or jruby        invokes jruby in PATH"
     doc "     i or ironruby     invokes ir in PATH"
     doc "     m or maglev       invokes maglev-ruby in PATH"
-    doc "     t or topaz       invokes topaz in PATH"
+    doc "     t or topaz        invokes topaz in PATH"
+    doc "     o or opal         invokes ./bin/opal with options"
     doc "     full path to EXE  invokes EXE directly\n"
 
     on("-T", "--target-opt", "OPT",
