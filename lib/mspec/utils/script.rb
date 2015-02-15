@@ -106,7 +106,7 @@ class MSpecScript
   # Registers all filters and actions.
   def register
     if config[:formatter].nil?
-      config[:formatter] = @files.size < 50 ? DottedFormatter : FileFormatter
+      config[:formatter] = STDOUT.tty? ? SpinnerFormatter : @files.size < 50 ? DottedFormatter : FileFormatter
     end
 
     if config[:formatter]
