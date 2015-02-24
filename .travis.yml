@@ -12,6 +12,7 @@ rvm:
 allow_failures:
   - rvm: jruby-head
   - rvm: rbx-2
+  - rvm: ruby-head
 notifications:
   recipients:
     - brixen@gmail.com
