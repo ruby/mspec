@@ -468,10 +468,6 @@ class MSpecOptions
        "Invoke the debugger when a spec description matches (see -K, -S)") do
       config[:debugger] = true
     end
-    on("--spec-gdb",
-       "Invoke Gdb when a spec description matches (see -K, -S)") do
-      config[:gdb] = true
-    end
   end
 
   def debug

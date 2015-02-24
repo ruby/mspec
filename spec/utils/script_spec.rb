@@ -3,7 +3,6 @@ require 'mspec/utils/script'
 require 'mspec/runner/mspec'
 require 'mspec/runner/filters'
 require 'mspec/runner/actions/filter'
-require 'mspec/runner/actions/gdb'
 
 describe MSpecScript, ".config" do
   it "returns a Hash" do
@@ -303,14 +302,6 @@ describe MSpecScript, "#register" do
   it "creates and registers a ProfileFilter for excluded specs" do
     ProfileFilter.should_receive(:new).with(:exclude, *@ary).and_return(@filter)
     @script.config[:xprofiles] = @ary
-    @script.register
-  end
-
-  it "creates and registers a GdbAction for excluded specs" do
-    @script.config[:atags] = ["some"]
-    @script.config[:astrings] = ["string"]
-    GdbAction.should_receive(:new).with(["some"], ["string"]).and_return(@filter)
-    @script.config[:gdb] = true
     @script.register
   end
 end

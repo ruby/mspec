@@ -264,29 +264,6 @@ describe MSpecMain, "#run" do
   end
 end
 
-describe "The -D, --gdb option" do
-  before :each do
-    @options, @config = new_option
-    MSpecOptions.stub(:new).and_return(@options)
-    @script = MSpecMain.new
-    @script.stub(:config).and_return(@config)
-  end
-
-  it "is enabled by #options" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-D", "--gdb", an_instance_of(String))
-    @script.options
-  end
-
-  it "sets use_gdb to true" do
-    ["-D", "--gdb"].each do |opt|
-      @config[:use_gdb] = false
-      @script.options [opt]
-      @config[:use_gdb].should be_true
-    end
-  end
-end
-
 describe "The -A, --valgrind option" do
   before :each do
     @options, @config = new_option

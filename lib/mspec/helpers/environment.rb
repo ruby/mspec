@@ -2,21 +2,13 @@ require 'mspec/guards/guard'
 
 class Object
   def env
-    env = nil
-
-    platform_is_not :opal, :windows do
-      env = Hash[*`env`.split("\n").map { |e| e.split("=", 2) }.flatten]
+    if PlatformGuard.windows?
+      Hash[*`cmd.exe /C set`.split("\n").map { |e| e.split("=", 2) }.flatten]
+    elsif PlatformGuard.opal?
+      {}
+    else
+      Hash[*`env`.split("\n").map { |e| e.split("=", 2) }.flatten]
     end
-
-    platform_is :windows do
-      env = Hash[*`cmd.exe /C set`.split("\n").map { |e| e.split("=", 2) }.flatten]
-    end
-
-    platform_is :opal do
-      env = {}
-    end
-
-    env
   end
 
   def windows_env_echo(var)
@@ -26,17 +18,13 @@ class Object
   end
 
   def username
-    user = ""
-
-    platform_is :windows do
-      user = windows_env_echo('USERNAME')
+    if PlatformGuard.windows?
+      windows_env_echo('USERNAME')
+    elsif PlatformGuard.opal?
+      ""
+    else
+      `whoami`.strip
     end
-
-    platform_is_not :opal do
-      user = `whoami`.strip
-    end
-
-    user
   end
 
   def home_directory

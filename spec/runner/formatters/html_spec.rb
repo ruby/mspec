@@ -33,7 +33,7 @@ describe HtmlFormatter, "#start" do
   it "prints the HTML head" do
     @formatter.start
     ruby_name = RUBY_NAME
-    ruby_name.should =~ /^ruby/
+    ruby_name.should =~ /^#{ruby_name}/
     @out.should ==
 %[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
     "http://www.w3.org/TR/html4/strict.dtd">

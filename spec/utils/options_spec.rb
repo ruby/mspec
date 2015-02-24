@@ -1309,28 +1309,6 @@ describe "The -S, --action-string STR option" do
   end
 end
 
-describe "The --spec-gdb option" do
-  before :each do
-    @options, @config = new_option
-    @options.actions
-  end
-
-  it "is enabled with #actions" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("--spec-gdb", an_instance_of(String))
-    @options.actions
-  end
-
-  it "enables triggering the gdb debugger" do
-    @options.action_filters
-    @options.parse ["-S", "some spec"]
-
-    @config[:gdb] = nil
-    @options.parse "--spec-gdb"
-    @config[:gdb].should == true
-  end
-end
-
 describe "The -d, --debug option" do
   before :each do
     @options, @config = new_option

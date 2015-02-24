@@ -9,6 +9,7 @@ describe "#env" do
 
   it "calls `env` on non-Windows" do
     PlatformGuard.stub(:windows?).and_return(false)
+    PlatformGuard.stub(:opal?).and_return(false)
     should_receive(:`).with("env").and_return("one=two\nthree=four")
     env
   end
@@ -19,11 +20,14 @@ describe "#env" do
     env
   end
 
-  it "returns the current user's environment variables" do
+  it "returns the current user's environment variables on non-Windows, non-Opal platforms" do
     PlatformGuard.stub(:windows?).and_return(false)
+    PlatformGuard.stub(:opal?).and_return(false)
     should_receive(:`).with("env").and_return("one=two\nthree=four")
     env.should == {"one" => "two", "three" => "four"}
+  end
 
+  it "returns the current user's environment variables on Windows" do
     PlatformGuard.stub(:windows?).and_return(true)
     should_receive(:`).with("cmd.exe /C set").and_return("five=six\nseven=eight")
     env.should == {"five" => "six", "seven" => "eight"}
@@ -47,16 +51,20 @@ describe "#username" do
 
   it "calls `env` on non-Windows" do
     PlatformGuard.stub(:windows?).and_return(false)
+    PlatformGuard.stub(:opal?).and_return(false)
     should_receive(:`).with("whoami").and_return("john")
     username
   end
 
-  it "returns the user's username" do
+  it "returns the user's username on Windows" do
     PlatformGuard.stub(:windows?).and_return(true)
     should_receive(:`).with("cmd.exe /C ECHO %USERNAME%").and_return("johnonwin")
     username.should == "johnonwin"
+  end
 
+  it "returns the user's username on non-Windows, non-Opal platforms" do
     PlatformGuard.stub(:windows?).and_return(false)
+    PlatformGuard.stub(:opal?).and_return(false)
     should_receive(:`).with("whoami").and_return("john")
     username.should == "john"
   end
