@@ -297,9 +297,13 @@ class MSpecOptions
       when 'j', 'junit'
         config[:formatter] = JUnitFormatter
       else
-        puts "Unknown format: #{o}"
-        puts @parser
-        exit
+        abort "Unknown format: #{o}\n#{@parser}" unless File.exist?(o)
+        require File.expand_path(o)
+        if defined?(CUSTOM_MSPEC_FORMATTER)
+          config[:formatter] = CUSTOM_MSPEC_FORMATTER
+        else
+          abort "You must define CUSTOM_MSPEC_FORMATTER in your custom formatter file"
+        end
       end
     end
 
