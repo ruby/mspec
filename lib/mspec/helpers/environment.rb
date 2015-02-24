@@ -2,6 +2,8 @@ require 'mspec/guards/guard'
 
 class Object
   def env
+    env = nil
+
     platform_is_not :opal, :windows do
       env = Hash[*`env`.split("\n").map { |e| e.split("=", 2) }.flatten]
     end
