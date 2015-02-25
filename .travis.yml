@@ -9,10 +9,12 @@ rvm:
   - ruby-head
   - rbx-2
   - jruby-head
-allow_failures:
-  - rvm: jruby-head
-  - rvm: rbx-2
-  - rvm: ruby-head
+matrix:
+  allow_failures:
+    - rvm: jruby-head
+    - rvm: rbx-2
+    - rvm: ruby-head
 notifications:
-  recipients:
-    - brixen@gmail.com
+  email:
+    recipients:
+      - brixen@gmail.com
