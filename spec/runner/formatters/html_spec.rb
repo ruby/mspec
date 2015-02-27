@@ -194,7 +194,7 @@ describe HtmlFormatter, "#finish" do
     exc = ExceptionState.new @state, nil, @exception
     exc.stub!(:backtrace).and_return("path/to/some/file.rb:35:in method")
     @formatter.exception exc
-    
+
     @timer.should_receive(:format).and_return("Finished in 2.0 seconds")
     @tally.should_receive(:format).and_return("1 example, 1 failures")
     @formatter.finish
