@@ -106,10 +106,7 @@ class Object
       next unless cmd = ruby_exe_options(option)
       exe, *rest = cmd.split(" ")
 
-      # It has been reported that File.executable is not reliable
-      # on Windows platforms (see commit 56bc555c). So, we check the
-      # platform.
-      if File.exist?(exe) and (PlatformGuard.windows? or File.executable?(exe))
+      if File.file?(exe) and File.executable?(exe)
         return [File.expand_path(exe), *rest].join(" ")
       end
     end
