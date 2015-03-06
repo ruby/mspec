@@ -106,27 +106,16 @@ describe "#resolve_ruby_exe" do
   end
 
   it "returns the value returned by #ruby_exe_options if it exists and is executable" do
-    PlatformGuard.stub!(:windows?).and_return(false)
     @script.should_receive(:ruby_exe_options).and_return(@name)
-    File.should_receive(:exist?).with(@name).and_return(true)
+    File.should_receive(:file?).with(@name).and_return(true)
     File.should_receive(:executable?).with(@name).and_return(true)
     File.should_receive(:expand_path).with(@name).and_return(@name)
     @script.resolve_ruby_exe.should == @name
   end
 
-  it "returns the value returned by #ruby_exe_options if it exists on Windows platforms" do
-    PlatformGuard.stub!(:windows?).and_return(true)
-    @script.should_receive(:ruby_exe_options).and_return(@name)
-    File.should_receive(:exist?).with(@name).and_return(true)
-    File.should_not_receive(:executable?)
-    File.should_receive(:expand_path).with(@name).and_return(@name)
-    @script.resolve_ruby_exe.should == @name
-  end
-
   it "expands the path portion of the result of #ruby_exe_options" do
-    PlatformGuard.stub!(:windows?).and_return(false)
     @script.should_receive(:ruby_exe_options).and_return("#{@name} -Xfoo")
-    File.should_receive(:exist?).with(@name).and_return(true)
+    File.should_receive(:file?).with(@name).and_return(true)
     File.should_receive(:executable?).with(@name).and_return(true)
     File.should_receive(:expand_path).with(@name).and_return("/usr/bin/#{@name}")
     @script.resolve_ruby_exe.should == "/usr/bin/#{@name} -Xfoo"
