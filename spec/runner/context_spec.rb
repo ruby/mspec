@@ -736,11 +736,11 @@ describe ContextState, "#process when an exception is raised in before(:each)" d
     ScratchPad.recorded.should == []
   end
 
-  it "does not call after(:each)" do
+  it "does call after(:each)" do
     @state.after(:each, &@a)
     @state.it("") { }
     @state.process
-    ScratchPad.recorded.should == []
+    ScratchPad.recorded.should == [:a]
   end
 
   it "does not call Mock.verify_count" do

@@ -122,7 +122,7 @@ describe "#resolve_ruby_exe" do
   end
 
   it "returns nil if no exe is found" do
-    File.should_receive(:exist?).at_least(:once).and_return(false)
+    File.should_receive(:file?).at_least(:once).and_return(false)
     @script.resolve_ruby_exe.should be_nil
   end
 end
