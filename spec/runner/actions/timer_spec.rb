@@ -6,8 +6,8 @@ require 'time'
 describe TimerAction do
   before :each do
     @timer = TimerAction.new
-    @start_time = Time.new(2009, 3, 30, 14, 5, 19, '-07:00')
-    @stop_time  = Time.new(2009, 3, 30, 14, 5, 52, '-07:00')
+    @start_time = Time.utc(2009, 3, 30, 14, 5, 19)
+    @stop_time  = Time.utc(2009, 3, 30, 14, 5, 52)
   end
 
   it "responds to #start by recording the current time" do
