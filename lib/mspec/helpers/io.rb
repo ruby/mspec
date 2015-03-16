@@ -53,7 +53,12 @@ class IOStub
     flush
     @output
   end
-  alias to_str to_s
+
+  alias_method :to_str, :to_s
+
+  def inspect
+    to_s.inspect
+  end
 end
 
 class Object

@@ -161,11 +161,6 @@ describe Object, "#ruby_cmd" do
       "ruby_spec_exe -w -Q -w -Cdir some/ruby/file.rb < file.txt"
   end
 
-  it "returns a command that runs code using -e" do
-    File.should_receive(:exist?).with(@code).and_return(false)
-    @script.ruby_cmd(@code).should == %(ruby_spec_exe -w -Q -e "some \\"real\\" 'ruby' code")
-  end
-
   it "includes the given options and arguments with -e" do
     File.should_receive(:exist?).with(@code).and_return(false)
     @script.ruby_cmd(@code, :options => "-W0 -Cdir", :args => "< file.txt").should ==
@@ -184,7 +179,7 @@ describe Object, "#ruby_exe" do
   end
 
   before :each do
-    @script.stub!(:`)
+    @script.stub(:`)
   end
 
   it "executes (using `) the result of calling #ruby_cmd with the given arguments" do
@@ -205,6 +200,7 @@ describe Object, "#ruby_exe" do
   describe "with :env option" do
     it "preserves the values of existing ENV keys" do
       ENV["ABC"] = "123"
+      ENV.stub(:[])
       ENV.should_receive(:[]).with("RUBY_FLAGS")
       ENV.should_receive(:[]).with("ABC")
       @script.ruby_exe nil, :env => { :ABC => "xyz" }
