@@ -14,7 +14,7 @@ describe "The -c, --constant CONSTANT option" do
     @options.stub(:on)
     @options.should_receive(:on).with("-c", "--constant", "CONSTANT",
       an_instance_of(String))
-    @script.options
+    @script.options []
   end
 
   it "adds CONSTANT to the list of constants" do
