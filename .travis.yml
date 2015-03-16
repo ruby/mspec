@@ -11,9 +11,10 @@ rvm:
   - 2.2.1
   - ruby-head
   - rbx-2
+  - jruby-1.7
   - jruby-head
 matrix:
   allow_failures:
-    - rvm: jruby-head
     - rvm: rbx-2
-    - rvm: ruby-head
+    - rvm: jruby-1.7
+    - rvm: jruby-head
