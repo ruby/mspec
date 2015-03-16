@@ -46,7 +46,7 @@ gem install bundler
 To install the gem dependencies with Bundler, run the following:
 
 ```bash
-RUBYLIB=lib ruby -S bundle install
+ruby -S bundle install
 ```
 
 ## Running Specs
@@ -57,7 +57,7 @@ MSpec specs runnable by MSpec.
 After installing the gem dependencies, the specs can be run as follows:
 
 ```bash
-ruby -S rspec
+ruby -S bundle exec rspec
 ```
 
 Or
@@ -69,7 +69,7 @@ ruby -S rake
 To run an individual spec file, use the following example:
 
 ```bash
-ruby -S rspec spec/helpers/ruby_exe_spec.rb
+ruby -S bundle exec rspec spec/helpers/ruby_exe_spec.rb
 ```
 
 
