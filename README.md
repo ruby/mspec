@@ -1,4 +1,4 @@
-1. Overview
+## Overview
 
 MSpec is a specialized framework that is syntax-compatible with RSpec for
 basic things like 'describe', 'it' blocks and 'before', 'after' actions. MSpec
@@ -32,46 +32,55 @@ specs in a manner compatible with multiple Ruby implementations.
      overrides.
 
 
-2. Bundler
+## Bundler
 
 A Gemfile is provided. Use Bundler to install gem dependencies. To install
 Bundler, run the following:
 
-  $ gem install bundler
+```bash
+gem install bundler
+```
 
 To install the gem dependencies with Bundler, run the following:
 
-  $ RUBYLIB=lib ruby -S bundle install
+```bash
+RUBYLIB=lib ruby -S bundle install
+```
 
-
-3. Running Specs
+## Running Specs
 
 Use RSpec to run the MSpec specs. There are no plans currently to make the
 MSpec specs runnable by MSpec.
 
 After installing the gem dependencies, the specs can be run as follows:
 
-  $ ruby -S rspec
+```bash
+ruby -S rspec
+```
 
 Or
 
-  $ ruby -S rake
+```bash
+ruby -S rake
+```
 
 To run an individual spec file, use the following example:
 
-  $ ruby -S rspec spec/helpers/ruby_exe_spec.rb
+```bash
+ruby -S rspec spec/helpers/ruby_exe_spec.rb
+```
 
 
-4. Documentation
+## Documentation
 
 See http://rubyspec.org
 
 
-5. Source Code
+## Source Code
 
 See https://github.com/rubyspec/mspec
 
 
-6. License
+## License
 
 See the LICENSE in the source code.
