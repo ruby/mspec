@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ruby/mspec.svg?branch=master)](https://travis-ci.org/ruby/mspec)
+
 ## Overview
 
 MSpec is a specialized framework that is syntax-compatible with RSpec for
