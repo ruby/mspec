@@ -166,8 +166,7 @@ class MSpecScript
   # If unable to resolve +partial+, returns <tt>Dir[partial]</tt>.
   def entries(partial)
     file = partial + "_spec.rb"
-    patterns = [partial]
-    patterns << file
+    patterns = [partial, file]
     if config[:prefix]
       patterns << File.join(config[:prefix], partial)
       patterns << File.join(config[:prefix], file)
@@ -175,11 +174,11 @@ class MSpecScript
 
     patterns.each do |pattern|
       expanded = File.expand_path(pattern)
-      return [expanded] if File.file?(expanded)
-
-      specs = File.join(pattern, "/**/*_spec.rb")
-      specs = File.expand_path(specs) rescue specs
-      return Dir[specs].sort if File.directory?(expanded)
+      if File.file?(expanded)
+        return [expanded]
+      elsif File.directory?(expanded)
+        return Dir["#{expanded}/**/*_spec.rb"].sort
+      end
     end
 
     Dir[partial]
