@@ -62,7 +62,7 @@ class MSpecScript
   # Returns +true+ if the file was located in +config[:path]+,
   # possibly appending +config[:config_ext]. Returns +false+
   # otherwise.
-  def load(target)
+  def try_load(target)
     names = [target]
     unless target[-6..-1] == config[:config_ext]
       names << target + config[:config_ext]
@@ -80,20 +80,24 @@ class MSpecScript
     false
   end
 
+  def load(target)
+    try_load(target) or abort "Could not load config file #{target}"
+  end
+
   # Attempts to load a default config file. First tries to load
   # 'default.mspec'. If that fails, attempts to load a config
   # file name constructed from the value of RUBY_ENGINE and the
   # first two numbers in RUBY_VERSION. For example, on MRI 1.8.6,
   # the file name would be 'ruby.1.8.mspec'.
   def load_default
-    load 'default.mspec'
+    try_load 'default.mspec'
 
     if Object.const_defined?(:RUBY_ENGINE)
       engine = RUBY_ENGINE
     else
       engine = 'ruby'
     end
-    load "#{engine}.#{SpecGuard.ruby_version}.mspec"
+    try_load "#{engine}.#{SpecGuard.ruby_version}.mspec"
   end
 
   # Callback for enabling custom options. This version is a no-op.
@@ -210,7 +214,7 @@ class MSpecScript
     $VERBOSE = nil unless ENV['OUTPUT_WARNINGS']
     script = new
     script.load_default
-    script.load '~/.mspecrc'
+    script.try_load '~/.mspecrc'
     script.options
     script.signals
     script.register

@@ -62,8 +62,8 @@ describe MSpecScript, "#load_default" do
   end
 
   it "attempts to load 'default.mspec'" do
-    @script.stub(:load)
-    @script.should_receive(:load).with('default.mspec').and_return(true)
+    @script.stub(:try_load)
+    @script.should_receive(:try_load).with('default.mspec').and_return(true)
     @script.load_default
   end
 
@@ -71,8 +71,8 @@ describe MSpecScript, "#load_default" do
     Object.const_set :RUBY_ENGINE, "ybur"
     Object.const_set :RUBY_VERSION, "1.8.9"
     default = "ybur.1.8.mspec"
-    @script.should_receive(:load).with('default.mspec').and_return(false)
-    @script.should_receive(:load).with(default)
+    @script.should_receive(:try_load).with('default.mspec').and_return(false)
+    @script.should_receive(:try_load).with(default)
     @script.load_default
   end
 end
@@ -94,7 +94,7 @@ describe MSpecScript, ".main" do
   end
 
   it "attempts to load the '~/.mspecrc' script" do
-    @script.should_receive(:load).with('~/.mspecrc')
+    @script.should_receive(:try_load).with('~/.mspecrc')
     MSpecScript.main
   end
 
