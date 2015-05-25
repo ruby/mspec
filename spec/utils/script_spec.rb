@@ -351,9 +351,9 @@ describe MSpecScript, "#entries" do
     @script.entries("name").should == ["dir1", "dir2"]
   end
 
-  it "returns Dir[pattern] if pattern is neither a file nor a directory" do
-    Dir.should_receive(:[]).with("pattern").and_return(["file1", "file2"])
-    @script.entries("pattern").should == ["file1", "file2"]
+  it "aborts if pattern cannot be resolved to a file nor a directory" do
+    @script.should_receive(:abort)
+    @script.entries("pattern")
   end
 
   describe "with config[:prefix] set" do
@@ -376,9 +376,9 @@ describe MSpecScript, "#entries" do
       @script.entries("name").should == ["dir1", "dir2"]
     end
 
-    it "returns Dir[pattern] if pattern is neither a file nor a directory" do
-      Dir.should_receive(:[]).with("pattern").and_return(["file1", "file2"])
-      @script.entries("pattern").should == ["file1", "file2"]
+    it "aborts if pattern cannot be resolved to a file nor a directory" do
+      @script.should_receive(:abort)
+      @script.entries("pattern")
     end
   end
 end

@@ -163,7 +163,7 @@ class MSpecScript
   # If it is a directory, returns all *_spec.rb files in the
   # directory and subdirectories.
   #
-  # If unable to resolve +partial+, returns <tt>Dir[partial]</tt>.
+  # If unable to resolve +partial+, +Kernel.abort+ is called.
   def entries(partial)
     file = partial + "_spec.rb"
     patterns = [partial, file]
@@ -181,7 +181,7 @@ class MSpecScript
       end
     end
 
-    Dir[partial]
+    abort "Could not find spec file #{partial}"
   end
 
   # Resolves each entry in +list+ to a set of files.
