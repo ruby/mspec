@@ -9,10 +9,7 @@ class SpinnerFormatter < DottedFormatter
   MIN = 60
 
   def initialize(out=nil)
-    @exception = @failure = false
-    @exceptions = []
-    @count = 0
-    @out = $stdout
+    super(nil)
 
     @which = 0
     @loaded = 0

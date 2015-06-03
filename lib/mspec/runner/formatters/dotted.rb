@@ -8,7 +8,7 @@ class DottedFormatter
   def initialize(out=nil)
     @exception = @failure = false
     @exceptions = []
-    @count = 0
+    @count = 0 # For subclasses
     if out.nil?
       @out = $stdout
     else
