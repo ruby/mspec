@@ -35,7 +35,7 @@ class DottedFormatter
 
   def abort
     if @current_state
-      puts " aborting example: #{@current_state.description}"
+      puts "\naborting example: #{@current_state.description}"
     end
   end
 
