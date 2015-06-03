@@ -94,12 +94,17 @@ class DottedFormatter
     print "\n"
     count = 0
     @exceptions.each do |exc|
-      outcome = exc.failure? ? "FAILED" : "ERROR"
-      print "\n#{count += 1})\n#{exc.description} #{outcome}\n"
-      print exc.message, "\n"
-      print exc.backtrace, "\n"
+      count += 1
+      print_exception(exc, count)
     end
     print "\n#{@timer.format}\n\n#{@tally.format}\n"
+  end
+
+  def print_exception(exc, count)
+    outcome = exc.failure? ? "FAILED" : "ERROR"
+    print "\n#{count})\n#{exc.description} #{outcome}\n"
+    print exc.message, "\n"
+    print exc.backtrace, "\n"
   end
 
   # A convenience method to allow printing to different outputs.
