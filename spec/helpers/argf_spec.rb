@@ -23,6 +23,12 @@ describe Object, "#argf" do
     ARGF.argv.should == @saved_argv
   end
 
+  it "does not close STDIN" do
+    argf ['-'] do
+    end
+    STDIN.should_not be_closed
+  end
+
   it "disallows nested calls" do
     argf @argv do
       lambda { argf @argv }.should raise_error

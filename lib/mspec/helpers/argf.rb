@@ -27,8 +27,8 @@ class Object
     ensure
       file1 = @__mspec_saved_argf_file__
       file2 = @argf.file # Either the first file or the second
-      file1.close unless file1.closed?
-      file2.close unless file2.closed?
+      file1.close if !file1.closed? and file1 != STDIN
+      file2.close if !file2.closed? and file2 != STDIN
       @argf = nil
       @__mspec_saved_argf_file__ = nil
       @__mspec_saved_argf_caller__ = nil
