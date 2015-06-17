@@ -16,6 +16,11 @@ class Object
     path = File.dirname(dir)
     path = path[0..-7] if path[-7..-1] == "/shared"
     dir = path[-9..-1] == "/fixtures" ? "" : "fixtures"
-    File.expand_path(File.join(path, dir, args))
+    if File.respond_to?(:realpath)
+      path = File.realpath(path)
+    else
+      path = File.expand_path(path)
+    end
+    File.join(path, dir, args)
   end
 end
