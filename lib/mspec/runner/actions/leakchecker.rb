@@ -283,12 +283,7 @@ class LeakCheckerAction
     @checker = LeakChecker.new
   end
 
-  def before(state)
-    GC.disable
-  end
-
   def after(state)
-    GC.enable
     unless @checker.check(state.description)
       if state.example
         puts state.example.source_location.join(':')
