@@ -275,7 +275,6 @@ end
 class LeakCheckerAction
   def register
     MSpec.register :start, self
-    MSpec.register :before, self
     MSpec.register :after, self
   end
 
