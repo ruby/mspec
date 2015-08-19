@@ -18,7 +18,7 @@ class Object
   # values.
   guard = SpecGuard.new
 
-  if guard.standard? or guard.implementation? :topaz 
+  if guard.standard? or guard.implementation? :topaz
     if guard.wordsize? 32
       def fixnum_max()
         (2**30) - 1
@@ -38,11 +38,11 @@ class Object
     end
   elsif guard.implementation? :opal
     def fixnum_max()
-      9007199254740991
+      Integer::MAX
     end
 
     def fixnum_min()
-      -9007199254740991
+      Integer::MIN
     end
   elsif guard.implementation? :rubinius
     def fixnum_max()
