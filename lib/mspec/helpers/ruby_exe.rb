@@ -149,7 +149,7 @@ class Object
           heredoc_separator << heredoc_separator
         end
 
-        body = %Q!-e "$(cat <<'#{heredoc_separator}'\n#{code}\n#{heredoc_separator}\n)"!
+        body = %Q!-e "`cat <<'#{heredoc_separator}'\n#{code}\n#{heredoc_separator}\n`"!
       else
         body = "-e #{code.inspect}"
       end
