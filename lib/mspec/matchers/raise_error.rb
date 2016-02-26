@@ -1,3 +1,5 @@
+require 'mspec/utils/deprecate'
+
 class RaiseErrorMatcher
   def initialize(exception, message, &block)
     @exception = exception
@@ -62,5 +64,8 @@ end
 RaiseExceptionMatcher = RaiseErrorMatcher
 
 class Object
-  alias_method :raise_exception, :raise_error
+  def raise_exception(exception=Exception, message=nil, &block)
+    MSpec.deprecate "raise_exception", "raise_error"
+    raise_error(exception, message, &block)
+  end
 end
