@@ -87,7 +87,7 @@ describe RaiseErrorMatcher do
     matcher = RaiseErrorMatcher.new(ExpectedException, "expected")
     matcher.matches?(proc)
     matcher.negative_failure_message.should ==
-      ["Expected to not get ExpectedException (expected)", ""]
+      ["Expected to not get ExpectedException (expected)"]
   end
 
   it "provides a useful negative failure message for strict subclasses of the matched exception class" do
