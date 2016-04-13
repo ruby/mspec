@@ -64,9 +64,9 @@ class RaiseErrorMatcher
   end
 
   def negative_failure_message
-    message = ["Expected to not get #{format_expected_exception}"]
+    message = ["Expected to not get #{format_expected_exception}", ""]
     unless @actual.class == @exception
-      message << "but got #{format_exception(@actual)}"
+      message[1] = "but got #{format_exception(@actual)}"
     end
     message
   end
