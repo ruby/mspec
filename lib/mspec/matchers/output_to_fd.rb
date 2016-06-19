@@ -39,9 +39,7 @@ class OutputToFDMatcher
         block.call
       ensure
         @to.reopen old_to
-        if !old_to.closed? and old_to.fileno != @to.fileno # reopen might create a new fd
-          old_to.close
-        end
+        old_to.close
       end
 
       out.rewind
