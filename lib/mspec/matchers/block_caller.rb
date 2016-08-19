@@ -1,19 +1,20 @@
 class BlockingMatcher
-  def initialize(timeout = 0.1)
-    @timeout = timeout
-  end
-
   def matches?(block)
+    started = false
     blocking = true
 
     thread = Thread.new do
+      started = true
       block.call
 
       blocking = false
     end
 
-    thread.join(@timeout)
+    while !started and status = thread.status and status != "sleep"
+      Thread.pass
+    end
     thread.kill
+    thread.join
 
     blocking
   end
@@ -29,6 +30,6 @@ end
 
 class Object
   def block_caller(timeout = 0.1)
-    BlockingMatcher.new(timeout)
+    BlockingMatcher.new
   end
 end
