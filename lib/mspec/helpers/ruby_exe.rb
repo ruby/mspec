@@ -113,7 +113,7 @@ class Object
         return [exe, *rest].join(" ")
       end
     end
-    nil
+    raise Exception, "Unable to find a suitable ruby executable."
   end
 
   def ruby_exe(code, opts = {})
@@ -165,8 +165,6 @@ class Object
 
   unless Object.const_defined?(:RUBY_EXE) and RUBY_EXE
     require 'rbconfig'
-
-    RUBY_EXE = resolve_ruby_exe or
-      raise Exception, "Unable to find a suitable ruby executable."
+    RUBY_EXE = resolve_ruby_exe
   end
 end

@@ -121,9 +121,11 @@ describe "#resolve_ruby_exe" do
     @script.resolve_ruby_exe.should == "/usr/bin/#{@name} -Xfoo"
   end
 
-  it "returns nil if no exe is found" do
+  it "raises an exception if no exe is found" do
     File.should_receive(:file?).at_least(:once).and_return(false)
-    @script.resolve_ruby_exe.should be_nil
+    lambda {
+      @script.resolve_ruby_exe
+    }.should raise_error(Exception)
   end
 end
 
