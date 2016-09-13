@@ -83,7 +83,7 @@ class JUnitFormatter < YamlFormatter
       gsub(/[#{Regexp.escape("\0\1\2\3\4\5\6\7\8")}]/, "?")
   end
 
-  if defined? Encoding
+  if Object.const_defined?(:Encoding)
     def encode_as_latin1(str)
       str.encode(TARGET_ENCODING, :undef => :replace, :invalid => :replace)
     end
