@@ -235,7 +235,7 @@ class MSpecOptions
         config[:target] = 'topaz'
       when 'o','opal'
         mspec_lib = File.expand_path('../../../', __FILE__)
-        config[:target] = "./bin/opal -syaml -siconv -sfileutils -rnodejs -rnodejs/require -rnodejs/yaml -rprocess -Derror -I#{mspec_lib} -I./lib/ -I. "
+        config[:target] = "./bin/opal -syaml -sfileutils -rnodejs -rnodejs/require -rnodejs/yaml -rprocess -Derror -I#{mspec_lib} -I./lib/ -I. "
       else
         config[:target] = t
       end
