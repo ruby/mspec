@@ -42,29 +42,25 @@ class SpecGuard
     @@ruby_version_override
   end
 
-  # Returns a partial Ruby version string based on +which+. For example,
-  # if RUBY_VERSION = 8.2.3 and RUBY_PATCHLEVEL = 71:
+  # Returns a partial Ruby version string based on +which+.
+  # For example, if RUBY_VERSION = 8.2.3:
   #
   #  :major  => "8"
   #  :minor  => "8.2"
   #  :tiny   => "8.2.3"
   #  :teeny  => "8.2.3"
-  #  :full   => "8.2.3.71"
+  #  :full   => "8.2.3"
   def self.ruby_version(which = :minor)
     case which
     when :major
       n = 1
     when :minor
       n = 2
-    when :tiny, :teeny
+    when :tiny, :teeny, :full
       n = 3
-    else
-      n = 4
     end
 
-    patch = RUBY_PATCHLEVEL.to_i
-    patch = 0 if patch < 0
-    version = "#{ruby_version_override || RUBY_VERSION}.#{patch}"
+    version = ruby_version_override || RUBY_VERSION
     version.split('.')[0,n].join('.')
   end
 

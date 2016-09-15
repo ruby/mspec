@@ -20,24 +20,15 @@ end
 describe SpecGuard, ".ruby_version" do
   before :each do
     @ruby_version = Object.const_get :RUBY_VERSION
-    @ruby_patchlevel = Object.const_get :RUBY_PATCHLEVEL
-
     Object.const_set :RUBY_VERSION, "8.2.3"
-    Object.const_set :RUBY_PATCHLEVEL, 71
   end
 
   after :each do
     Object.const_set :RUBY_VERSION, @ruby_version
-    Object.const_set :RUBY_PATCHLEVEL, @ruby_patchlevel
   end
 
-  it "returns the version and patchlevel for :full" do
-    SpecGuard.ruby_version(:full).should == "8.2.3.71"
-  end
-
-  it "returns 0 for negative RUBY_PATCHLEVEL values" do
-    Object.const_set :RUBY_PATCHLEVEL, -1
-    SpecGuard.ruby_version(:full).should == "8.2.3.0"
+  it "returns the full version for :full" do
+    SpecGuard.ruby_version(:full).should == "8.2.3"
   end
 
   it "returns major.minor.tiny for :tiny" do
@@ -69,13 +60,8 @@ describe SpecGuard, ".ruby_version" do
       SpecGuard.ruby_version_override = nil
     end
 
-    it "returns the version and patchlevel for :full" do
-      SpecGuard.ruby_version(:full).should == "8.3.2.71"
-    end
-
-    it "returns 0 for negative RUBY_PATCHLEVEL values" do
-      Object.const_set :RUBY_PATCHLEVEL, -1
-      SpecGuard.ruby_version(:full).should == "8.3.2.0"
+    it "returns the full version for :full" do
+      SpecGuard.ruby_version(:full).should == "8.3.2"
     end
 
     it "returns major.minor.tiny for :tiny" do
