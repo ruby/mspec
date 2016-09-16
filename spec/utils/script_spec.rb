@@ -148,15 +148,16 @@ describe MSpecScript, "#load" do
   end
 
   it "attempts to locate the file through the expanded path name" do
-    File.should_receive(:expand_path).with(@file).and_return(@file)
+    File.should_receive(:expand_path).with(@file, ".").and_return(@file)
     File.should_receive(:exist?).with(@file).and_return(true)
     Kernel.should_receive(:load).with(@file).and_return(:loaded)
     @script.load(@file).should == :loaded
   end
 
   it "appends config[:config_ext] to the name and attempts to locate the file through the expanded path name" do
-    File.should_receive(:expand_path).with(@base).and_return(@base)
-    File.should_receive(:expand_path).with(@file).and_return(@file)
+    File.should_receive(:expand_path).with(@base, ".").and_return(@base)
+    File.should_receive(:expand_path).with(@base, "spec").and_return(@base)
+    File.should_receive(:expand_path).with(@file, ".").and_return(@file)
     File.should_receive(:exist?).with(@base).and_return(false)
     File.should_receive(:exist?).with(@file).and_return(true)
     Kernel.should_receive(:load).with(@file).and_return(:loaded)
@@ -164,28 +165,28 @@ describe MSpecScript, "#load" do
   end
 
   it "attemps to locate the file in '.'" do
-    path = File.join ".", @file
+    path = File.expand_path @file, "."
     File.should_receive(:exist?).with(path).and_return(true)
     Kernel.should_receive(:load).with(path).and_return(:loaded)
     @script.load(@file).should == :loaded
   end
 
   it "appends config[:config_ext] to the name and attempts to locate the file in '.'" do
-    path = File.join ".", @file
+    path = File.expand_path @file, "."
     File.should_receive(:exist?).with(path).and_return(true)
     Kernel.should_receive(:load).with(path).and_return(:loaded)
     @script.load(@base).should == :loaded
   end
 
   it "attemps to locate the file in 'spec'" do
-    path = File.join "spec", @file
+    path = File.expand_path @file, "spec"
     File.should_receive(:exist?).with(path).and_return(true)
     Kernel.should_receive(:load).with(path).and_return(:loaded)
     @script.load(@file).should == :loaded
   end
 
   it "appends config[:config_ext] to the name and attempts to locate the file in 'spec'" do
-    path = File.join "spec", @file
+    path = File.expand_path @file, "spec"
     File.should_receive(:exist?).with(path).and_return(true)
     Kernel.should_receive(:load).with(path).and_return(:loaded)
     @script.load(@base).should == :loaded

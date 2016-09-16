@@ -69,10 +69,8 @@ class MSpecScript
     end
 
     names.each do |name|
-      return Kernel.load(name) if File.exist?(File.expand_path(name))
-
       config[:path].each do |dir|
-        file = File.join dir, name
+        file = File.expand_path name, dir
         return Kernel.load(file) if File.exist? file
       end
     end
