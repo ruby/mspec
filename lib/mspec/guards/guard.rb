@@ -1,5 +1,6 @@
 require 'mspec/runner/mspec'
 require 'mspec/runner/actions/tally'
+require 'mspec/utils/ruby_name'
 
 class SpecGuard
   def self.report
