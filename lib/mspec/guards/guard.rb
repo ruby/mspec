@@ -1,8 +1,6 @@
 require 'mspec/runner/mspec'
 require 'mspec/runner/actions/tally'
 
-require 'rbconfig'
-
 class SpecGuard
   def self.report
     @report ||= Hash.new { |h,k| h[k] = [] }
@@ -161,11 +159,16 @@ class SpecGuard
     size == 8 * 1.size
   end
 
+  HOST_OS = begin
+    require 'rbconfig'
+    RbConfig::CONFIG['host_os'] || RUBY_PLATFORM
+  rescue LoadError
+    RUBY_PLATFORM
+  end.downcase
+
   def os?(*oses)
     oses.any? do |os|
-      host_os = RbConfig::CONFIG['host_os'] || RUBY_PLATFORM
-      host_os.downcase!
-      host_os.match(os.to_s) || windows?(os, host_os)
+      HOST_OS.match(os.to_s) || windows?(os, HOST_OS)
     end
   end
 
