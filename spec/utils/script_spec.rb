@@ -116,6 +116,11 @@ describe MSpecScript, ".main" do
     MSpecScript.main
   end
 
+  it "calls the #setup_env method on the script" do
+    @script.should_receive(:setup_env)
+    MSpecScript.main
+  end
+
   it "calls the #run method on the script" do
     @script.should_receive(:run)
     MSpecScript.main
@@ -426,5 +431,35 @@ describe MSpecScript, "#files" do
 
   it "returns an empty list if the config key is not set" do
     @script.files([":all_files"]).should == []
+  end
+end
+
+describe MSpecScript, "#setup_env" do
+  before :each do
+    @script = MSpecScript.new
+    @options, @config = new_option
+    @script.stub(:config).and_return(@config)
+  end
+
+  after :each do
+  end
+
+  it "sets MSPEC_RUNNER = '1' in the environment" do
+    ENV["MSPEC_RUNNER"] = "0"
+    @script.setup_env
+    ENV["MSPEC_RUNNER"].should == "1"
+  end
+
+  it "sets RUBY_EXE = config[:target] in the environment" do
+    ENV["RUBY_EXE"] = nil
+    @script.setup_env
+    ENV["RUBY_EXE"].should == @config[:target]
+  end
+
+  it "sets RUBY_FLAGS = config[:flags] in the environment" do
+    ENV["RUBY_FLAGS"] = nil
+    @config[:flags] = ["-w", "-Q"]
+    @script.setup_env
+    ENV["RUBY_FLAGS"].should == "-w -Q"
   end
 end
