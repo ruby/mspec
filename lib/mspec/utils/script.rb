@@ -95,6 +95,7 @@ class MSpecScript
       engine = 'ruby'
     end
     try_load "#{engine}.#{SpecGuard.ruby_version}.mspec"
+    try_load "#{engine}.mspec"
   end
 
   # Callback for enabling custom options. This version is a no-op.

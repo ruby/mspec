@@ -73,6 +73,7 @@ describe MSpecScript, "#load_default" do
     default = "ybur.1.8.mspec"
     @script.should_receive(:try_load).with('default.mspec').and_return(false)
     @script.should_receive(:try_load).with(default)
+    @script.should_receive(:try_load).with('ybur.mspec')
     @script.load_default
   end
 end
