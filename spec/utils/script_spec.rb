@@ -81,6 +81,8 @@ describe MSpecScript, ".main" do
   before :each do
     @script = double("MSpecScript").as_null_object
     MSpecScript.stub(:new).and_return(@script)
+    # Do not require full mspec as it would conflict with RSpec
+    MSpecScript.should_receive(:require).with('mspec')
   end
 
   it "creates an instance of MSpecScript" do

@@ -1,5 +1,4 @@
 require 'mspec/guards/guard'
-require 'mspec/runner/formatters/dotted'
 
 # MSpecScript provides a skeleton for all the MSpec runner scripts.
 
@@ -107,6 +106,9 @@ class MSpecScript
 
   # Registers all filters and actions.
   def register
+    require 'mspec/runner/formatters/dotted'
+    require 'mspec/runner/formatters/spinner'
+
     if config[:formatter].nil?
       config[:formatter] = STDOUT.tty? ? SpinnerFormatter : @files.size < 50 ? DottedFormatter : FileFormatter
     end
@@ -215,6 +217,7 @@ class MSpecScript
     script.options
     script.signals
     script.register
+    require 'mspec'
     script.run
   end
 end
