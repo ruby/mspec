@@ -273,6 +273,7 @@ class MSpecOptions
   def formatters
     on("-f", "--format", "FORMAT",
        "Formatter for reporting, where FORMAT is one of:") do |o|
+      require 'mspec/runner/formatters'
       case o
       when 's', 'spec', 'specdoc'
         config[:formatter] = SpecdocFormatter
