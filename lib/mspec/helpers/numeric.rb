@@ -1,3 +1,5 @@
+require 'mspec/guards/guard'
+
 class Object
   def nan_value
     0/0.0
