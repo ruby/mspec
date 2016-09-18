@@ -63,30 +63,6 @@ class Object
     def fixnum_min()
       -9223372036854775808
     end
-  elsif guard.implementation? :ironruby
-    def fixnum_max()
-      raise "fixnum_max() helper not implemented"
-    end
-
-    def fixnum_min()
-      raise "fixnum_min() helper not implemented"
-    end
-  elsif guard.implementation? :maglev
-    def fixnum_max()
-      raise "fixnum_max() helper not implemented"
-    end
-
-    def fixnum_min()
-      raise "fixnum_min() helper not implemented"
-    end
-  elsif guard.implementation? :macruby
-    def fixnum_max()
-      raise "fixnum_max() helper not implemented"
-    end
-
-    def fixnum_min()
-      raise "fixnum_min() helper not implemented"
-    end
   else
     def fixnum_max()
       raise "unknown implementation for fixnum_max() helper"
