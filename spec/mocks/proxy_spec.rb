@@ -387,3 +387,14 @@ describe MockProxy, "#yielding?" do
     @proxy.yielding?.should be_true
   end
 end
+
+describe MockIntObject, "#to_int" do
+  before :each do
+    @int = MockIntObject.new(10)
+  end
+
+  it "returns the number if to_int is called" do
+    @int.to_int.should == 10
+    @int.count.should == [:at_least, 1]
+  end
+end
