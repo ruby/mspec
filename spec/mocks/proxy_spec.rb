@@ -397,4 +397,9 @@ describe MockIntObject, "#to_int" do
     @int.to_int.should == 10
     @int.count.should == [:at_least, 1]
   end
+
+  it "tries to convert the target to int if to_int is called" do
+    MockIntObject.new(@int).to_int.should == 10
+    @int.count.should == [:at_least, 1]
+  end
 end
