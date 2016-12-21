@@ -1,5 +1,3 @@
-require 'mspec/helpers/fs'
-
 # Creates a temporary directory in the current working directory
 # for temporary files created while running the specs. All specs
 # should clean up any temporary files created so that the temp
@@ -10,9 +8,6 @@ SPEC_TEMP_DIR = File.expand_path(ENV["SPEC_TEMP_DIR"] || "rubyspec_temp")
 SPEC_TEMP_UNIQUIFIER = "0"
 
 SPEC_TEMP_DIR_PID = Process.pid
-
-# Clean it up when starting MSpec
-rm_r SPEC_TEMP_DIR
 
 at_exit do
   begin
