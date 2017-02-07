@@ -1,5 +1,8 @@
 sudo: false
 language: ruby
+before_install:
+  - unset JRUBY_OPTS
+  - gem install bundler
 script:
   - bundle exec rspec
 rvm:
