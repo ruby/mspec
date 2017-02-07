@@ -1,3 +1,4 @@
+# encoding: utf-8
 unless defined?(RSpec)
   describe "Tag#me" do
     it "passes" do

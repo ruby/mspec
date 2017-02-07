@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe "Running mspec tag" do
@@ -35,8 +36,8 @@ Tag#me errors FAILED
 Expected 1
  to equal 2
 
-#{cwd}/spec/fixtures/tagging_spec.rb:8:in `block (2 levels) in <top (required)>'
-#{cwd}/spec/fixtures/tagging_spec.rb:2:in `<top (required)>'
+#{cwd}/spec/fixtures/tagging_spec.rb:9:in `block (2 levels) in <top (required)>'
+#{cwd}/spec/fixtures/tagging_spec.rb:3:in `<top (required)>'
 #{cwd}/bin/mspec-tag:7:in `<main>'
 
 2)
@@ -44,8 +45,8 @@ Tag#me érròrs in unicode FAILED
 Expected 1
  to equal 2
 
-#{cwd}/spec/fixtures/tagging_spec.rb:12:in `block (2 levels) in <top (required)>'
-#{cwd}/spec/fixtures/tagging_spec.rb:2:in `<top (required)>'
+#{cwd}/spec/fixtures/tagging_spec.rb:13:in `block (2 levels) in <top (required)>'
+#{cwd}/spec/fixtures/tagging_spec.rb:3:in `<top (required)>'
 #{cwd}/bin/mspec-tag:7:in `<main>'
 
 Finished in D.DDDDDD seconds
