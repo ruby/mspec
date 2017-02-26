@@ -39,3 +39,12 @@ end
 def hide_deprecation_warnings
   MSpec.stub(:deprecate)
 end
+
+def run_mspec(command, args)
+  cwd = Dir.pwd
+  cmd = "bin/mspec #{command} -B spec/fixtures/config.mspec #{args}"
+  out = `#{cmd} 2>&1`
+  out = out.sub(RUBY_DESCRIPTION, "RUBY_DESCRIPTION")
+  out = out.gsub(/\d\.\d{6}/, "D.DDDDDD")
+  out = out.gsub(cwd, "CWD")
+end
