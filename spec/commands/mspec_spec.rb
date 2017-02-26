@@ -235,7 +235,7 @@ describe MSpecMain, "#run" do
     @script.should_receive(:exec).with("ruby", "-v", %r"#{MSPEC_HOME}/bin/mspec-run$")
     @script.options []
     @script.run
-    $stderr.to_s.should == "$ ruby -v /home/eregon/code/mspec/bin/mspec-run\n"
+    $stderr.to_s.should == "$ ruby -v #{Dir.pwd}/bin/mspec-run\n"
   end
 
   it "adds config[:launch] to the exec options" do
@@ -244,7 +244,7 @@ describe MSpecMain, "#run" do
     @config[:launch] << "-Xlaunch.option"
     @script.options []
     @script.run
-    $stderr.to_s.should == "$ ruby -Xlaunch.option -v /home/eregon/code/mspec/bin/mspec-run\n"
+    $stderr.to_s.should == "$ ruby -Xlaunch.option -v #{Dir.pwd}/bin/mspec-run\n"
   end
 
   it "calls #multi_exec if the command is 'ci' and the multi option is passed" do
