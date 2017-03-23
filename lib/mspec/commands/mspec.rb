@@ -35,10 +35,6 @@ class MSpecMain < MSpecScript
 
     options.targets
 
-    options.on("-A", "--valgrind", "Run under valgrind") do
-      config[:use_valgrind] = true
-    end
-
     options.on("--warnings", "Don't supress warnings") do
       config[:flags] << '-w'
       ENV['OUTPUT_WARNINGS'] = '1'
@@ -150,16 +146,10 @@ class MSpecMain < MSpecScript
     if config[:multi] and config[:command] == "ci"
       multi_exec argv
     else
-      if config[:use_valgrind]
-        more = ["--child-silent-after-fork=yes",
-                config[:target]] + argv
-        exec "valgrind", *more
-      else
-        cmd, *rest = config[:target].split(/\s+/)
-        argv = rest + argv unless rest.empty?
-        $stderr.puts "$ #{cmd} #{argv.join(' ')}"
-        exec cmd, *argv
-      end
+      cmd, *rest = config[:target].split(/\s+/)
+      argv = rest + argv unless rest.empty?
+      $stderr.puts "$ #{cmd} #{argv.join(' ')}"
+      exec cmd, *argv
     end
   end
 end
