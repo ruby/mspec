@@ -106,9 +106,11 @@ class MSpecMain < MSpecScript
     timer = TimerAction.new
     timer.start
 
+    spec_groups = config[:ci_files]
+
     output_files = []
     i = 0
-    pids = config[:ci_files].map { |specs|
+    pids = spec_groups.map { |specs|
       i += 1
       name = tmp "mspec-multi-#{i}"
       output_files << name
