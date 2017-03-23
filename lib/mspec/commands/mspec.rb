@@ -80,31 +80,9 @@ class MSpecMain < MSpecScript
 
   def register; end
 
-  def report(files, timer)
-    require 'yaml'
-
-    exceptions = []
-    tally = Tally.new
-
-    files.each do |file|
-      d = File.open(file, "r") { |f| YAML.load f }
-      File.delete file
-
-      exceptions += Array(d['exceptions'])
-      tally.files!        d['files']
-      tally.examples!     d['examples']
-      tally.expectations! d['expectations']
-      tally.errors!       d['errors']
-      tally.failures!     d['failures']
-    end
-
-    require 'mspec/runner/formatters/multi'
-    MultiFormatter.new(timer, tally, exceptions).finish
-  end
-
   def multi_exec(argv)
-    timer = TimerAction.new
-    timer.start
+    require 'mspec/runner/formatters/multi'
+    formatter = MultiFormatter.new
 
     spec_groups = config[:ci_files]
 
@@ -115,7 +93,7 @@ class MSpecMain < MSpecScript
       name = tmp "mspec-multi-#{i}"
       output_files << name
 
-      env = { "SPEC_TEMP_DIR" => "rubyspec_temp_#{i+1}" }
+      env = { "SPEC_TEMP_DIR" => "rubyspec_temp_#{i}" }
       command = [config[:target]] + argv + ["-o", name, specs]
       $stderr.puts "$ #{command.join(' ')}"
       Process.spawn(env, *command)
@@ -124,8 +102,9 @@ class MSpecMain < MSpecScript
     pids.each { |pid|
       Process.wait(pid)
     }
-    timer.finish
-    report output_files, timer
+
+    formatter.aggregate_results(output_files)
+    formatter.finish
   end
 
   def run
