@@ -98,11 +98,8 @@ class MSpecMain < MSpecScript
       tally.failures!     d['failures']
     end
 
-    print "\n"
-    exceptions.each_with_index do |exc, index|
-      print "\n#{index+1})\n", exc, "\n"
-    end
-    print "\n#{timer.format}\n\n#{tally.format}\n"
+    require 'mspec/runner/formatters/multi'
+    MultiFormatter.new(timer, tally, exceptions).finish
   end
 
   def multi_exec(argv)
