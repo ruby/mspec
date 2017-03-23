@@ -57,7 +57,6 @@ class NameMap
   EXCLUDED = %w[
     MSpecScript
     MkSpec
-    DTracer
     Etc
     FileUtils
     MSpecOption
