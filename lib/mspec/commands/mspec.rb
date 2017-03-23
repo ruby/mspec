@@ -94,7 +94,7 @@ class MSpecMain < MSpecScript
       output_files << name
 
       env = { "SPEC_TEMP_DIR" => "rubyspec_temp_#{i}" }
-      command = [config[:target]] + argv + ["-o", name, specs]
+      command = argv + ["-o", name, specs]
       $stderr.puts "$ #{command.join(' ')}"
       Process.spawn(env, *command)
     }
@@ -108,7 +108,7 @@ class MSpecMain < MSpecScript
   end
 
   def run
-    argv = []
+    argv = config[:target].split(/\s+/)
 
     argv.concat config[:launch]
     argv.concat config[:flags]
@@ -121,10 +121,8 @@ class MSpecMain < MSpecScript
     if config[:multi]
       multi_exec argv
     else
-      cmd, *rest = config[:target].split(/\s+/)
-      argv = rest + argv unless rest.empty?
-      $stderr.puts "$ #{cmd} #{argv.join(' ')}"
-      exec cmd, *argv
+      $stderr.puts "$ #{argv.join(' ')}"
+      exec *argv
     end
   end
 end

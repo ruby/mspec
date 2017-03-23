@@ -117,11 +117,8 @@ describe MSpecMain, "#run" do
   end
 
   it "calls #multi_exec if the command is 'ci' and the multi option is passed" do
-    @script.should_receive(:multi_exec).and_return do |arg|
-      arg.length.should == 3
-      arg[0].should == "-v"
-      arg[1].should =~ %r"#{MSPEC_HOME}/bin/mspec-ci$"
-      arg[2].should == "-fy"
+    @script.should_receive(:multi_exec).and_return do |argv|
+      argv.should == ["ruby", "-v", "#{MSPEC_HOME}/bin/mspec-ci", "-fy"]
     end
     @script.options ["ci", "-j"]
     @script.run
