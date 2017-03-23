@@ -80,15 +80,6 @@ class MSpecMain < MSpecScript
 
   def register; end
 
-  def parallel
-    @parallel ||= !(Object.const_defined?(:JRUBY_VERSION) ||
-                  /(mswin|mingw)/ =~ RUBY_PLATFORM)
-  end
-
-  def fork(&block)
-    parallel ? Kernel.fork(&block) : block.call
-  end
-
   def report(files, timer)
     require 'yaml'
 
@@ -118,18 +109,24 @@ class MSpecMain < MSpecScript
     timer = TimerAction.new
     timer.start
 
-    files = config[:ci_files].inject([]) do |list, item|
-      name = tmp "mspec-ci-multi-#{list.size}"
+    output_files = []
+    i = 0
+    pids = config[:ci_files].map { |specs|
+      i += 1
+      name = tmp "mspec-multi-#{i}"
+      output_files << name
 
-      rest = argv + ["-o", name, item]
-      fork { system [config[:target], *rest].join(" ") }
+      env = { "SPEC_TEMP_DIR" => "rubyspec_temp_#{i+1}" }
+      command = [config[:target]] + argv + ["-o", name, specs]
+      $stderr.puts "$ #{command.join(' ')}"
+      Process.spawn(env, *command)
+    }
 
-      list << name
-    end
-
-    Process.waitall
+    pids.each { |pid|
+      Process.wait(pid)
+    }
     timer.finish
-    report files, timer
+    report output_files, timer
   end
 
   def run
@@ -143,7 +140,7 @@ class MSpecMain < MSpecScript
     argv << "#{MSPEC_HOME}/bin/mspec-#{ config[:command] || "run" }"
     argv.concat config[:options]
 
-    if config[:multi] and config[:command] == "ci"
+    if config[:multi]
       multi_exec argv
     else
       cmd, *rest = config[:target].split(/\s+/)

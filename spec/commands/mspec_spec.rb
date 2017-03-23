@@ -44,66 +44,6 @@ describe MSpecMain, "#options" do
   end
 end
 
-describe MSpecMain, "#parallel" do
-  before :all do
-    @verbose, $VERBOSE = $VERBOSE, nil
-  end
-
-  after :all do
-    $VERBOSE = @verbose
-  end
-
-  before :each do
-    @script = MSpecMain.new
-    @ruby_platform = Object.const_get :RUBY_PLATFORM
-  end
-
-  after :each do
-    Object.const_set :RUBY_PLATFORM, @ruby_platform
-  end
-
-  it "returns false if JRUBY_VERSION is defined" do
-    Object.should_receive(:const_defined?).with(:JRUBY_VERSION).and_return(true)
-    @script.parallel.should == false
-  end
-
-  it "returns false if RUBY_PLATFORM matches mswin" do
-    Object.const_set :RUBY_PLATFORM, "i386-mswin32"
-    @script.parallel.should == false
-  end
-
-  it "returns false if RUBY_PLATFORM matches mingw" do
-    Object.const_set :RUBY_PLATFORM, "i386-mingw32"
-    @script.parallel.should == false
-  end
-
-  it "returns true unless JRUBY_VERSION is set or RUBY_PLATFORM matches mswin or mingw" do
-    Object.should_receive(:const_defined?).with(:JRUBY_VERSION).and_return(false)
-    Object.const_set :RUBY_PLATFORM, "i686-linux"
-    @script.parallel.should == true
-  end
-end
-
-describe MSpecMain, "#fork" do
-  before :each do
-    @script = MSpecMain.new
-    ScratchPad.clear
-  end
-
-  it "calls Kernel.fork if #parallel returns true" do
-    @script.should_receive(:parallel).and_return(true)
-    Kernel.should_receive(:fork)
-    @script.fork
-  end
-
-  it "calls the block if #parallel returns false" do
-    @script.should_receive(:parallel).and_return(false)
-    Kernel.should_not_receive(:fork)
-    @script.fork { ScratchPad.record :called }
-    ScratchPad.recorded.should == :called
-  end
-end
-
 describe MSpecMain, "#report" do
   before :each do
     @stdout, $stdout = $stdout, IOStub.new
@@ -189,18 +129,25 @@ describe MSpecMain, "#multi_exec" do
 
     @script = MSpecMain.new
     @script.stub(:config).and_return(@config)
-    @script.stub(:fork)
+    Process.stub(:spawn)
+    Process.stub(:wait)
     @script.stub(:report)
-    Process.stub(:waitall)
+
+    @err = $stderr
+    $stderr = IOStub.new
   end
 
-  it "calls #fork for each entry in config[:ci_files]" do
-    @script.should_receive(:fork).twice
+  after :each do
+    $stderr = @err
+  end
+
+  it "calls #spawn for each entry in config[:ci_files]" do
+    Process.should_receive(:spawn).twice
     @script.multi_exec []
   end
 
-  it "calls Process.waitall" do
-    Process.should_receive(:waitall)
+  it "calls Process.wait for each subprocess" do
+    Process.should_receive(:wait).twice
     @script.multi_exec []
   end
 
