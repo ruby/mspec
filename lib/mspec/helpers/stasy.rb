@@ -20,6 +20,7 @@ class Object
   #   stasy("nom") => :nom
 
   def stasy(one, *rest)
+    MSpec.deprecate "stasy", "a Symbol literal"
     era = SpecVersion.new(SpecGuard.ruby_version) < "1.9"
     convert = era ? :to_s : :to_sym
 

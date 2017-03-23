@@ -13,6 +13,10 @@ describe Object, "#stasy when RUBY_VERSION < 1.9" do
     Object.const_set :RUBY_VERSION, @ruby_version
   end
 
+  before :each do
+    MSpec.stub :deprecate
+  end
+
   it "returns a String when passed a String" do
     stasy("nom").should == "nom"
   end
@@ -35,6 +39,10 @@ describe Object, "#stasy when RUBY_VERSION >= 1.9.0" do
     @ruby_version = Object.const_get :RUBY_VERSION
 
     Object.const_set :RUBY_VERSION, "1.9.0"
+  end
+
+  before :each do
+    MSpec.stub :deprecate
   end
 
   after :all do
