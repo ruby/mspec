@@ -88,6 +88,8 @@ class MSpecMain < MSpecScript
   def register; end
 
   def multi_exec(argv)
+    MSpec.register_files @files
+
     require 'mspec/runner/formatters/multi'
     formatter = MultiFormatter.new
 
@@ -106,15 +108,18 @@ class MSpecMain < MSpecScript
     }
 
     puts children.map { |child| child.gets }.uniq
+    formatter.start
 
     until @files.empty?
       IO.select(children)[0].each { |io|
         reply = io.read(1)
-        unless reply == '.'
+        case reply
+        when '.'
+          formatter.unload
+        else
           reply += io.read_nonblock(4096)
           raise reply
         end
-        print reply
         io.puts @files.shift unless @files.empty?
       }
     end

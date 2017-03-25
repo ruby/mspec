@@ -1,9 +1,10 @@
-require 'mspec/runner/formatters/dotted'
+require 'mspec/runner/formatters/spinner'
 require 'yaml'
 
-class MultiFormatter < DottedFormatter
+class MultiFormatter < SpinnerFormatter
   def initialize(out=nil)
     super(out)
+    @counter = @tally = Tally.new
     @timer = TimerAction.new
     @timer.start
   end
@@ -11,7 +12,6 @@ class MultiFormatter < DottedFormatter
   def aggregate_results(files)
     @timer.finish
     @exceptions = []
-    @tally = Tally.new
 
     files.each do |file|
       d = File.open(file, "r") { |f| YAML.load f }
@@ -28,5 +28,9 @@ class MultiFormatter < DottedFormatter
 
   def print_exception(exc, count)
     print "\n#{count})\n#{exc}\n"
+  end
+
+  def finish
+    super(false)
   end
 end
