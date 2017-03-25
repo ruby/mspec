@@ -76,6 +76,13 @@ class MSpecMain < MSpecScript
 
     options.on_extra { |o| config[:options] << o }
     options.parse(argv)
+
+    if config[:multi]
+      options = MSpecOptions.new "mspec", 30, config
+      options.all
+      patterns = options.parse(config[:options])
+      @files = files_from_patterns(patterns)
+    end
   end
 
   def register; end
