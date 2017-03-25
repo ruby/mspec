@@ -92,7 +92,7 @@ class MSpecMain < MSpecScript
     formatter = MultiFormatter.new
 
     output_files = []
-    pids = cores.times.map { |i|
+    children = cores.times.map { |i|
       name = tmp "mspec-multi-#{i}"
       output_files << name
 
@@ -101,12 +101,27 @@ class MSpecMain < MSpecScript
         "MSPEC_MULTI" => i.to_s
       }
       command = argv + ["-o", name]
-      $stderr.puts "$ #{command.join(' ')}"
-      Process.spawn(env, *command)
+      $stderr.puts "$ #{command.join(' ')}" if $MSPEC_DEBUG
+      IO.popen([env, *command], "rb+")
     }
 
-    pids.each { |pid|
-      Process.wait(pid)
+    puts children.map { |child| child.gets }.uniq
+
+    until @files.empty?
+      IO.select(children)[0].each { |io|
+        reply = io.read(1)
+        unless reply == '.'
+          reply += io.read_nonblock(4096)
+          raise reply
+        end
+        print reply
+        io.puts @files.shift unless @files.empty?
+      }
+    end
+
+    children.each { |child|
+      child.puts "QUIT"
+      Process.wait(child.pid)
     }
 
     formatter.aggregate_results(output_files)

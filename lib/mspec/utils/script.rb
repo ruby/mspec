@@ -226,15 +226,6 @@ class MSpecScript
     files patterns
   end
 
-  def distribute files
-    i = Integer(ENV["MSPEC_MULTI"] || -1)
-    return files if i < 0
-    chunk = files.size / cores
-    from = i * chunk
-    to = i == cores-1 ? files.size : (i+1) * chunk
-    files[from...to]
-  end
-
   def cores
     4
   end

@@ -44,40 +44,6 @@ describe MSpecMain, "#options" do
   end
 end
 
-describe MSpecMain, "#multi_exec" do
-  before :each do
-    @options, @config = new_option
-    MSpecOptions.stub(:new).and_return(@options)
-
-    @config[:target] = "target"
-
-    @script = MSpecMain.new
-    @script.stub(:config).and_return(@config)
-    Process.stub(:spawn)
-    Process.stub(:wait)
-
-    formatter = double("formatter").as_null_object
-    MultiFormatter.stub(:new).and_return(formatter)
-
-    @err = $stderr
-    $stderr = IOStub.new
-  end
-
-  after :each do
-    $stderr = @err
-  end
-
-  it "calls #spawn for each core" do
-    Process.should_receive(:spawn)
-    @script.multi_exec []
-  end
-
-  it "calls Process.wait for each subprocess" do
-    Process.should_receive(:wait)
-    @script.multi_exec []
-  end
-end
-
 describe MSpecMain, "#run" do
   before :each do
     @options, @config = new_option
