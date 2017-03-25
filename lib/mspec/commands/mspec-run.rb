@@ -89,7 +89,7 @@ class MSpecRun < MSpecScript
         exit 1
       end
     end
-    @files = files patterns
+    @files = distribute files patterns
   end
 
   def run
@@ -100,4 +100,3 @@ class MSpecRun < MSpecScript
     exit MSpec.exit_code
   end
 end
-

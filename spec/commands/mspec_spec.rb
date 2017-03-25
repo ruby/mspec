@@ -50,7 +50,6 @@ describe MSpecMain, "#multi_exec" do
     MSpecOptions.stub(:new).and_return(@options)
 
     @config[:target] = "target"
-    @config[:ci_files] = ["a", "b"]
 
     @script = MSpecMain.new
     @script.stub(:config).and_return(@config)
@@ -68,13 +67,13 @@ describe MSpecMain, "#multi_exec" do
     $stderr = @err
   end
 
-  it "calls #spawn for each entry in config[:ci_files]" do
-    Process.should_receive(:spawn).twice
+  it "calls #spawn for each core" do
+    Process.should_receive(:spawn)
     @script.multi_exec []
   end
 
   it "calls Process.wait for each subprocess" do
-    Process.should_receive(:wait).twice
+    Process.should_receive(:wait)
     @script.multi_exec []
   end
 end

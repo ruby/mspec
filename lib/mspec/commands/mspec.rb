@@ -84,17 +84,16 @@ class MSpecMain < MSpecScript
     require 'mspec/runner/formatters/multi'
     formatter = MultiFormatter.new
 
-    spec_groups = config[:ci_files]
-
     output_files = []
-    i = 0
-    pids = spec_groups.map { |specs|
-      i += 1
+    pids = cores.times.map { |i|
       name = tmp "mspec-multi-#{i}"
       output_files << name
 
-      env = { "SPEC_TEMP_DIR" => "rubyspec_temp_#{i}" }
-      command = argv + ["-o", name, specs]
+      env = {
+        "SPEC_TEMP_DIR" => "rubyspec_temp_#{i}",
+        "MSPEC_MULTI" => i.to_s
+      }
+      command = argv + ["-o", name]
       $stderr.puts "$ #{command.join(' ')}"
       Process.spawn(env, *command)
     }
