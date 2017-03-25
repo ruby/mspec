@@ -75,21 +75,7 @@ class MSpecRun < MSpecScript
     options.doc ""
 
     patterns = options.parse argv
-
-    unless $0.end_with?("_spec.rb")
-      if patterns.empty?
-        patterns = config[:files]
-      end
-      if patterns.empty? and File.directory? "./spec"
-        patterns = ["spec/"]
-      end
-      if patterns.empty?
-        puts options
-        puts "No files specified."
-        exit 1
-      end
-    end
-    @files = distribute files patterns
+    @files = files_from_patterns(patterns)
   end
 
   def run

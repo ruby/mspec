@@ -210,6 +210,22 @@ class MSpecScript
     end
   end
 
+  def files_from_patterns(patterns)
+    unless $0.end_with?("_spec.rb")
+      if patterns.empty?
+        patterns = config[:files]
+      end
+      if patterns.empty? and File.directory? "./spec"
+        patterns = ["spec/"]
+      end
+      if patterns.empty?
+        puts "No files specified."
+        exit 1
+      end
+    end
+    files patterns
+  end
+
   def distribute files
     i = Integer(ENV["MSPEC_MULTI"] || -1)
     return files if i < 0
