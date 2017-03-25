@@ -116,8 +116,12 @@ class MSpecMain < MSpecScript
         case reply
         when '.'
           formatter.unload
+        when nil
+          raise "Worker died!"
         else
-          reply += io.read_nonblock(4096)
+          while chunk = (io.read_nonblock(4096) rescue nil)
+            reply += chunk
+          end
           raise reply
         end
         io.puts @files.shift unless @files.empty?
