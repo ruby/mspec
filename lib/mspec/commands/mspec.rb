@@ -144,7 +144,6 @@ class MSpecMain < MSpecScript
     argv.concat config[:flags]
     argv.concat config[:includes]
     argv.concat config[:requires]
-    argv << "-v"
     argv << "#{MSPEC_HOME}/bin/mspec-#{ config[:command] || "run" }"
     argv.concat config[:options]
 

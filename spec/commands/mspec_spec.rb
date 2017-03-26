@@ -60,30 +60,30 @@ describe MSpecMain, "#run" do
   end
 
   it "uses exec to invoke the runner script" do
-    @script.should_receive(:exec).with("ruby", "-v", %r"#{MSPEC_HOME}/bin/mspec-run$")
+    @script.should_receive(:exec).with("ruby", "#{MSPEC_HOME}/bin/mspec-run")
     @script.options []
     @script.run
   end
 
   it "shows the command line on stderr" do
-    @script.should_receive(:exec).with("ruby", "-v", %r"#{MSPEC_HOME}/bin/mspec-run$")
+    @script.should_receive(:exec).with("ruby", "#{MSPEC_HOME}/bin/mspec-run")
     @script.options []
     @script.run
-    $stderr.to_s.should == "$ ruby -v #{Dir.pwd}/bin/mspec-run\n"
+    $stderr.to_s.should == "$ ruby #{Dir.pwd}/bin/mspec-run\n"
   end
 
   it "adds config[:launch] to the exec options" do
     @script.should_receive(:exec).with("ruby",
-        "-Xlaunch.option", "-v", %r"#{MSPEC_HOME}/bin/mspec-run$")
+        "-Xlaunch.option", "#{MSPEC_HOME}/bin/mspec-run")
     @config[:launch] << "-Xlaunch.option"
     @script.options []
     @script.run
-    $stderr.to_s.should == "$ ruby -Xlaunch.option -v #{Dir.pwd}/bin/mspec-run\n"
+    $stderr.to_s.should == "$ ruby -Xlaunch.option #{Dir.pwd}/bin/mspec-run\n"
   end
 
   it "calls #multi_exec if the command is 'ci' and the multi option is passed" do
     @script.should_receive(:multi_exec).and_return do |argv|
-      argv.should == ["ruby", "-v", "#{MSPEC_HOME}/bin/mspec-ci", "-fy"]
+      argv.should == ["ruby", "#{MSPEC_HOME}/bin/mspec-ci", "-fy"]
     end
     @script.options ["ci", "-j"]
     @script.run

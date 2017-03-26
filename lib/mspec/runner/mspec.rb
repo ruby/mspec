@@ -42,6 +42,8 @@ module MSpec
   end
 
   def self.process
+    STDOUT.puts RUBY_DESCRIPTION
+
     actions :start
     files
     actions :finish
