@@ -9,9 +9,3 @@ rvm:
   - 2.3.3
   - 2.4.1
   - ruby-head
-  - rubinius
-  - jruby
-matrix:
-  allow_failures:
-    - rvm: rubinius
-    - rvm: jruby
