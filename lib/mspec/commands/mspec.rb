@@ -107,7 +107,7 @@ class MSpecMain < MSpecScript
       IO.popen([env, *command], "rb+")
     }
 
-    puts children.map { |child| child.gets }.uniq
+    puts children.map { |child| child.gets("").chomp }.uniq
     formatter.start
 
     until @files.empty?
@@ -144,6 +144,9 @@ class MSpecMain < MSpecScript
     argv.concat config[:flags]
     argv.concat config[:includes]
     argv.concat config[:requires]
+    if config[:multi]
+      argv << "-r#{MSPEC_HOME}/lib/mspec/utils/empty_line.rb"
+    end
     argv << "-v"
     argv << "#{MSPEC_HOME}/bin/mspec-#{ config[:command] || "run" }"
     argv.concat config[:options]
