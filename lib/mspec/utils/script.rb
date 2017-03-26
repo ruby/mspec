@@ -227,7 +227,21 @@ class MSpecScript
   end
 
   def cores
-    4
+    # From https://github.com/ruby-concurrency/concurrent-ruby/blob/master/lib/concurrent/utility/processor_counter.rb
+    if File.readable?("/proc/cpuinfo") # Linux
+      cores = File.readlines("/proc/cpuinfo").count { |line| line.start_with?('processor') }
+      raise "Could not parse /proc/cpuinfo" if cores == 0
+      cores
+    elsif File.executable?("/usr/sbin/psrinfo") # Solaris
+      File.readlines("/usr/sbin/psrinfo").grep(/on-*line/).size
+    elsif File.executable?("/usr/sbin/sysctl") # Darwin
+      Integer(`/usr/sbin/sysctl -n hw.ncpu`)
+    elsif File.executable?("/sbin/sysctl") # BSD
+      Integer(`/sbin/sysctl -n hw.ncpu`)
+    else
+      warn "Could not find number of processors"
+      1
+    end
   end
 
   def setup_env
