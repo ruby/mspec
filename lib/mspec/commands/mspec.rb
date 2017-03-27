@@ -10,6 +10,8 @@ require 'mspec/runner/actions/timer'
 
 class MSpecMain < MSpecScript
   def initialize
+    super
+
     config[:includes] = []
     config[:requires] = []
     config[:target]   = ENV['RUBY'] || 'ruby'
