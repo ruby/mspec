@@ -79,6 +79,7 @@ describe VersionGuard, "#match?" do
     VersionGuard.new('1.8'...'1.9').match?.should == true
     VersionGuard.new('1.8'..'1.8.6').match?.should == true
     VersionGuard.new('1.8.5'..'1.8.6').match?.should == true
+    VersionGuard.new(''...'1.8.7').match?.should == true
   end
 
   it "returns false when the argument range does not include RUBY_VERSION" do
@@ -86,6 +87,7 @@ describe VersionGuard, "#match?" do
     VersionGuard.new('1.8.4'..'1.8.5').match?.should == false
     VersionGuard.new('1.8.4'...'1.8.6').match?.should == false
     VersionGuard.new('1.8.5'...'1.8.6').match?.should == false
+    VersionGuard.new(''...'1.8.6').match?.should == false
   end
 end
 

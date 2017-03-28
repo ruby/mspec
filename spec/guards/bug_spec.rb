@@ -48,6 +48,7 @@ describe BugGuard, "#match? when #implementation? is 'ruby'" do
     BugGuard.new("#1", '1.8'...'1.9').match?.should == true
     BugGuard.new("#1", '1.8'..'1.8.6').match?.should == true
     BugGuard.new("#1", '1.8.5'..'1.8.6').match?.should == true
+    BugGuard.new("#1", ''...'1.8.7').match?.should == true
   end
 
   it "returns false when the argument range does not include RUBY_VERSION" do
@@ -55,6 +56,7 @@ describe BugGuard, "#match? when #implementation? is 'ruby'" do
     BugGuard.new("#1", '1.8.4'..'1.8.5').match?.should == false
     BugGuard.new("#1", '1.8.4'...'1.8.6').match?.should == false
     BugGuard.new("#1", '1.8.5'...'1.8.6').match?.should == false
+    BugGuard.new("#1", ''...'1.8.6').match?.should == false
   end
 
   it "returns false when MSpec.mode?(:no_ruby_bug) is true" do
