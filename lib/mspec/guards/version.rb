@@ -8,6 +8,7 @@ class VersionGuard < SpecGuard
     when String
       @version = SpecVersion.new version
     when Range
+      MSpec.deprecate "an empty version range end", 'a specific version' if version.end.empty?
       a = SpecVersion.new version.begin
       b = SpecVersion.new version.end
       unless version.exclude_end?
