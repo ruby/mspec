@@ -4,7 +4,7 @@ require 'mspec/helpers'
 
 describe Object, "#stasy" do
   before :each do
-    MSpec.stub :deprecate
+    hide_deprecation_warnings
   end
 
   it "returns a Symbol when passed a String" do
