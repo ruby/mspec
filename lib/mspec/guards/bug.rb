@@ -3,13 +3,22 @@ require 'mspec/guards/version'
 class BugGuard < VersionGuard
   def initialize(bug, version)
     @bug = bug
-    @version = SpecVersion.new version, true
+    if String === version
+      @version = SpecVersion.new version, true
+    else
+      super(version)
+    end
     self.parameters = [@bug, @version]
   end
 
   def match?
     return false if MSpec.mode? :no_ruby_bug
-    standard? && ruby_version <= @version
+    return false unless standard?
+    if Range === @version
+      super
+    else
+      ruby_version <= @version
+    end
   end
 end
 

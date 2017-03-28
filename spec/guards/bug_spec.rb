@@ -12,6 +12,7 @@ describe BugGuard, "#match? when #implementation? is 'ruby'" do
   end
 
   before :each do
+    hide_deprecation_warnings
     @ruby_version = Object.const_get :RUBY_VERSION
     @ruby_name = Object.const_get :RUBY_NAME
 
@@ -39,6 +40,21 @@ describe BugGuard, "#match? when #implementation? is 'ruby'" do
   it "returns true when version argument implicitly includes RUBY_VERSION" do
     BugGuard.new("#1", "1.8").match?.should == true
     BugGuard.new("#1", "1.8.6").match?.should == true
+  end
+
+  it "returns true when the argument range includes RUBY_VERSION" do
+    BugGuard.new("#1", '1.8.5'..'1.8.7').match?.should == true
+    BugGuard.new("#1", '1.8'..'1.9').match?.should == true
+    BugGuard.new("#1", '1.8'...'1.9').match?.should == true
+    BugGuard.new("#1", '1.8'..'1.8.6').match?.should == true
+    BugGuard.new("#1", '1.8.5'..'1.8.6').match?.should == true
+  end
+
+  it "returns false when the argument range does not include RUBY_VERSION" do
+    BugGuard.new("#1", '1.8.7'..'1.8.9').match?.should == false
+    BugGuard.new("#1", '1.8.4'..'1.8.5').match?.should == false
+    BugGuard.new("#1", '1.8.4'...'1.8.6').match?.should == false
+    BugGuard.new("#1", '1.8.5'...'1.8.6').match?.should == false
   end
 
   it "returns false when MSpec.mode?(:no_ruby_bug) is true" do
@@ -82,6 +98,12 @@ describe BugGuard, "#match? when #implementation? is not 'ruby'" do
 
   it "returns false when version argument is greater than RUBY_VERSION" do
     BugGuard.new("#1", "1.8.7").match?.should == false
+  end
+
+  it "returns false no matter if the argument range includes RUBY_VERSION" do
+    BugGuard.new("#1", '1.8'...'1.9').match?.should == false
+    BugGuard.new("#1", '1.8.5'...'1.8.7').match?.should == false
+    BugGuard.new("#1", '1.8.4'...'1.8.6').match?.should == false
   end
 
   it "returns false when MSpec.mode?(:no_ruby_bug) is true" do

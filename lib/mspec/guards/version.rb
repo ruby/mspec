@@ -14,6 +14,8 @@ class VersionGuard < SpecGuard
         MSpec.deprecate "ruby_version_is with an inclusive range", 'an exclusive range ("2.1"..."2.3")'
       end
       @version = version.exclude_end? ? a...b : a..b
+    else
+      raise "version must be a String or Range but was a #{version.class}"
     end
     self.parameters = [version]
   end
