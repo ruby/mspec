@@ -75,6 +75,7 @@ describe BugGuard, "#match? when #implementation? is not 'ruby'" do
   end
 
   before :each do
+    hide_deprecation_warnings
     @ruby_version = Object.const_get :RUBY_VERSION
     @ruby_name = Object.const_get :RUBY_NAME
 
@@ -114,6 +115,7 @@ end
 
 describe Object, "#ruby_bug" do
   before :each do
+    hide_deprecation_warnings
     @guard = BugGuard.new "#1234", "x.x.x"
     BugGuard.stub(:new).and_return(@guard)
     ScratchPad.clear

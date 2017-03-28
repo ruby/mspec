@@ -4,6 +4,7 @@ class BugGuard < VersionGuard
   def initialize(bug, version)
     @bug = bug
     if String === version
+      MSpec.deprecate "ruby_bug with a single version", 'an exclusive range ("2.1"..."2.3")'
       @version = SpecVersion.new version, true
     else
       super(version)
