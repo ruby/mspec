@@ -96,7 +96,8 @@ class MSpecMain < MSpecScript
     formatter = MultiFormatter.new
 
     output_files = []
-    children = cores.times.map { |i|
+    processes = [cores, @files.size].min
+    children = processes.times.map { |i|
       name = tmp "mspec-multi-#{i}"
       output_files << name
 
