@@ -131,13 +131,16 @@ class MSpecMain < MSpecScript
       }
     end
 
+    ok = true
     children.each { |child|
       child.puts "QUIT"
       Process.wait(child.pid)
+      ok &&= $?.success?
     }
 
     formatter.aggregate_results(output_files)
     formatter.finish
+    ok
   end
 
   def run
@@ -151,7 +154,7 @@ class MSpecMain < MSpecScript
     argv.concat config[:options]
 
     if config[:multi]
-      multi_exec argv
+      exit multi_exec(argv)
     else
       $stderr.puts "$ #{argv.join(' ')}"
       exec *argv
