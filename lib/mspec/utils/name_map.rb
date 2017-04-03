@@ -57,14 +57,10 @@ class NameMap
   EXCLUDED = %w[
     MSpecScript
     MkSpec
-    FileUtils
     MSpecOption
     MSpecOptions
     NameMap
-    OptionParser
-    RbConfig
     SpecVersion
-    YAML
   ]
 
   def initialize(filter=false)
