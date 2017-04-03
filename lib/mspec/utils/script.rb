@@ -1,5 +1,4 @@
 require 'mspec/guards/guard'
-require 'etc'
 
 # MSpecScript provides a skeleton for all the MSpec runner scripts.
 
@@ -228,6 +227,7 @@ class MSpecScript
   end
 
   def cores
+    require 'etc'
     Etc.nprocessors
   end
 
