@@ -1,15 +1,9 @@
 require 'mspec/guards/guard'
 
 class Object
-  def windows_env_echo(var)
-    platform_is_not :opal do
-      `cmd.exe /C ECHO %#{var}%`.strip
-    end
-  end
-
   def username
     if PlatformGuard.windows?
-      windows_env_echo('USERNAME')
+      ENV['USERNAME']
     elsif PlatformGuard.opal?
       ""
     else
@@ -19,7 +13,7 @@ class Object
 
   def home_directory
     if PlatformGuard.windows?
-      path = windows_env_echo('HOMEDRIVE') + windows_env_echo('HOMEPATH')
+      path = ENV['HOMEDRIVE'] + ENV['HOMEPATH']
       path.tr('\\', '/').chomp('/')
     else
       ENV['HOME']

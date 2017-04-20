@@ -13,7 +13,7 @@ describe "#username" do
 
   it "calls `cmd.exe /C ECHO %USERNAME%` on Windows" do
     PlatformGuard.stub(:windows?).and_return(true)
-    should_receive(:`).with("cmd.exe /C ECHO %USERNAME%").and_return("john")
+    ENV.should_receive(:[]).with("USERNAME").and_return("john")
     username
   end
 
@@ -26,7 +26,7 @@ describe "#username" do
 
   it "returns the user's username on Windows" do
     PlatformGuard.stub(:windows?).and_return(true)
-    should_receive(:`).with("cmd.exe /C ECHO %USERNAME%").and_return("johnonwin")
+    ENV.should_receive(:[]).with("USERNAME").and_return("johnonwin")
     username.should == "johnonwin"
   end
 
