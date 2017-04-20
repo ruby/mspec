@@ -1,16 +1,6 @@
 require 'mspec/guards/guard'
 
 class Object
-  def env
-    if PlatformGuard.windows?
-      Hash[*`cmd.exe /C set`.split("\n").map { |e| e.split("=", 2) }.flatten]
-    elsif PlatformGuard.opal?
-      {}
-    else
-      Hash[*`env`.split("\n").map { |e| e.split("=", 2) }.flatten]
-    end
-  end
-
   def windows_env_echo(var)
     platform_is_not :opal do
       `cmd.exe /C ECHO %#{var}%`.strip

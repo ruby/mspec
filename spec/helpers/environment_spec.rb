@@ -2,38 +2,6 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe "#env" do
-  it "returns a hash of variables" do
-    env.class.should == Hash
-  end
-
-  it "calls `env` on non-Windows" do
-    PlatformGuard.stub(:windows?).and_return(false)
-    PlatformGuard.stub(:opal?).and_return(false)
-    should_receive(:`).with("env").and_return("one=two\nthree=four")
-    env
-  end
-
-  it "calls `cmd.exe /C set` on Windows" do
-    PlatformGuard.stub(:windows?).and_return(true)
-    should_receive(:`).with("cmd.exe /C set").and_return("one=two\nthree=four")
-    env
-  end
-
-  it "returns the current user's environment variables on non-Windows, non-Opal platforms" do
-    PlatformGuard.stub(:windows?).and_return(false)
-    PlatformGuard.stub(:opal?).and_return(false)
-    should_receive(:`).with("env").and_return("one=two\nthree=four")
-    env.should == {"one" => "two", "three" => "four"}
-  end
-
-  it "returns the current user's environment variables on Windows" do
-    PlatformGuard.stub(:windows?).and_return(true)
-    should_receive(:`).with("cmd.exe /C set").and_return("five=six\nseven=eight")
-    env.should == {"five" => "six", "seven" => "eight"}
-  end
-end
-
 describe "#username" do
   before(:all) do
     @ruby_platform = Object.const_get :RUBY_PLATFORM
