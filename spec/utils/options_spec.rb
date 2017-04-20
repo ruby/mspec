@@ -554,16 +554,6 @@ describe "The -t, --target TARGET option" do
     end
   end
 
-  it "sets the target to 'ruby1.9' with TARGET 'r19', 'ruby19' or 'ruby1.9'" do
-    ["-t", "--target"].each do |opt|
-      ["r19", "ruby19"].each do |t|
-        @config[:target] = nil
-        @options.parse [opt, t]
-        @config[:target].should == "ruby1.9"
-      end
-    end
-  end
-
   it "sets the target to 'jruby' with TARGET 'j' or 'jruby'" do
     ["-t", "--target"].each do |opt|
       ["j", "jruby"].each do |t|
