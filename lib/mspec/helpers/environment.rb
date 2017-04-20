@@ -1,16 +1,6 @@
 require 'mspec/guards/guard'
 
 class Object
-  def username
-    if PlatformGuard.windows?
-      ENV['USERNAME']
-    elsif PlatformGuard.opal?
-      ""
-    else
-      `whoami`.strip
-    end
-  end
-
   def home_directory
     if PlatformGuard.windows?
       path = ENV['HOMEDRIVE'] + ENV['HOMEPATH']
