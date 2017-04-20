@@ -6,7 +6,7 @@ class PlatformGuard < SpecGuard
   end
 
   def self.opal?
-    PlatformGuard.new(:opal)
+    PlatformGuard.new(:opal).match?
   end
 
   def initialize(*args)
