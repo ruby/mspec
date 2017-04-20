@@ -104,25 +104,11 @@ class SpecGuard
 
   def implementation?(*args)
     args.any? do |name|
-      !!case name
+      case name
       when :rubinius
-        RUBY_NAME =~ /^rbx/
-      when :ruby
-        RUBY_NAME =~ /^ruby/
-      when :jruby
-        RUBY_NAME =~ /^jruby/
-      when :truffleruby
-        RUBY_NAME =~ /^truffleruby/
-      when :ironruby
-        RUBY_NAME =~ /^ironruby/
-      when :macruby
-        RUBY_NAME =~ /^macruby/
-      when :maglev
-        RUBY_NAME =~ /^maglev/
-      when :topaz
-        RUBY_NAME =~ /^topaz/
-      when :opal
-        RUBY_NAME =~ /^opal/
+        RUBY_NAME.start_with?('rbx')
+      when :ruby, :jruby, :truffleruby, :ironruby, :macruby, :maglev, :topaz, :opal
+        RUBY_NAME.start_with?(name.to_s)
       else
         raise "unknown implementation #{name}"
       end
