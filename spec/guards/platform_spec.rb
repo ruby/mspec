@@ -8,14 +8,14 @@ describe Object, "#platform_is" do
     ScratchPad.clear
   end
 
-  it "does not yield when #platform? returns false" do
-    PlatformGuard.stub(:platform?).and_return(false)
+  it "does not yield when #os? returns false" do
+    PlatformGuard.stub(:os?).and_return(false)
     platform_is(:ruby) { ScratchPad.record :yield }
     ScratchPad.recorded.should_not == :yield
   end
 
-  it "yields when #platform? returns true" do
-    PlatformGuard.stub(:platform?).and_return(true)
+  it "yields when #os? returns true" do
+    PlatformGuard.stub(:os?).and_return(true)
     platform_is(:solarce) { ScratchPad.record :yield }
     ScratchPad.recorded.should == :yield
   end
@@ -41,14 +41,14 @@ describe Object, "#platform_is_not" do
     ScratchPad.clear
   end
 
-  it "does not yield when #platform? returns true" do
-    PlatformGuard.stub(:platform?).and_return(true)
+  it "does not yield when #os? returns true" do
+    PlatformGuard.stub(:os?).and_return(true)
     platform_is_not(:ruby) { ScratchPad.record :yield }
     ScratchPad.recorded.should_not == :yield
   end
 
-  it "yields when #platform? returns false" do
-    PlatformGuard.stub(:platform?).and_return(false)
+  it "yields when #os? returns false" do
+    PlatformGuard.stub(:os?).and_return(false)
     platform_is_not(:solarce) { ScratchPad.record :yield }
     ScratchPad.recorded.should == :yield
   end
@@ -70,7 +70,7 @@ end
 describe Object, "#platform_is :wordsize => SIZE_SPEC" do
   before :each do
     @guard = PlatformGuard.new :darwin, :wordsize => 32
-    PlatformGuard.stub(:platform?).and_return(true)
+    PlatformGuard.stub(:os?).and_return(true)
     PlatformGuard.stub(:new).and_return(@guard)
     ScratchPad.clear
   end
@@ -91,7 +91,7 @@ end
 describe Object, "#platform_is_not :wordsize => SIZE_SPEC" do
   before :each do
     @guard = PlatformGuard.new :darwin, :wordsize => 32
-    PlatformGuard.stub(:platform?).and_return(true)
+    PlatformGuard.stub(:os?).and_return(true)
     PlatformGuard.stub(:new).and_return(@guard)
     ScratchPad.clear
   end
@@ -188,63 +188,59 @@ describe PlatformGuard, ".standard?" do
   end
 end
 
-describe PlatformGuard, ".platform?" do
-  before :all do
-    @verbose = $VERBOSE
-    $VERBOSE = nil
+describe PlatformGuard, ".wordsize?" do
+  it "returns true when arg is 32 and 1.size is 4" do
+    PlatformGuard.wordsize?(32).should == (1.size == 4)
   end
 
-  after :all do
-    $VERBOSE = @verbose
-  end
-
-  before :each do
-    @ruby_platform = Object.const_get :RUBY_PLATFORM
-    Object.const_set :RUBY_PLATFORM, 'solarce'
-  end
-
-  after :each do
-    Object.const_set :RUBY_PLATFORM, @ruby_platform
-  end
-
-  it "returns false when arg does not match RUBY_PLATFORM" do
-    PlatformGuard.platform?(:ruby).should == false
-  end
-
-  it "returns false when no arg matches RUBY_PLATFORM" do
-    PlatformGuard.platform?(:ruby, :jruby, :rubinius, :maglev).should == false
-  end
-
-  it "returns true when arg matches RUBY_PLATFORM" do
-    PlatformGuard.platform?(:solarce).should == true
-  end
-
-  it "returns true when any arg matches RUBY_PLATFORM" do
-    PlatformGuard.platform?(:ruby, :jruby, :solarce, :rubinius, :maglev).should == true
-  end
-
-  it "returns true when arg is :windows and RUBY_PLATFORM contains 'mswin'" do
-    Object.const_set :RUBY_PLATFORM, 'i386-mswin32'
-    PlatformGuard.platform?(:windows).should == true
-  end
-
-  it "returns true when arg is :windows and RUBY_PLATFORM contains 'mingw'" do
-    Object.const_set :RUBY_PLATFORM, 'i386-mingw32'
-    PlatformGuard.platform?(:windows).should == true
-  end
-
-  it "returns false when arg is not :windows and RbConfig::CONFIG['host_os'] contains 'mswin'" do
-    Object.const_set :RUBY_PLATFORM, 'i386-mswin32'
-    PlatformGuard.platform?(:linux).should == false
-  end
-
-  it "returns false when arg is not :windows and RbConfig::CONFIG['host_os'] contains 'mingw'" do
-    Object.const_set :RUBY_PLATFORM, 'i386-mingw32'
-    PlatformGuard.platform?(:linux).should == false
+  it "returns true when arg is 64 and 1.size is 8" do
+    PlatformGuard.wordsize?(64).should == (1.size == 8)
   end
 end
 
-describe PlatformGuard, ".platform? on JRuby" do
+describe PlatformGuard, ".os?" do
+  before :each do
+    stub_const 'PlatformGuard::HOST_OS', 'solarce'
+  end
+
+  it "returns false when arg does not match the platform" do
+    PlatformGuard.os?(:ruby).should == false
+  end
+
+  it "returns false when no arg matches the platform" do
+    PlatformGuard.os?(:ruby, :jruby, :rubinius, :maglev).should == false
+  end
+
+  it "returns true when arg matches the platform" do
+    PlatformGuard.os?(:solarce).should == true
+  end
+
+  it "returns true when any arg matches the platform" do
+    PlatformGuard.os?(:ruby, :jruby, :solarce, :rubinius, :maglev).should == true
+  end
+
+  it "returns true when arg is :windows and the platform contains 'mswin'" do
+    stub_const 'PlatformGuard::HOST_OS', 'mswin32'
+    PlatformGuard.os?(:windows).should == true
+  end
+
+  it "returns true when arg is :windows and the platform contains 'mingw'" do
+    stub_const 'PlatformGuard::HOST_OS', 'i386-mingw32'
+    PlatformGuard.os?(:windows).should == true
+  end
+
+  it "returns false when arg is not :windows and RbConfig::CONFIG['host_os'] contains 'mswin'" do
+    stub_const 'PlatformGuard::HOST_OS', 'i386-mswin32'
+    PlatformGuard.os?(:linux).should == false
+  end
+
+  it "returns false when arg is not :windows and RbConfig::CONFIG['host_os'] contains 'mingw'" do
+    stub_const 'PlatformGuard::HOST_OS', 'i386-mingw32'
+    PlatformGuard.os?(:linux).should == false
+  end
+end
+
+describe PlatformGuard, ".os? on JRuby" do
   before :all do
     @verbose = $VERBOSE
     $VERBOSE = nil
@@ -263,28 +259,20 @@ describe PlatformGuard, ".platform? on JRuby" do
     Object.const_set :RUBY_PLATFORM, @ruby_platform
   end
 
-  it "returns true when arg is :java and RUBY_PLATFORM contains 'java'" do
-    PlatformGuard.platform?(:java).should == true
+  it "raises an error when testing for a :java platform" do
+    lambda {
+      PlatformGuard.os?(:java)
+    }.should raise_error(":java is not a valid OS")
   end
 
   it "returns true when arg is :windows and RUBY_PLATFORM contains 'java' and os?(:windows) is true" do
     stub_const 'PlatformGuard::HOST_OS', 'mswin32'
-    PlatformGuard.platform?(:windows).should == true
+    PlatformGuard.os?(:windows).should == true
   end
 
   it "returns true when RUBY_PLATFORM contains 'java' and os?(argument) is true" do
     stub_const 'PlatformGuard::HOST_OS', 'amiga'
-    PlatformGuard.platform?(:amiga).should == true
-  end
-end
-
-describe PlatformGuard, ".wordsize?" do
-  it "returns true when arg is 32 and 1.size is 4" do
-    PlatformGuard.wordsize?(32).should == (1.size == 4)
-  end
-
-  it "returns true when arg is 64 and 1.size is 8" do
-    PlatformGuard.wordsize?(64).should == (1.size == 8)
+    PlatformGuard.os?(:amiga).should == true
   end
 end
 

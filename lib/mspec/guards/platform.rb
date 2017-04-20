@@ -27,6 +27,7 @@ class PlatformGuard < SpecGuard
 
   def self.os?(*oses)
     oses.any? do |os|
+      raise ":java is not a valid OS" if os == :java
       if os == :windows
         HOST_OS =~ /(mswin|mingw)/
       else
@@ -37,17 +38,6 @@ class PlatformGuard < SpecGuard
 
   def self.windows?
     os?(:windows)
-  end
-
-  def self.platform?(*args)
-    args.any? do |platform|
-      if platform != :java && RUBY_PLATFORM.include?('java') && os?(platform)
-        true
-      else
-        RUBY_PLATFORM.match(platform.to_s) ||
-          (platform == :windows && RUBY_PLATFORM =~ /(mswin|mingw)/)
-      end
-    end
   end
 
   def self.wordsize?(size)
@@ -64,7 +54,7 @@ class PlatformGuard < SpecGuard
   end
 
   def match?
-    match = @platforms.empty? ? true : PlatformGuard.platform?(*@platforms)
+    match = @platforms.empty? ? true : PlatformGuard.os?(*@platforms)
     @options.each do |key, value|
       case key
       when :os
