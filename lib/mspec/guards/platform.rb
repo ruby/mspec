@@ -27,8 +27,11 @@ class PlatformGuard < SpecGuard
 
   def self.os?(*oses)
     oses.any? do |os|
-      HOST_OS.match(os.to_s) ||
-        (os == :windows && HOST_OS =~ /(mswin|mingw)/)
+      if os == :windows
+        HOST_OS =~ /(mswin|mingw)/
+      else
+        HOST_OS.include?(os.to_s)
+      end
     end
   end
 
