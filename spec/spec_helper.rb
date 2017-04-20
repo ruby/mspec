@@ -43,7 +43,7 @@ end
 def run_mspec(command, args)
   cwd = Dir.pwd
   command = " #{command}" unless command.start_with?('-')
-  cmd = "bin/mspec#{command} -B spec/fixtures/config.mspec #{args}"
+  cmd = "#{cwd}/bin/mspec#{command} -B spec/fixtures/config.mspec #{args}"
   out = `#{cmd} 2>&1`
   ret = $?
   out = out.sub(/\A\$.+\n/, '') # Remove printed command line

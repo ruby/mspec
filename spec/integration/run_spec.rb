@@ -32,6 +32,13 @@ EOS
     ret.success?.should == false
   end
 
+  it "directly with mspec-run runs the specs" do
+    fixtures = "spec/fixtures"
+    out, ret = run_mspec("-run", "#{fixtures}/a_spec.rb")
+    out.should == "RUBY_DESCRIPTION\n.FE\n#{a_spec_output}\n#{a_stats}"
+    ret.success?.should == false
+  end
+
   it "runs the specs in parallel with -j" do
     fixtures = "spec/fixtures"
     out, ret = run_mspec("run", "-j #{fixtures}/a_spec.rb #{fixtures}/b_spec.rb")
