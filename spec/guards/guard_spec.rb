@@ -165,9 +165,11 @@ describe SpecGuard, "#implementation?" do
     @guard.implementation?(:ruby).should == true
   end
 
-  it "returns false when passed an unrecognized name" do
+  it "raises an error when passed an unrecognized name" do
     Object.const_set :RUBY_NAME, 'ruby'
-    @guard.implementation?(:python).should == false
+    lambda {
+      @guard.implementation?(:python)
+    }.should raise_error(/unknown implementation/)
   end
 end
 

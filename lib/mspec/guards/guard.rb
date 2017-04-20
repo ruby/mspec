@@ -124,7 +124,7 @@ class SpecGuard
       when :opal
         RUBY_NAME =~ /^opal/
       else
-        false
+        raise "unknown implementation #{name}"
       end
     end
   end
