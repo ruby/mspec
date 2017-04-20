@@ -55,7 +55,7 @@ class SpecGuard
   attr_accessor :name, :parameters
 
   def initialize(*args)
-    self.parameters = @args = args
+    @parameters = args
   end
 
   def yield?(invert=false)

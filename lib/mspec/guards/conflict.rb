@@ -4,7 +4,7 @@ class ConflictsGuard < SpecGuard
   def match?
     # Always convert constants to symbols regardless of version.
     constants = Object.constants.map { |x| x.to_sym }
-    @args.any? { |mod| constants.include? mod }
+    @parameters.any? { |mod| constants.include? mod }
   end
 end
 

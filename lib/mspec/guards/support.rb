@@ -2,10 +2,10 @@ require 'mspec/guards/guard'
 
 class SupportedGuard < SpecGuard
   def match?
-    if @args.include? :ruby
+    if @parameters.include? :ruby
       raise Exception, "improper use of not_supported_on guard"
     end
-    standard? or !implementation?(*@args)
+    standard? or !implementation?(*@parameters)
   end
 end
 
