@@ -14,7 +14,7 @@ class BugGuard < VersionGuard
 
   def match?
     return false if MSpec.mode? :no_ruby_bug
-    return false unless standard?
+    return false unless PlatformGuard.standard?
     if Range === @version
       super
     else

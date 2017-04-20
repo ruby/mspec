@@ -102,54 +102,6 @@ class SpecGuard
     MSpec.unregister :add, self
   end
 
-  def implementation?(*args)
-    args.any? do |name|
-      case name
-      when :rubinius
-        RUBY_NAME.start_with?('rbx')
-      when :ruby, :jruby, :truffleruby, :ironruby, :macruby, :maglev, :topaz, :opal
-        RUBY_NAME.start_with?(name.to_s)
-      else
-        raise "unknown implementation #{name}"
-      end
-    end
-  end
-
-  def standard?
-    implementation? :ruby
-  end
-
-  def windows?(sym, key)
-    sym == :windows && !key.match(/(mswin|mingw)/).nil?
-  end
-
-  def platform?(*args)
-    args.any? do |platform|
-      if platform != :java && RUBY_PLATFORM.match('java') && os?(platform)
-        true
-      else
-        RUBY_PLATFORM.match(platform.to_s) || windows?(platform, RUBY_PLATFORM)
-      end
-    end
-  end
-
-  def wordsize?(size)
-    size == 8 * 1.size
-  end
-
-  HOST_OS = begin
-    require 'rbconfig'
-    RbConfig::CONFIG['host_os'] || RUBY_PLATFORM
-  rescue LoadError
-    RUBY_PLATFORM
-  end.downcase
-
-  def os?(*oses)
-    oses.any? do |os|
-      HOST_OS.match(os.to_s) || windows?(os, HOST_OS)
-    end
-  end
-
   def match?
     raise "must be implemented by the subclass"
   end

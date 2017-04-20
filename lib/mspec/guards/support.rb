@@ -1,11 +1,11 @@
-require 'mspec/guards/guard'
+require 'mspec/guards/platform'
 
 class SupportedGuard < SpecGuard
   def match?
     if @parameters.include? :ruby
       raise Exception, "improper use of not_supported_on guard"
     end
-    standard? or !implementation?(*@parameters)
+    PlatformGuard.standard? or !PlatformGuard.implementation?(*@parameters)
   end
 end
 
