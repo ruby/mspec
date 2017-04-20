@@ -109,7 +109,7 @@ module MSpec
   end
 
   def self.guarded?
-    not @guarded.empty?
+    !@guarded.empty?
   end
 
   # Sets the toplevel ContextState to +state+.

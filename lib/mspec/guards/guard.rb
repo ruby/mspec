@@ -63,7 +63,7 @@ class SpecGuard
 
     allow = match? ^ invert
 
-    if not allow and reporting?
+    if !allow and reporting?
       MSpec.guard
       MSpec.register :finish, SpecGuard
       MSpec.register :add,    self

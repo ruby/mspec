@@ -261,7 +261,7 @@ class ContextState
       MSpec.actions :tagged, ex
     end
 
-    not @examples.empty?
+    !@examples.empty?
   end
 
   # Evaluates the examples in a +ContextState+. Invokes the MSpec events
@@ -285,7 +285,7 @@ class ContextState
               if example
                 passed = protect nil, example
                 MSpec.actions :example, state, example
-                protect nil, @expectation_missing unless MSpec.expectation? or not passed
+                protect nil, @expectation_missing unless MSpec.expectation? or !passed
               end
             end
             protect "after :each", post(:each)

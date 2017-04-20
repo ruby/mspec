@@ -136,7 +136,7 @@ class Object
       end
 
       escape = opts.delete(:escape)
-      if code and not File.exist?(code) and escape != false
+      if code and !File.exist?(code) and escape != false
         tmpfile = tmp("rubyexe.rb")
         File.open(tmpfile, "w") { |f| f.write(code) }
         code = tmpfile
@@ -164,7 +164,7 @@ class Object
       raise "escape: true is no longer supported in ruby_cmd, use ruby_exe or a fixture"
     end
 
-    if code and not File.exist?(code)
+    if code and !File.exist?(code)
       body = "-e #{code.inspect}"
     end
 

@@ -145,7 +145,7 @@ class MSpecOptions
 
       # process first option
       option = process argv, entry, opt, arg
-      next unless option and not option.arg?
+      next unless option and !option.arg?
 
       # process the rest of the options
       while rest.size > 0
