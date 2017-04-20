@@ -9,7 +9,7 @@ class BugGuard < VersionGuard
     else
       super(version)
     end
-    self.parameters = [@bug, @version]
+    @parameters = [@bug, @version]
   end
 
   def match?

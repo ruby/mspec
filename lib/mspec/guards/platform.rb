@@ -11,7 +11,7 @@ class PlatformGuard < SpecGuard
     else
       @options, @platforms = {}, args
     end
-    self.parameters = args
+    @parameters = args
   end
 
   def match?

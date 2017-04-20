@@ -18,7 +18,7 @@ class VersionGuard < SpecGuard
     else
       raise "version must be a String or Range but was a #{version.class}"
     end
-    self.parameters = [version]
+    @parameters = [version]
   end
 
   def ruby_version

@@ -52,7 +52,7 @@ class SpecGuard
     RUBY_VERSION.split('.')[0,n].join('.')
   end
 
-  attr_accessor :name, :parameters
+  attr_accessor :name
 
   def initialize(*args)
     @parameters = args
@@ -85,7 +85,7 @@ class SpecGuard
   end
 
   def report_key
-    "#{name} #{parameters.join(", ")}"
+    "#{name} #{@parameters.join(", ")}"
   end
 
   def record(description)
