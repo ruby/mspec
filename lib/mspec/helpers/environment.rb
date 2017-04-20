@@ -10,14 +10,6 @@ class Object
     end
   end
 
-  def dev_null
-    if PlatformGuard.windows?
-      "NUL"
-    else
-      "/dev/null"
-    end
-  end
-
   def hostname
     commands = ['hostname', 'uname -n']
     commands.each do |command|
