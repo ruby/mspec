@@ -5,10 +5,6 @@ class PlatformGuard < SpecGuard
     PlatformGuard.new(:os => :windows).match?
   end
 
-  def self.opal?
-    PlatformGuard.new(:opal).match?
-  end
-
   def initialize(*args)
     if args.last.is_a?(Hash)
       @options, @platforms = args.last, args[0..-2]
