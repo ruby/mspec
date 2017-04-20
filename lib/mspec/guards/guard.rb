@@ -165,6 +165,6 @@ class SpecGuard
   end
 
   def match?
-    implementation?(*@args) or platform?(*@args)
+    raise "must be implemented by the subclass"
   end
 end

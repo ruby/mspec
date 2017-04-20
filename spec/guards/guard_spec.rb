@@ -41,6 +41,7 @@ describe SpecGuard, "#yield?" do
   before :each do
     MSpec.clear_modes
     @guard = SpecGuard.new
+    @guard.stub(:match?).and_return(false)
   end
 
   after :each do
@@ -359,23 +360,12 @@ end
 describe SpecGuard, "#match?" do
   before :each do
     @guard = SpecGuard.new
-    SpecGuard.stub(:new).and_return(@guard)
   end
 
-  it "returns true if #platform? or #implementation? return true" do
-    @guard.stub(:implementation?).and_return(true)
-    @guard.stub(:platform?).and_return(false)
-    @guard.match?.should == true
-
-    @guard.stub(:implementation?).and_return(false)
-    @guard.stub(:platform?).and_return(true)
-    @guard.match?.should == true
-  end
-
-  it "returns false if #platform? and #implementation? return false" do
-    @guard.stub(:implementation?).and_return(false)
-    @guard.stub(:platform?).and_return(false)
-    @guard.match?.should == false
+  it "must be implemented in subclasses" do
+    lambda {
+      @guard.match?
+    }.should raise_error("must be implemented by the subclass")
   end
 end
 
