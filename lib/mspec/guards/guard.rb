@@ -58,7 +58,7 @@ class SpecGuard
     @parameters = args
   end
 
-  def yield?(invert=false)
+  def yield?(invert = false)
     return true if MSpec.mode? :unguarded
 
     allow = match? ^ invert
@@ -73,6 +73,20 @@ class SpecGuard
     end
 
     allow
+  end
+
+  def run_if(name, &block)
+    @name = name
+    yield if yield?(false)
+  ensure
+    unregister
+  end
+
+  def run_unless(name, &block)
+    @name = name
+    yield if yield?(true)
+  ensure
+    unregister
   end
 
   def reporting?

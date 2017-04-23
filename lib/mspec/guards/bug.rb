@@ -24,11 +24,7 @@ class BugGuard < VersionGuard
 end
 
 class Object
-  def ruby_bug(bug, version)
-    g = BugGuard.new bug, version
-    g.name = :ruby_bug
-    yield if g.yield? true
-  ensure
-    g.unregister
+  def ruby_bug(bug, version, &block)
+    BugGuard.new(bug, version).run_unless(:ruby_bug, &block)
   end
 end

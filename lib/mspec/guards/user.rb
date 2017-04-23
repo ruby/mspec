@@ -7,11 +7,7 @@ class UserGuard < SpecGuard
 end
 
 class Object
-  def as_user
-    g = UserGuard.new
-    g.name = :as_user
-    yield if g.yield?
-  ensure
-    g.unregister
+  def as_user(&block)
+    UserGuard.new.run_if(:as_user, &block)
   end
 end

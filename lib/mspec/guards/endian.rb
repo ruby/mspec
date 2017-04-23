@@ -23,19 +23,11 @@ class LittleEndianGuard < EndianGuard
 end
 
 class Object
-  def big_endian
-    g = BigEndianGuard.new
-    g.name = :big_endian
-    yield if g.yield?
-  ensure
-    g.unregister
+  def big_endian(&block)
+    BigEndianGuard.new.run_if(:big_endian, &block)
   end
 
-  def little_endian
-    g = LittleEndianGuard.new
-    g.name = :little_endian
-    yield if g.yield?
-  ensure
-    g.unregister
+  def little_endian(&block)
+    LittleEndianGuard.new.run_if(:little_endian, &block)
   end
 end

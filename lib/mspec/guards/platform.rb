@@ -68,19 +68,11 @@ class PlatformGuard < SpecGuard
 end
 
 class Object
-  def platform_is(*args)
-    g = PlatformGuard.new(*args)
-    g.name = :platform_is
-    yield if g.yield?
-  ensure
-    g.unregister
+  def platform_is(*args, &block)
+    PlatformGuard.new(*args).run_if(:platform_is, &block)
   end
 
-  def platform_is_not(*args)
-    g = PlatformGuard.new(*args)
-    g.name = :platform_is_not
-    yield if g.yield? true
-  ensure
-    g.unregister
+  def platform_is_not(*args, &block)
+    PlatformGuard.new(*args).run_unless(:platform_is_not, &block)
   end
 end
