@@ -1,7 +1,6 @@
 require 'mspec/helpers/argf'
 require 'mspec/helpers/argv'
 require 'mspec/helpers/datetime'
-require 'mspec/helpers/encode'
 require 'mspec/helpers/fixture'
 require 'mspec/helpers/flunk'
 require 'mspec/helpers/fs'
