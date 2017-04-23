@@ -3,6 +3,8 @@ require 'mspec/utils/version'
 require 'mspec/guards/guard'
 
 class VersionGuard < SpecGuard
+  FULL_RUBY_VERSION = SpecVersion.new SpecGuard.ruby_version(:full)
+
   def initialize(version)
     case version
     when String
@@ -21,15 +23,11 @@ class VersionGuard < SpecGuard
     @parameters = [version]
   end
 
-  def ruby_version
-    @ruby_version ||= SpecVersion.new self.class.ruby_version(:full)
-  end
-
   def match?
     if Range === @version
-      @version.include? ruby_version
+      @version.include? FULL_RUBY_VERSION
     else
-      ruby_version >= @version
+      FULL_RUBY_VERSION >= @version
     end
   end
 end

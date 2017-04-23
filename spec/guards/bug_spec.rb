@@ -13,15 +13,12 @@ describe BugGuard, "#match? when #implementation? is 'ruby'" do
 
   before :each do
     hide_deprecation_warnings
-    @ruby_version = Object.const_get :RUBY_VERSION
+    stub_const "VersionGuard::FULL_RUBY_VERSION", SpecVersion.new('1.8.6')
     @ruby_name = Object.const_get :RUBY_NAME
-
-    Object.const_set :RUBY_VERSION, '1.8.6'
     Object.const_set :RUBY_NAME, 'ruby'
   end
 
   after :each do
-    Object.const_set :RUBY_VERSION, @ruby_version
     Object.const_set :RUBY_NAME, @ruby_name
   end
 

@@ -18,7 +18,7 @@ class BugGuard < VersionGuard
     if Range === @version
       super
     else
-      ruby_version <= @version
+      FULL_RUBY_VERSION <= @version
     end
   end
 end
