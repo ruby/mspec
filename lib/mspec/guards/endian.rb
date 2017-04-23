@@ -16,18 +16,12 @@ class BigEndianGuard < EndianGuard
   end
 end
 
-class LittleEndianGuard < EndianGuard
-  def match?
-    pattern[-1] == ?\000
-  end
-end
-
 class Object
   def big_endian(&block)
     BigEndianGuard.new.run_if(:big_endian, &block)
   end
 
   def little_endian(&block)
-    LittleEndianGuard.new.run_if(:little_endian, &block)
+    BigEndianGuard.new.run_unless(:little_endian, &block)
   end
 end
