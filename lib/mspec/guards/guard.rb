@@ -75,10 +75,6 @@ class SpecGuard
     allow
   end
 
-  def ===(other)
-    true
-  end
-
   def reporting?
     MSpec.mode?(:report) or
       (MSpec.mode?(:report_on) and SpecGuard.guards.include?(name))

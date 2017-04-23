@@ -98,13 +98,6 @@ describe SpecGuard, "#yield?" do
   end
 end
 
-describe SpecGuard, "#===" do
-  it "returns true" do
-    anything = double("anything")
-    SpecGuard.new.===(anything).should == true
-  end
-end
-
 describe SpecGuard, "#match?" do
   before :each do
     @guard = SpecGuard.new
