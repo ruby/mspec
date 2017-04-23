@@ -43,9 +43,9 @@ EOS
     fixtures = "spec/fixtures"
     out, ret = run_mspec("run", "-j #{fixtures}/a_spec.rb #{fixtures}/b_spec.rb")
     progress_bar =
-      "\r[/ |                   0%                     | 00:00:00] \e[0;32m     0F \e[0;32m     0E\e[0m" +
-      "\r[- | ==================50%                    | 00:00:00] \e[0;32m     0F \e[0;32m     0E\e[0m" +
-      "\r[\\ | ==================100%================== | 00:00:00] \e[0;32m     0F \e[0;32m     0E\e[0m"
+      "\r[/ |                   0%                     | 00:00:00] \e[0;32m     0F \e[0;32m     0E\e[0m " +
+      "\r[- | ==================50%                    | 00:00:00] \e[0;32m     0F \e[0;32m     0E\e[0m " +
+      "\r[\\ | ==================100%================== | 00:00:00] \e[0;32m     0F \e[0;32m     0E\e[0m "
     out.should == "RUBY_DESCRIPTION\n#{progress_bar}\n#{a_spec_output}\n#{ab_stats}"
     ret.success?.should == false
   end
