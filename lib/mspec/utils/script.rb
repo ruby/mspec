@@ -1,4 +1,5 @@
 require 'mspec/guards/guard'
+require 'mspec/utils/warnings'
 
 # MSpecScript provides a skeleton for all the MSpec runner scripts.
 
@@ -246,7 +247,6 @@ class MSpecScript
   # Instantiates an instance and calls the series of methods to
   # invoke the script.
   def self.main
-    $VERBOSE = nil unless ENV['OUTPUT_WARNINGS']
     script = new
     script.load_default
     script.try_load '~/.mspecrc'
