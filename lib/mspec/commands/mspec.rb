@@ -95,6 +95,20 @@ class MSpecMain < MSpecScript
     require 'mspec/runner/formatters/multi'
     formatter = MultiFormatter.new
 
+    cores = cores()
+    if /(?:\A|\s)--jobserver-(?:auth|fds)=(\d+),(\d+)/ =~ ENV["MAKEFLAGS"]
+      begin
+        r = IO.for_fd($1.to_i(10), "rb", autoclose: false)
+        w = IO.for_fd($2.to_i(10), "wb", autoclose: false)
+      rescue
+        r.close if r
+        nil
+      else
+        jobserver = [r, w]
+        jobtokens = r.read_nonblock(1024)
+        cores = jobtokens.size
+      end
+    end
     output_files = []
     processes = [cores, @files.size].min
     children = processes.times.map { |i|
@@ -141,6 +155,11 @@ class MSpecMain < MSpecScript
     formatter.aggregate_results(output_files)
     formatter.finish
     ok
+  ensure
+    if jobserver
+      jobserver[1].print(jobtokens)
+      jobserver.each(&:close)
+    end
   end
 
   def run
