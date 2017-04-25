@@ -51,6 +51,7 @@ class MSpecScript
     config[:astrings]  = []
     config[:ltags]     = []
     config[:abort]     = true
+    @loaded = []
   end
 
   # Returns the config object maintained by the instance's class.
@@ -71,7 +72,13 @@ class MSpecScript
     names.each do |name|
       config[:path].each do |dir|
         file = File.expand_path name, dir
-        return Kernel.load(file) if File.exist? file
+        if @loaded.include?(file)
+          return true
+        elsif File.exist? file
+          value = Kernel.load(file)
+          @loaded << file
+          return value
+        end
       end
     end
 
