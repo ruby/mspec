@@ -5,10 +5,10 @@ if RUBY_ENGINE == "ruby" and RUBY_VERSION >= "2.4.0"
     # Kernel#warn does not delegate to Warning.warn in 2.4
     module Kernel
       def warn(*messages)
-        return if messages.empty?
+        return if $VERBOSE == nil or messages.empty?
         msg = messages.join("\n")
         msg += "\n" unless msg.end_with?("\n")
-        Warning.warn(msg) unless $VERBOSE == nil
+        Warning.warn(msg)
       end
       private :warn
     end
