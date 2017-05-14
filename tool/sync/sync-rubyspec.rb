@@ -35,13 +35,13 @@ def branch?(name)
 end
 
 def update_repo(info)
-  repo_name = File.basename(info[:git], ".git")
+  info[:repo_name] = File.basename(info[:git], ".git")
 
-  unless File.directory? repo_name
+  unless File.directory? info[:repo_name]
     sh "git", "clone", info[:git]
   end
 
-  Dir.chdir(repo_name) do
+  Dir.chdir(info[:repo_name]) do
     puts Dir.pwd
 
     sh "git", "checkout", (info[:master] || "master")
@@ -50,9 +50,7 @@ def update_repo(info)
 end
 
 def filter_commits(impl, info)
-  repo_name = File.basename(info[:git], ".git")
-
-  Dir.chdir(repo_name) do
+  Dir.chdir(info[:repo_name]) do
     date = NOW.strftime("%F")
     branch = "specs-#{date}"
 
@@ -118,12 +116,41 @@ def test_new_specs
   end
 end
 
+def verify_commits(info)
+  puts
+  Dir.chdir(RUBYSPEC_REPO) do
+    history = `git log master...`
+    history.lines.slice_before(/^commit \h{40}$/).each do |commit, *message|
+      commit = commit.chomp.split.last
+      message = message.join
+      if /\W(#\d+)/ === message
+        puts "Commit #{commit} contains an unqualified issue number: #{$1}"
+        github_org = File.basename(File.dirname(info[:git]))
+        puts "Replace it with #{github_org}/#{info[:repo_name]}#{$1}"
+        sh "git", "rebase", "-i", "#{commit}^"
+      end
+    end
+
+    puts "Manually check commit messages:"
+    sh "git", "log", "master..."
+  end
+end
+
+def fast_forward_master(impl)
+  Dir.chdir(RUBYSPEC_REPO) do
+    sh "git", "checkout", "master"
+    sh "git", "merge", "--ff-only", "#{impl}-rebased"
+  end
+end
+
 def main(impls)
   impls.each_pair do |impl, info|
     update_repo(info)
     filter_commits(impl, info)
     rebase_commits(impl, info)
     test_new_specs
+    verify_commits(info)
+    fast_forward_master(impl)
   end
 end
 
