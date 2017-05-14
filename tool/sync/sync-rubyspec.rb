@@ -23,6 +23,43 @@ raise RUBYSPEC_REPO unless Dir.exist?(RUBYSPEC_REPO)
 
 NOW = Time.now
 
+class RubyImplementation
+  attr_reader :name
+
+  def initialize(name, data)
+    @name = name.to_s
+    @data = data
+  end
+
+  def git_url
+    @data[:git]
+  end
+
+  def default_branch
+    @data[:branch] || "master"
+  end
+
+  def repo_name
+    File.basename(git_url, ".git")
+  end
+
+  def repo_org
+    File.basename(File.dirname(git_url))
+  end
+
+  def from_commit
+    from = @data[:from_commit] && "#{from}..."
+  end
+
+  def prefix
+    @data[:prefix] || "spec/ruby"
+  end
+
+  def rebased_branch
+    "#{@name}-rebased"
+  end
+end
+
 def sh(*args)
   puts args.join(' ')
   system(*args)
@@ -34,51 +71,44 @@ def branch?(name)
   branches.include?(name)
 end
 
-def update_repo(info)
-  info[:repo_name] = File.basename(info[:git], ".git")
-
-  unless File.directory? info[:repo_name]
-    sh "git", "clone", info[:git]
+def update_repo(impl)
+  unless File.directory? impl.repo_name
+    sh "git", "clone", impl.git_url
   end
 
-  Dir.chdir(info[:repo_name]) do
+  Dir.chdir(impl.repo_name) do
     puts Dir.pwd
 
-    sh "git", "checkout", (info[:master] || "master")
+    sh "git", "checkout", impl.default_branch
     sh "git", "pull"
   end
 end
 
-def filter_commits(impl, info)
-  Dir.chdir(info[:repo_name]) do
+def filter_commits(impl)
+  Dir.chdir(impl.repo_name) do
     date = NOW.strftime("%F")
     branch = "specs-#{date}"
 
     unless branch?(branch)
       sh "git", "checkout", "-b", branch
-
-      from_commit = info[:from_commit]
-      from_commit = "#{from_commit}..." if from_commit
-      prefix = info[:prefix] || "spec/ruby"
-      sh "git", "filter-branch", "-f", "--subdirectory-filter", prefix, *from_commit
-
-      sh "git", "push", "-f", RUBYSPEC_REPO, "#{branch}:#{impl}"
+      sh "git", "filter-branch", "-f", "--subdirectory-filter", impl.prefix, *impl.from_commit
+      sh "git", "push", "-f", RUBYSPEC_REPO, "#{branch}:#{impl.name}"
     end
   end
 end
 
-def rebase_commits(impl, info)
+def rebase_commits(impl)
   Dir.chdir(RUBYSPEC_REPO) do
     sh "git", "checkout", "master"
     sh "git", "pull"
 
-    rebased = "#{impl}-rebased"
+    rebased = impl.rebased_branch
     if branch?(rebased)
       puts "#{rebased} already exists, assuming it correct"
       sh "git", "checkout", rebased
     else
       sh "git", "branch", "-D", rebased if branch?(rebased)
-      sh "git", "checkout", "-b", rebased, impl.to_s
+      sh "git", "checkout", "-b", rebased, impl.name
 
       last_merge = `git log --grep='Merge ruby/spec commit' -n 1 --format='%H %ct'`
       last_merge, commit_timestamp = last_merge.chomp.split(' ')
@@ -116,7 +146,7 @@ def test_new_specs
   end
 end
 
-def verify_commits(info)
+def verify_commits(impl)
   puts
   Dir.chdir(RUBYSPEC_REPO) do
     history = `git log master...`
@@ -125,8 +155,7 @@ def verify_commits(info)
       message = message.join
       if /\W(#\d+)/ === message
         puts "Commit #{commit} contains an unqualified issue number: #{$1}"
-        github_org = File.basename(File.dirname(info[:git]))
-        puts "Replace it with #{github_org}/#{info[:repo_name]}#{$1}"
+        puts "Replace it with #{impl.repo_org}/#{impl.repo_name}#{$1}"
         sh "git", "rebase", "-i", "#{commit}^"
       end
     end
@@ -139,18 +168,28 @@ end
 def fast_forward_master(impl)
   Dir.chdir(RUBYSPEC_REPO) do
     sh "git", "checkout", "master"
-    sh "git", "merge", "--ff-only", "#{impl}-rebased"
+    sh "git", "merge", "--ff-only", "#{impl.name}-rebased"
   end
 end
 
+def check_ci
+  puts
+  puts <<-EOS
+  Push to master, and check that the CI passes:
+    https://github.com/ruby/spec/commits/master
+  EOS
+end
+
 def main(impls)
-  impls.each_pair do |impl, info|
-    update_repo(info)
-    filter_commits(impl, info)
-    rebase_commits(impl, info)
-    test_new_specs
-    verify_commits(info)
+  impls.each_pair do |impl, data|
+    impl = RubyImplementation.new(impl, data)
+    update_repo(impl)
+    filter_commits(impl)
+    rebase_commits(impl)
+    # test_new_specs
+    verify_commits(impl)
     fast_forward_master(impl)
+    check_ci
   end
 end
 
