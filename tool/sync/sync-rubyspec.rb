@@ -36,7 +36,7 @@ class RubyImplementation
   end
 
   def default_branch
-    @data[:branch] || "master"
+    @data[:master] || "master"
   end
 
   def repo_name
@@ -48,7 +48,8 @@ class RubyImplementation
   end
 
   def from_commit
-    from = @data[:from_commit] && "#{from}..."
+    from = @data[:from_commit]
+    "#{from}..." if from
   end
 
   def prefix
@@ -107,10 +108,13 @@ def rebase_commits(impl)
       puts "#{rebased} already exists, assuming it correct"
       sh "git", "checkout", rebased
     else
-      sh "git", "branch", "-D", rebased if branch?(rebased)
-      sh "git", "checkout", "-b", rebased, impl.name
+      sh "git", "checkout", impl.name
 
-      last_merge = `git log --grep='Merge ruby/spec commit' -n 1 --format='%H %ct'`
+      if ENV["LAST_MERGE"]
+        last_merge = `git log -n 1 --format='%H %ct' #{ENV["LAST_MERGE"]}`
+      else
+        last_merge = `git log --grep='Merge ruby/spec commit' -n 1 --format='%H %ct'`
+      end
       last_merge, commit_timestamp = last_merge.chomp.split(' ')
 
       raise "Could not find last merge" unless last_merge
@@ -123,6 +127,8 @@ def rebase_commits(impl)
       end
 
       puts "Rebasing..."
+      sh "git", "branch", "-D", rebased if branch?(rebased)
+      sh "git", "checkout", "-b", rebased, impl.name
       sh "git", "rebase", "--onto", "master", last_merge
     end
   end
@@ -186,7 +192,7 @@ def main(impls)
     update_repo(impl)
     filter_commits(impl)
     rebase_commits(impl)
-    # test_new_specs
+    test_new_specs
     verify_commits(impl)
     fast_forward_master(impl)
     check_ci
