@@ -190,6 +190,7 @@ def check_ci
   puts <<-EOS
   Push to master, and check that the CI passes:
     https://github.com/ruby/spec/commits/master
+
   EOS
 end
 
