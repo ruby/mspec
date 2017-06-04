@@ -4,6 +4,10 @@ require 'mspec/helpers'
 require 'rbconfig'
 
 class RubyExeSpecs
+  public :ruby_exe_options
+  public :resolve_ruby_exe
+  public :ruby_cmd
+  public :ruby_exe
 end
 
 describe "#ruby_exe_options" do
