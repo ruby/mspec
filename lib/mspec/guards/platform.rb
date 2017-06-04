@@ -67,12 +67,10 @@ class PlatformGuard < SpecGuard
   end
 end
 
-class Object
-  def platform_is(*args, &block)
-    PlatformGuard.new(*args).run_if(:platform_is, &block)
-  end
+def platform_is(*args, &block)
+  PlatformGuard.new(*args).run_if(:platform_is, &block)
+end
 
-  def platform_is_not(*args, &block)
-    PlatformGuard.new(*args).run_unless(:platform_is_not, &block)
-  end
+def platform_is_not(*args, &block)
+  PlatformGuard.new(*args).run_unless(:platform_is_not, &block)
 end
