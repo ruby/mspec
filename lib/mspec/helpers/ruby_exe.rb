@@ -1,4 +1,3 @@
-require 'mspec/utils/ruby_name'
 require 'mspec/guards/platform'
 require 'mspec/helpers/tmp'
 
@@ -46,8 +45,8 @@ require 'mspec/helpers/tmp'
 # constructed as follows:
 #
 #   1. the value of ENV['RUBY_EXE']
-#   2. an explicit value based on RUBY_NAME
-#   3. cwd/(RUBY_NAME + $(EXEEXT) || $(exeext) || '')
+#   2. an explicit value based on RUBY_ENGINE
+#   3. cwd/(RUBY_ENGINE + $(EXEEXT) || $(exeext) || '')
 #   4. $(bindir)/$(RUBY_INSTALL_NAME)
 #
 # The value will only be used if the file exists and is executable.
@@ -64,8 +63,7 @@ require 'mspec/helpers/tmp'
 #   2. Running the specs while developing an alternative
 #      Ruby implementation. This explicitly names the
 #      executable in the development directory based on
-#      the value of RUBY_NAME, which is probably initialized
-#      from the value of RUBY_ENGINE.
+#      the value of RUBY_ENGINE.
 #   3. Running the specs within the source directory for
 #      some implementation. (E.g. a local build directory.)
 #   4. Running the specs against some installed Ruby
@@ -81,7 +79,7 @@ def ruby_exe_options(option)
   when :env
     ENV['RUBY_EXE']
   when :engine
-    case RUBY_NAME
+    case RUBY_ENGINE
     when 'rbx'
       "bin/rbx"
     when 'jruby'
@@ -95,7 +93,7 @@ def ruby_exe_options(option)
     end
   when :name
     require 'rbconfig'
-    bin = RUBY_NAME + (RbConfig::CONFIG['EXEEXT'] || RbConfig::CONFIG['exeext'] || '')
+    bin = RUBY_ENGINE + (RbConfig::CONFIG['EXEEXT'] || RbConfig::CONFIG['exeext'] || '')
     File.join(".", bin)
   when :install_name
     require 'rbconfig'
