@@ -118,7 +118,7 @@ def rebase_commits(impl)
       if ENV["LAST_MERGE"]
         last_merge = `git log -n 1 --format='%H %ct' #{ENV["LAST_MERGE"]}`
       else
-        last_merge = `git log --grep='#{impl.last_merge_message}' -n 1 --format='%H %ct'`
+        last_merge = `git log --grep='^#{impl.last_merge_message}' -n 1 --format='%H %ct'`
       end
       last_merge, commit_timestamp = last_merge.chomp.split(' ')
 
