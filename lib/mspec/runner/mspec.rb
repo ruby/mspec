@@ -55,8 +55,13 @@ module MSpec
       STDOUT.flush
       while (file = STDIN.gets.chomp) != "QUIT"
         yield file
-        STDOUT.print "."
-        STDOUT.flush
+        begin
+          STDOUT.print "."
+          STDOUT.flush
+        rescue Errno::EPIPE
+          # The parent died
+          exit 1
+        end
       end
     else
       return unless files = retrieve(:files)
