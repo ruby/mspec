@@ -133,17 +133,17 @@ class MSpecMain < MSpecScript
       }
     end
 
-    ok = true
+    success = true
     children.each { |child|
       child.puts "QUIT"
       pid, status = Process.wait2(child.pid)
-      ok &&= status.success?
+      success &&= status.success?
       child.close
     }
 
     formatter.aggregate_results(output_files)
     formatter.finish
-    ok
+    success
   end
 
   def run
