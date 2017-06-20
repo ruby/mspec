@@ -114,6 +114,7 @@ class MSpecMain < MSpecScript
 
     puts children.map { |child| child.gets }.uniq
     formatter.start
+    last_files = {}
 
     until @files.empty?
       IO.select(children)[0].each { |io|
@@ -127,9 +128,19 @@ class MSpecMain < MSpecScript
           while chunk = (io.read_nonblock(4096) rescue nil)
             reply += chunk
           end
-          raise reply.inspect
+          reply.chomp!('.')
+          msg = "A child mspec-run process printed unexpected output on STDOUT"
+          if last_file = last_files[io]
+            msg += " while running #{last_file}"
+          end
+          abort "\n#{msg}: #{reply.inspect}"
         end
-        io.puts @files.shift unless @files.empty?
+
+        unless @files.empty?
+          file = @files.shift
+          last_files[io] = file
+          io.puts file
+        end
       }
     end
 
