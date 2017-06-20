@@ -138,6 +138,7 @@ class MSpecMain < MSpecScript
       child.puts "QUIT"
       Process.wait(child.pid)
       ok &&= $?.success?
+      child.close
     }
 
     formatter.aggregate_results(output_files)
