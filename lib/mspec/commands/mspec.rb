@@ -153,7 +153,7 @@ class MSpecMain < MSpecScript
     argv.concat config[:flags]
     argv.concat config[:loadpath]
     argv.concat config[:requires]
-    argv << "#{MSPEC_HOME}/bin/mspec-#{ config[:command] || "run" }"
+    argv << "#{MSPEC_HOME}/bin/mspec-#{config[:command] || 'run'}"
     argv.concat config[:options]
 
     if config[:multi]
