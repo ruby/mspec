@@ -53,7 +53,8 @@ module MSpec
     if ENV["MSPEC_MULTI"]
       STDOUT.print "."
       STDOUT.flush
-      while (file = STDIN.gets.chomp) != "QUIT"
+      while file = STDIN.gets and file = file.chomp
+        return if file == "QUIT"
         yield file
         begin
           STDOUT.print "."
@@ -63,6 +64,8 @@ module MSpec
           exit 1
         end
       end
+      # The parent closed the connection without QUIT
+      abort "the parent did not send QUIT"
     else
       return unless files = retrieve(:files)
       shuffle files if randomize?
