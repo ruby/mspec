@@ -127,7 +127,7 @@ class MSpecMain < MSpecScript
           while chunk = (io.read_nonblock(4096) rescue nil)
             reply += chunk
           end
-          raise reply
+          raise reply.inspect
         end
         io.puts @files.shift unless @files.empty?
       }
