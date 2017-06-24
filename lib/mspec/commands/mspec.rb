@@ -171,7 +171,7 @@ class MSpecMain < MSpecScript
       exit multi_exec(argv)
     else
       $stderr.puts "$ #{argv.join(' ')}"
-      exec(*argv)
+      exec(*argv, close_others: false)
     end
   end
 end
