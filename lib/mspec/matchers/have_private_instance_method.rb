@@ -17,7 +17,7 @@ class HavePrivateInstanceMethodMatcher < MethodMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def have_private_instance_method(method, include_super=true)
     HavePrivateInstanceMethodMatcher.new method, include_super
   end

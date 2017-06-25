@@ -1,4 +1,6 @@
 class SpecEvaluate
+  include MSpecMatchers
+
   def self.desc=(desc)
     @desc = desc
   end

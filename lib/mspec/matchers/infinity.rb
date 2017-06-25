@@ -17,7 +17,7 @@ class InfinityMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def be_positive_infinity
     InfinityMatcher.new(1)
   end

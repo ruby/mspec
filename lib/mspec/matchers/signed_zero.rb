@@ -17,7 +17,7 @@ class SignedZeroMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def be_positive_zero
     SignedZeroMatcher.new(1)
   end

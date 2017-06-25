@@ -5,7 +5,7 @@ class HaveInstanceVariableMatcher < VariableMatcher
   self.description      = 'instance variable'
 end
 
-class Object
+module MSpecMatchers
   def have_instance_variable(variable)
     HaveInstanceVariableMatcher.new(variable)
   end

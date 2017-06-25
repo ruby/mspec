@@ -24,7 +24,7 @@ class IncludeMatcher
 end
 
 # Cannot override #include at the toplevel in MRI
-module MSpec
+module MSpecMatchers
   def include(*expected)
     IncludeMatcher.new(*expected)
   end

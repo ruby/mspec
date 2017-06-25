@@ -72,7 +72,7 @@ class RaiseErrorMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def raise_error(exception=Exception, message=nil, &block)
     RaiseErrorMatcher.new(exception, message, &block)
   end

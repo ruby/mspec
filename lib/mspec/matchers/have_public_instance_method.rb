@@ -17,7 +17,7 @@ class HavePublicInstanceMethodMatcher < MethodMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def have_public_instance_method(method, include_super=true)
     HavePublicInstanceMethodMatcher.new method, include_super
   end

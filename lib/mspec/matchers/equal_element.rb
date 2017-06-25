@@ -71,7 +71,7 @@ class EqualElementMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def equal_element(*args)
     EqualElementMatcher.new(*args)
   end

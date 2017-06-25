@@ -86,6 +86,7 @@ module MSpec
   def self.setup_env
     @env = Object.new
     @env.extend MSpec
+    @env.extend MSpecMatchers
   end
 
   def self.actions(action, *args)

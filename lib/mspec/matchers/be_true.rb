@@ -13,7 +13,7 @@ class BeTrueMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def be_true
     BeTrueMatcher.new
   end

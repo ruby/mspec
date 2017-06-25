@@ -17,7 +17,7 @@ class BeKindOfMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def be_kind_of(expected)
     BeKindOfMatcher.new(expected)
   end

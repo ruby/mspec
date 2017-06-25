@@ -49,7 +49,7 @@ class ComplainMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def complain(complaint=nil)
     ComplainMatcher.new(complaint)
   end

@@ -13,7 +13,7 @@ class BeEmptyMatcher
   end
 end
 
-class Object
+module MSpecMatchers
   def be_empty
     BeEmptyMatcher.new
   end
