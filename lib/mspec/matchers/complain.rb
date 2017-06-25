@@ -50,7 +50,7 @@ class ComplainMatcher
 end
 
 module MSpecMatchers
-  def complain(complaint=nil)
+  private def complain(complaint=nil)
     ComplainMatcher.new(complaint)
   end
 end

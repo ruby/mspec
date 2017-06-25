@@ -18,11 +18,11 @@ class SignedZeroMatcher
 end
 
 module MSpecMatchers
-  def be_positive_zero
+  private def be_positive_zero
     SignedZeroMatcher.new(1)
   end
 
-  def be_negative_zero
+  private def be_negative_zero
     SignedZeroMatcher.new(-1)
   end
 end

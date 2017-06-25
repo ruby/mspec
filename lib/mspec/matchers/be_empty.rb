@@ -14,7 +14,7 @@ class BeEmptyMatcher
 end
 
 module MSpecMatchers
-  def be_empty
+  private def be_empty
     BeEmptyMatcher.new
   end
 end

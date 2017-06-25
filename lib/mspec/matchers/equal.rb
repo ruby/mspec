@@ -20,7 +20,7 @@ class EqualMatcher
 end
 
 module MSpecMatchers
-  def equal(expected)
+  private def equal(expected)
     EqualMatcher.new(expected)
   end
 end

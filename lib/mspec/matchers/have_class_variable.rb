@@ -6,7 +6,7 @@ class HaveClassVariableMatcher < VariableMatcher
 end
 
 module MSpecMatchers
-  def have_class_variable(variable)
+  private def have_class_variable(variable)
     HaveClassVariableMatcher.new(variable)
   end
 end

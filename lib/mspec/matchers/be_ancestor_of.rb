@@ -18,7 +18,7 @@ class BeAncestorOfMatcher
 end
 
 module MSpecMatchers
-  def be_ancestor_of(expected)
+  private def be_ancestor_of(expected)
     BeAncestorOfMatcher.new(expected)
   end
 end

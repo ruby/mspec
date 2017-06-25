@@ -6,7 +6,7 @@ class HaveConstantMatcher < VariableMatcher
 end
 
 module MSpecMatchers
-  def have_constant(variable)
+  private def have_constant(variable)
     HaveConstantMatcher.new(variable)
   end
 end

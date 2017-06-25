@@ -14,7 +14,7 @@ class BeNilMatcher
 end
 
 module MSpecMatchers
-  def be_nil
+  private def be_nil
     BeNilMatcher.new
   end
 end

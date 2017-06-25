@@ -72,7 +72,7 @@ class EqualElementMatcher
 end
 
 module MSpecMatchers
-  def equal_element(*args)
+  private def equal_element(*args)
     EqualElementMatcher.new(*args)
   end
 end

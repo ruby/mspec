@@ -29,7 +29,7 @@ class BlockingMatcher
 end
 
 module MSpecMatchers
-  def block_caller(timeout = 0.1)
+  private def block_caller(timeout = 0.1)
     BlockingMatcher.new
   end
 end

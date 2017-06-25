@@ -25,7 +25,7 @@ end
 
 # Cannot override #include at the toplevel in MRI
 module MSpecMatchers
-  def include(*expected)
+  private def include(*expected)
     IncludeMatcher.new(*expected)
   end
   module_function :include

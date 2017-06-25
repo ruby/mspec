@@ -40,7 +40,7 @@ class MatchYAMLMatcher
 end
 
 module MSpecMatchers
-  def match_yaml(expected)
+  private def match_yaml(expected)
     MatchYAMLMatcher.new(expected)
   end
 end

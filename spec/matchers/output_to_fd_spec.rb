@@ -24,7 +24,7 @@ describe OutputToFDMatcher do
   it "defaults to matching against STDOUT" do
     object = Object.new
     object.extend MSpecMatchers
-    object.output_to_fd("Hi\n").matches?(lambda { $stdout.print "Hi\n" }).should == true
+    object.send(:output_to_fd, "Hi\n").matches?(lambda { $stdout.print "Hi\n" }).should == true
   end
 
   it "accepts any IO instance" do

@@ -14,7 +14,7 @@ class BeFalseMatcher
 end
 
 module MSpecMatchers
-  def be_false
+  private def be_false
     BeFalseMatcher.new
   end
 end

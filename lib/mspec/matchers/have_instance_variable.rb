@@ -6,7 +6,7 @@ class HaveInstanceVariableMatcher < VariableMatcher
 end
 
 module MSpecMatchers
-  def have_instance_variable(variable)
+  private def have_instance_variable(variable)
     HaveInstanceVariableMatcher.new(variable)
   end
 end

@@ -14,7 +14,7 @@ class BeNaNMatcher
 end
 
 module MSpecMatchers
-  def be_nan
+  private def be_nan
     BeNaNMatcher.new
   end
 end

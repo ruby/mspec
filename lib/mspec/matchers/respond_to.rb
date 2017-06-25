@@ -18,7 +18,7 @@ class RespondToMatcher
 end
 
 module MSpecMatchers
-  def respond_to(expected)
+  private def respond_to(expected)
     RespondToMatcher.new(expected)
   end
 end

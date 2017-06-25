@@ -20,7 +20,7 @@ class EqlMatcher
 end
 
 module MSpecMatchers
-  def eql(expected)
+  private def eql(expected)
     EqlMatcher.new(expected)
   end
 end
