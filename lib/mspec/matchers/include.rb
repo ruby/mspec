@@ -28,5 +28,4 @@ module MSpecMatchers
   private def include(*expected)
     IncludeMatcher.new(*expected)
   end
-  module_function :include
 end
