@@ -49,8 +49,6 @@ class SpecEvaluate
   end
 end
 
-class Object
-  def evaluate(str, desc=nil, &block)
-    SpecEvaluate.new(str, desc).define(&block)
-  end
+def evaluate(str, desc=nil, &block)
+  SpecEvaluate.new(str, desc).define(&block)
 end
