@@ -138,12 +138,15 @@ describe Object, "#ruby_cmd" do
 end
 
 describe Object, "#ruby_exe" do
-  before :all do
+  before :each do
+    stub_const 'RUBY_EXE', 'ruby_spec_exe -w -Q'
+
     @script = RubyExeSpecs.new
+    @script.stub(:`)
   end
 
-  before :each do
-    @script.stub(:`)
+  it "returns an Array containing the interpreter executable and flags when given no arguments" do
+    @script.ruby_exe.should == ['ruby_spec_exe', '-w', '-Q']
   end
 
   it "executes (using `) the result of calling #ruby_cmd with the given arguments" do
