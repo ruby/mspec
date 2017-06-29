@@ -147,7 +147,7 @@ class MSpecMain < MSpecScript
     success = true
     children.each { |child|
       child.puts "QUIT"
-      pid, status = Process.wait2(child.pid)
+      _pid, status = Process.wait2(child.pid)
       success &&= status.success?
       child.close
     }
