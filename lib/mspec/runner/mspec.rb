@@ -399,4 +399,7 @@ module MSpec
     file = tags_file
     File.delete file if File.exist? file
   end
+
+  # Initialize @env
+  setup_env
 end
