@@ -178,3 +178,39 @@ SomeClass#reverse returns false
 ]
   end
 end
+
+describe SpecGuard, ".run_if" do
+  before :each do
+    @guard = SpecGuard.new
+    ScratchPad.clear
+  end
+
+  it "yields if match? returns true" do
+    @guard.stub(:match?).and_return(true)
+    @guard.run_if(:name) { ScratchPad.record :yield }
+    ScratchPad.recorded.should == :yield
+  end
+
+  it "does not yield if match? returns false" do
+    @guard.stub(:match?).and_return(false)
+    @guard.run_if(:name) { fail }
+  end
+end
+
+describe SpecGuard, ".run_unless" do
+  before :each do
+    @guard = SpecGuard.new
+    ScratchPad.clear
+  end
+
+  it "yields if match? returns false" do
+    @guard.stub(:match?).and_return(false)
+    @guard.run_unless(:name) { ScratchPad.record :yield }
+    ScratchPad.recorded.should == :yield
+  end
+
+  it "does not yield if match? returns true" do
+    @guard.stub(:match?).and_return(true)
+    @guard.run_unless(:name) { fail }
+  end
+end
