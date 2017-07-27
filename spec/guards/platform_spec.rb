@@ -110,66 +110,49 @@ describe Object, "#platform_is_not :wordsize => SIZE_SPEC" do
 end
 
 describe PlatformGuard, ".implementation?" do
-  before :all do
-    @verbose = $VERBOSE
-    $VERBOSE = nil
-  end
-
-  after :all do
-    $VERBOSE = @verbose
-  end
-
-  before :each do
-    @ruby_engine = Object.const_get :RUBY_ENGINE
-  end
-
-  after :each do
-    Object.const_set :RUBY_ENGINE, @ruby_engine
-  end
-
   it "returns true if passed :ruby and RUBY_ENGINE == 'ruby'" do
-    Object.const_set :RUBY_ENGINE, 'ruby'
+    stub_const 'RUBY_ENGINE', 'ruby'
     PlatformGuard.implementation?(:ruby).should == true
   end
 
   it "returns true if passed :rubinius and RUBY_ENGINE == 'rbx'" do
-    Object.const_set :RUBY_ENGINE, 'rbx'
+    stub_const 'RUBY_ENGINE', 'rbx'
     PlatformGuard.implementation?(:rubinius).should == true
   end
 
   it "returns true if passed :jruby and RUBY_ENGINE == 'jruby'" do
-    Object.const_set :RUBY_ENGINE, 'jruby'
+    stub_const 'RUBY_ENGINE', 'jruby'
     PlatformGuard.implementation?(:jruby).should == true
   end
 
   it "returns true if passed :ironruby and RUBY_ENGINE == 'ironruby'" do
-    Object.const_set :RUBY_ENGINE, 'ironruby'
+    stub_const 'RUBY_ENGINE', 'ironruby'
     PlatformGuard.implementation?(:ironruby).should == true
   end
 
   it "returns true if passed :maglev and RUBY_ENGINE == 'maglev'" do
-    Object.const_set :RUBY_ENGINE, 'maglev'
+    stub_const 'RUBY_ENGINE', 'maglev'
     PlatformGuard.implementation?(:maglev).should == true
   end
 
   it "returns true if passed :topaz and RUBY_ENGINE == 'topaz'" do
-    Object.const_set :RUBY_ENGINE, 'topaz'
+    stub_const 'RUBY_ENGINE', 'topaz'
     PlatformGuard.implementation?(:topaz).should == true
   end
 
   it "returns true if passed :ruby and RUBY_ENGINE matches /^ruby/" do
-    Object.const_set :RUBY_ENGINE, 'ruby'
+    stub_const 'RUBY_ENGINE', 'ruby'
     PlatformGuard.implementation?(:ruby).should == true
 
-    Object.const_set :RUBY_ENGINE, 'ruby1.8'
+    stub_const 'RUBY_ENGINE', 'ruby1.8'
     PlatformGuard.implementation?(:ruby).should == true
 
-    Object.const_set :RUBY_ENGINE, 'ruby1.9'
+    stub_const 'RUBY_ENGINE', 'ruby1.9'
     PlatformGuard.implementation?(:ruby).should == true
   end
 
   it "raises an error when passed an unrecognized name" do
-    Object.const_set :RUBY_ENGINE, 'ruby'
+    stub_const 'RUBY_ENGINE', 'ruby'
     lambda {
       PlatformGuard.implementation?(:python)
     }.should raise_error(/unknown implementation/)
