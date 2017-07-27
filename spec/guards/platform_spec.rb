@@ -20,6 +20,13 @@ describe Object, "#platform_is" do
     ScratchPad.recorded.should == :yield
   end
 
+  it "returns what #os? returns when no block is given" do
+    PlatformGuard.stub(:os?).and_return(true)
+    platform_is(:solarce).should == true
+    PlatformGuard.stub(:os?).and_return(false)
+    platform_is(:solarce).should == false
+  end
+
   it "sets the name of the guard to :platform_is" do
     platform_is(:solarce) { }
     @guard.name.should == :platform_is
@@ -51,6 +58,13 @@ describe Object, "#platform_is_not" do
     PlatformGuard.stub(:os?).and_return(false)
     platform_is_not(:solarce) { ScratchPad.record :yield }
     ScratchPad.recorded.should == :yield
+  end
+
+  it "returns the opposite of what #os? returns when no block is given" do
+    PlatformGuard.stub(:os?).and_return(true)
+    platform_is_not(:solarce).should == false
+    PlatformGuard.stub(:os?).and_return(false)
+    platform_is_not(:solarce).should == true
   end
 
   it "sets the name of the guard to :platform_is_not" do
