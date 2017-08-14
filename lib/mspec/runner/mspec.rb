@@ -2,6 +2,9 @@ require 'mspec/runner/context'
 require 'mspec/runner/exception'
 require 'mspec/runner/tag'
 
+module MSpec
+end
+
 class MSpecEnv
   include MSpec
 end
