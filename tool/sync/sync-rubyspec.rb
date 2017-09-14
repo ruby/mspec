@@ -148,7 +148,7 @@ def rebase_commits(impl)
       commit_date = Time.at(Integer(commit_timestamp))
       days_since_last_merge = (NOW-commit_date) / 86400
       if days_since_last_merge > 60
-        raise "#{days_since_last_merge} since last merge, probably wrong commit"
+        raise "#{days_since_last_merge.floor} days since last merge, probably wrong commit"
       end
 
       puts "Rebasing..."
