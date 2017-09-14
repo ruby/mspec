@@ -20,12 +20,12 @@ IMPLS = {
 
 MSPEC = ARGV.delete('--mspec')
 
-# Assuming the rubyspec repo is a sibling of the mspec repo
-RUBYSPEC_REPO = File.expand_path("../../../../rubyspec", __FILE__)
-raise RUBYSPEC_REPO unless Dir.exist?(RUBYSPEC_REPO)
+MSPEC_REPO = File.expand_path("../../..", __FILE__)
+raise MSPEC_REPO if !Dir.exist?(MSPEC_REPO) or !Dir.exist?("#{MSPEC_REPO}/.git")
 
-MSPEC_REPO = File.expand_path("../../../../mspec", __FILE__)
-raise MSPEC_REPO if MSPEC && !Dir.exist?(MSPEC_REPO)
+# Assuming the rubyspec repo is a sibling of the mspec repo
+RUBYSPEC_REPO = File.expand_path("../rubyspec", MSPEC_REPO)
+raise RUBYSPEC_REPO unless Dir.exist?(RUBYSPEC_REPO)
 
 SOURCE_REPO = MSPEC ? MSPEC_REPO : RUBYSPEC_REPO
 
