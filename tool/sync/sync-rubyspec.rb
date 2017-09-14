@@ -31,6 +31,7 @@ SOURCE_REPO = MSPEC ? MSPEC_REPO : RUBYSPEC_REPO
 
 NOW = Time.now
 
+BRIGHT_RED = "\e[31;1m"
 BRIGHT_YELLOW = "\e[33;1m"
 RESET = "\e[0m"
 
@@ -123,8 +124,14 @@ def rebase_commits(impl)
 
     rebased = impl.rebased_branch
     if branch?(rebased)
-      puts "#{BRIGHT_YELLOW}#{rebased} already exists, assuming it correct#{RESET}"
-      sh "git", "checkout", rebased
+      last_commit = Time.at(Integer(`git log -n 1 --format='%ct' #{rebased}`))
+      days_since_last_commit = (NOW-last_commit) / 86400
+      if days_since_last_commit > 7
+        abort "#{BRIGHT_RED}#{rebased} exists but last commit is old (#{last_commit}), delete the branch if it was merged#{RESET}"
+      else
+        puts "#{BRIGHT_YELLOW}#{rebased} already exists, last commit on #{last_commit}, assuming it correct#{RESET}"
+        sh "git", "checkout", rebased
+      end
     else
       sh "git", "checkout", impl.name
 
