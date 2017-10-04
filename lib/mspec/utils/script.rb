@@ -215,7 +215,9 @@ class MSpecScript
         files -= entries(item[1..-1])
       when ?:
         key = item[1..-1].to_sym
-        files += files(Array(config[key]))
+        value = config[key]
+        abort "Key #{item} not found in mspec config." unless value
+        files += files(Array(value))
       else
         files += entries(item)
       end
