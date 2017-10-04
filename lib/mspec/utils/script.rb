@@ -233,12 +233,10 @@ class MSpecScript
       if patterns.empty? and File.directory? "./spec"
         patterns = ["spec/"]
       end
-      if patterns.empty?
-        puts "No files specified."
-        exit 1
-      end
     end
-    files patterns
+    list = files(patterns)
+    abort "No files specified." if list.empty?
+    list
   end
 
   def cores(max)
