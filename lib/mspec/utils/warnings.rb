@@ -18,7 +18,13 @@ if RUBY_ENGINE == "ruby" and RUBY_VERSION >= "2.4.0"
   def Warning.warn(message)
     case message
     # $VERBOSE = true warnings
-    when /possibly useless use of (<|<=|==|>=|>|\+|-) in void context/
+    when /(.+\.rb):(\d+):.+possibly useless use of (<|<=|==|>=|>) in void context/
+      # Make sure there is a .should otherwise it is missing
+      line_nb = Integer($2)
+      unless File.exist?($1) and /\.should(_not)? (<|<=|==|>=|>)/ === File.readlines($1)[line_nb-1]
+        $stderr.write message
+      end
+    when /possibly useless use of (\+|-) in void context/
     when /assigned but unused variable/
     when /method redefined/
     when /previous definition of/
