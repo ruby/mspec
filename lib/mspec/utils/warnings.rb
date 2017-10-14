@@ -1,6 +1,6 @@
 require 'mspec/guards/version'
 
-if RUBY_ENGINE == "ruby" and RUBY_VERSION >= "2.4.0"
+if RUBY_ENGINE == "ruby" and ruby_version_is("2.4")
   ruby_version_is "2.4"..."2.5" do
     # Kernel#warn does not delegate to Warning.warn in 2.4
     module Kernel

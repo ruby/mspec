@@ -1,4 +1,5 @@
 require 'mspec/guards/guard'
+require 'mspec/guards/version'
 require 'mspec/utils/warnings'
 
 # MSpecScript provides a skeleton for all the MSpec runner scripts.
@@ -38,7 +39,7 @@ class MSpecScript
   end
 
   def initialize
-    if RUBY_VERSION < '2.2'
+    ruby_version_is ""..."2.2" do
       abort "MSpec needs Ruby 2.2 or more recent"
     end
 
