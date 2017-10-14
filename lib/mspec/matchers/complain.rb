@@ -9,21 +9,22 @@ class ComplainMatcher
     @saved_err = $stderr
     @verbose = $VERBOSE
 
-    @stderr = $stderr = IOStub.new
+    $stderr = IOStub.new
     $VERBOSE = false
 
     proc.call
 
+    @warning = $stderr.to_s
     unless @complaint.nil?
       case @complaint
       when Regexp
-        return false unless $stderr =~ @complaint
+        return false unless @warning =~ @complaint
       else
-        return false unless $stderr == @complaint
+        return false unless @warning == @complaint
       end
     end
 
-    return $stderr.empty? ? false : true
+    return @warning.empty? ? false : true
   ensure
     $VERBOSE = @verbose
     $stderr = @saved_err
@@ -33,19 +34,19 @@ class ComplainMatcher
     if @complaint.nil?
       ["Expected a warning", "but received none"]
     elsif @complaint.kind_of? Regexp
-      ["Expected warning to match: #{@complaint.inspect}", "but got: #{@stderr.chomp.inspect}"]
+      ["Expected warning to match: #{@complaint.inspect}", "but got: #{@warning.chomp.inspect}"]
     else
-      ["Expected warning: #{@complaint.inspect}", "but got: #{@stderr.chomp.inspect}"]
+      ["Expected warning: #{@complaint.inspect}", "but got: #{@warning.chomp.inspect}"]
     end
   end
 
   def negative_failure_message
     if @complaint.nil?
-      ["Unexpected warning: ", @stderr.chomp.inspect]
+      ["Unexpected warning: ", @warning.chomp.inspect]
     elsif @complaint.kind_of? Regexp
-      ["Expected warning not to match: #{@complaint.inspect}", "but got: #{@stderr.chomp.inspect}"]
+      ["Expected warning not to match: #{@complaint.inspect}", "but got: #{@warning.chomp.inspect}"]
     else
-      ["Expected warning: #{@complaint.inspect}", "but got: #{@stderr.chomp.inspect}"]
+      ["Expected warning: #{@complaint.inspect}", "but got: #{@warning.chomp.inspect}"]
     end
   end
 end
