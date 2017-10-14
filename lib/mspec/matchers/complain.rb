@@ -7,8 +7,9 @@ class ComplainMatcher
 
   def matches?(proc)
     @saved_err = $stderr
-    @stderr = $stderr = IOStub.new
     @verbose = $VERBOSE
+
+    @stderr = $stderr = IOStub.new
     $VERBOSE = false
 
     proc.call
