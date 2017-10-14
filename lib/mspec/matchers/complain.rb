@@ -8,13 +8,16 @@ class ComplainMatcher
   def matches?(proc)
     @saved_err = $stderr
     @verbose = $VERBOSE
+    begin
+      err = $stderr = IOStub.new
+      $VERBOSE = false
+      proc.call
+    ensure
+      $VERBOSE = @verbose
+      $stderr = @saved_err
+    end
 
-    $stderr = IOStub.new
-    $VERBOSE = false
-
-    proc.call
-
-    @warning = $stderr.to_s
+    @warning = err.to_s
     unless @complaint.nil?
       case @complaint
       when Regexp
@@ -25,9 +28,6 @@ class ComplainMatcher
     end
 
     return @warning.empty? ? false : true
-  ensure
-    $VERBOSE = @verbose
-    $stderr = @saved_err
   end
 
   def failure_message
