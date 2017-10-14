@@ -11,10 +11,12 @@ class ComplainMatcher
     begin
       err = $stderr = IOStub.new
       $VERBOSE = false
+      Thread.current[:in_mspec_complain_matcher] = true
       proc.call
     ensure
       $VERBOSE = @verbose
       $stderr = @saved_err
+      Thread.current[:in_mspec_complain_matcher] = false
     end
 
     @warning = err.to_s

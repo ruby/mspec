@@ -16,6 +16,10 @@ if RUBY_ENGINE == "ruby" and RUBY_VERSION >= "2.4.0"
   end
 
   def Warning.warn(message)
+    if Thread.current[:in_mspec_complain_matcher]
+      return $stderr.write(message)
+    end
+
     case message
     # $VERBOSE = true warnings
     when /(.+\.rb):(\d+):.+possibly useless use of (<|<=|==|>=|>) in void context/
