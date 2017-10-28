@@ -171,6 +171,7 @@ class MSpecMain < MSpecScript
       exit multi_exec(argv)
     else
       $stderr.puts "$ #{argv.join(' ')}"
+      $stderr.flush
       exec(*argv, close_others: false)
     end
   end
