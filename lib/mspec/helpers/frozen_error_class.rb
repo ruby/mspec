@@ -1,11 +1,15 @@
+require 'mspec/guards/version'
+
 # This helper makes it easy to write version independent
 # specs for frozen objects.
 unless respond_to? :frozen_error_class
-  if VersionGuard.new("2.5").match?
+  ruby_version_is "2.5" do
     def frozen_error_class
       FrozenError
     end
-  else
+  end
+
+  ruby_version_is ""..."2.5" do
     def frozen_error_class
       RuntimeError
     end
