@@ -3,6 +3,8 @@ language: ruby
 before_script:
   # https://github.com/travis-ci/travis-ci/issues/8408
   - unset _JAVA_OPTIONS
+  # https://github.com/travis-ci/travis-ci/issues/8978
+  - gem update --system
 script:
   - bundle exec rspec
 matrix:
