@@ -87,6 +87,10 @@ module Mock
     obj.instance_variable_get(:@name) || obj.inspect
   end
 
+  def self.inspect_args(args)
+    "(#{Array(args).map(&:inspect).join(', ')})"
+  end
+
   def self.verify_count
     mocks.each do |key, proxies|
       obj = objects[key]
@@ -106,7 +110,7 @@ module Mock
         end
         unless pass
           SpecExpectation.fail_with(
-            "Mock '#{name_or_inspect obj}' expected to receive '#{key.last}' " + \
+            "Mock '#{name_or_inspect obj}' expected to receive #{key.last}#{inspect_args proxy.arguments} " + \
             "#{qualifier.to_s.sub('_', ' ')} #{count} times",
             "but received it #{proxy.calls} times")
         end
@@ -166,7 +170,7 @@ module Mock
       mock_respond_to? obj, *args
     else
       SpecExpectation.fail_with("Mock '#{name_or_inspect obj}': method #{sym}\n",
-                            "called with unexpected arguments (#{Array(compare).join(' ')})")
+                            "called with unexpected arguments #{inspect_args compare}")
     end
   end
 
