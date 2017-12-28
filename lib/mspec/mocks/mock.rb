@@ -54,6 +54,11 @@ module Mock
     key = replaced_key obj, sym
     sym = sym.to_sym
 
+    if type == :stub and mocks.key?(key)
+      # Defining a stub and there is already a mock, ignore the stub
+      return
+    end
+
     if (sym == :respond_to? or mock_respond_to?(obj, sym, true)) and !replaced?(key.first)
       meta.__send__ :alias_method, key.first, sym
     end
@@ -71,6 +76,11 @@ module Mock
     if proxy.mock?
       MSpec.expectation
       MSpec.actions :expectation, MSpec.current.state
+    end
+
+    if proxy.mock? and stubs.key?(key)
+      # Defining a mock and there is already a stub, remove the stub
+      stubs.delete key
     end
 
     if proxy.stub?
@@ -124,7 +134,7 @@ module Mock
 
     key = replaced_key obj, sym
     [mocks, stubs].each do |proxies|
-      proxies[key].each do |proxy|
+      proxies.fetch(key, []).each do |proxy|
         pass = case proxy.arguments
         when :any_args
           true
