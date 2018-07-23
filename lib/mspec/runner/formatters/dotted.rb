@@ -27,8 +27,7 @@ class DottedFormatter
     (@timer = TimerAction.new).register
     (@tally = TallyAction.new).register
     LeakCheckerAction.new.register if ENV['CHECK_LEAKS']
-    ConstantsLeakLockAction.new.register unless ENV['CHECK_CONSTANTS_LEAKS']
-    ConstantsLeakCheckerAction.new.register if ENV['CHECK_CONSTANTS_LEAKS']
+    ConstantsLeakCheckerAction.new.register
     @counter = @tally.counter
 
     MSpec.register :exception, self
