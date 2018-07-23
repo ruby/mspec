@@ -1,26 +1,12 @@
-class ConstantsLeakChecker
-  attr_accessor :constants_new
-
-  def initialize
-    @constants_before = Module.constants
-  end
-
-  def check
-    @constants_after = Module.constants
-    @constants_new = @constants_after - @constants_before
-    @constants_new.empty?
-  end
-end
-
 class ConstantsLockFile
   LOCK_FILE_NAME = '.mspec.constants.lock'
 
-  def self.exist?
-    File.exist?(LOCK_FILE_NAME)
-  end
-
   def self.load
-    File.read(LOCK_FILE_NAME).split
+    if File.exist?(LOCK_FILE_NAME)
+      File.readlines(LOCK_FILE_NAME).map(&:chomp)
+    else
+      []
+    end
   end
 
   def self.dump(ary)
@@ -28,48 +14,48 @@ class ConstantsLockFile
   end
 end
 
-class ConstantsLeakLockAction
-  def register
-    MSpec.register :start, self
-    MSpec.register :finish, self
-  end
-
-  def start
-    @checker = ConstantsLeakChecker.new
-  end
-
-  def finish
-    unless @checker.check
-      if ConstantsLockFile.exist?
-        constants_locked = ConstantsLockFile.load
-        result = constants_locked | @checker.constants_new.map(&:to_s)
-        ConstantsLockFile.dump(result)
-      else
-        ConstantsLockFile.dump(@checker.constants_new)
-      end
-    end
-  end
+class LeaksError < StandardError
 end
 
 class ConstantsLeakCheckerAction
+  attr_accessor :constants_start, :constants_before
+
   def register
     MSpec.register :start, self
+    MSpec.register :before, self
+    MSpec.register :after, self
     MSpec.register :finish, self
   end
 
   def start
-    @checker = ConstantsLeakChecker.new
+    self.constants_start = constants_now
+  end
+
+  def before(state)
+    self.constants_before = constants_now
+  end
+
+  def after(state)
+    constants_new = constants_now - constants_before - constants_locked
+    constants_new = remove_helpers(constants_new)
+
+    MSpec.protect 'Leaks check' do
+      if !constants_new.empty? && ENV['CHECK_LEAKS']
+        raise LeaksError, "Top level constants leaked: #{constants_new.join(', ')}"
+      end
+    end
   end
 
   def finish
-    unless @checker.check
-      constants = @checker.constants_new.map(&:to_s) - constants_locked
+    constants_new = remove_helpers(constants_now - constants_start)
 
-      unless constants.empty?
-        puts "\nNew top level constants found:"
-        puts constants.join(", ")
+    if MSpec.exit_code == 0 && !ENV['CHECK_LEAKS']
+      ConstantsLockFile.dump(constants_locked + constants_new)
+    end
 
-        MSpec.register_exit 1
+    MSpec.protect 'Global leaks check' do
+      if !constants_new.empty? && ENV['CHECK_LEAKS']
+        raise LeaksError, "Top level constants leaked in the whole tests suit: #{constants_new.join(', ')}"
       end
     end
   end
@@ -77,10 +63,14 @@ class ConstantsLeakCheckerAction
   private
 
   def constants_locked
-    if ConstantsLockFile.exist?
-      ConstantsLockFile.load
-    else
-      []
-    end
+    @constants_locked ||= ConstantsLockFile.load
+  end
+
+  def constants_now
+    Object.constants.map(&:to_s)
+  end
+
+  def remove_helpers(ary)
+    ary.reject { |s| s =~ /\wSpecs?$/ }
   end
 end
