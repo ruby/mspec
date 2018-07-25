@@ -37,7 +37,7 @@ class ConstantsLeakCheckerAction
     constants = remove_helpers(constants_now - @constants_before - constants_locked)
 
     unless constants.empty?
-      MSpec.protect 'Leaks check' do
+      MSpec.protect 'Constants leak check' do
         raise ConstantLeakError, "Top level constants leaked: #{constants.join(', ')}"
       end
     end
@@ -51,7 +51,7 @@ class ConstantsLeakCheckerAction
     end
 
     unless constants.empty?
-      MSpec.protect 'Global leaks check' do
+      MSpec.protect 'Global constants leak check' do
         raise ConstantLeakError, "Top level constants leaked in the whole test suite: #{constants.join(', ')}"
       end
     end
