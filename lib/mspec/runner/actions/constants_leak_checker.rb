@@ -14,7 +14,7 @@ class ConstantsLockFile
   end
 end
 
-class LeaksError < StandardError
+class ConstantLeakError < StandardError
 end
 
 class ConstantsLeakCheckerAction
@@ -41,7 +41,7 @@ class ConstantsLeakCheckerAction
 
     MSpec.protect 'Leaks check' do
       if !constants_new.empty? && ENV['CHECK_LEAKS']
-        raise LeaksError, "Top level constants leaked: #{constants_new.join(', ')}"
+        raise ConstantLeakError, "Top level constants leaked: #{constants_new.join(', ')}"
       end
     end
   end
@@ -55,7 +55,7 @@ class ConstantsLeakCheckerAction
 
     MSpec.protect 'Global leaks check' do
       if !constants_new.empty? && ENV['CHECK_LEAKS']
-        raise LeaksError, "Top level constants leaked in the whole tests suit: #{constants_new.join(', ')}"
+        raise ConstantLeakError, "Top level constants leaked in the whole test suite: #{constants_new.join(', ')}"
       end
     end
   end
