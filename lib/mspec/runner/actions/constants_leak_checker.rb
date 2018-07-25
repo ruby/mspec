@@ -20,6 +20,7 @@ end
 class ConstantsLeakCheckerAction
   def initialize
     @save = ENV['CHECK_LEAKS'] == 'save'
+    @constants_locked = ConstantsLockFile.load
   end
 
   def register
@@ -38,7 +39,7 @@ class ConstantsLeakCheckerAction
   end
 
   def after(state)
-    constants = remove_helpers(constants_now - @constants_before - constants_locked)
+    constants = remove_helpers(constants_now - @constants_before - @constants_locked)
 
     unless @save or constants.empty?
       MSpec.protect 'Constants leak check' do
@@ -48,10 +49,10 @@ class ConstantsLeakCheckerAction
   end
 
   def finish
-    constants = remove_helpers(constants_now - @constants_start - constants_locked)
+    constants = remove_helpers(constants_now - @constants_start - @constants_locked)
 
     if @save
-      ConstantsLockFile.dump(constants_locked + constants)
+      ConstantsLockFile.dump(@constants_locked + constants)
     end
 
     unless @save or constants.empty?
@@ -62,10 +63,6 @@ class ConstantsLeakCheckerAction
   end
 
   private
-
-  def constants_locked
-    @constants_locked ||= ConstantsLockFile.load
-  end
 
   def constants_now
     Object.constants.map(&:to_s)
