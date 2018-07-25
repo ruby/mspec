@@ -36,8 +36,7 @@ class ConstantsLeakCheckerAction
   end
 
   def after(state)
-    constants_new = constants_now - constants_before - constants_locked
-    constants_new = remove_helpers(constants_new)
+    constants_new = remove_helpers(constants_now - constants_before - constants_locked)
 
     unless constants_new.empty?
       MSpec.protect 'Leaks check' do
