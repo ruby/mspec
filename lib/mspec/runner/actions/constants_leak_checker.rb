@@ -18,8 +18,6 @@ class ConstantLeakError < StandardError
 end
 
 class ConstantsLeakCheckerAction
-  attr_accessor :constants_start, :constants_before
-
   def register
     MSpec.register :start, self
     MSpec.register :before, self
@@ -28,15 +26,15 @@ class ConstantsLeakCheckerAction
   end
 
   def start
-    self.constants_start = constants_now
+    @constants_start = constants_now
   end
 
   def before(state)
-    self.constants_before = constants_now
+    @constants_before = constants_now
   end
 
   def after(state)
-    constants = remove_helpers(constants_now - constants_before - constants_locked)
+    constants = remove_helpers(constants_now - @constants_before - constants_locked)
 
     unless constants.empty?
       MSpec.protect 'Leaks check' do
@@ -46,7 +44,7 @@ class ConstantsLeakCheckerAction
   end
 
   def finish
-    constants = remove_helpers(constants_now - constants_start - constants_locked)
+    constants = remove_helpers(constants_now - @constants_start - constants_locked)
 
     if ENV['CHECK_LEAKS'] == 'save'
       ConstantsLockFile.dump(constants_locked + constants)
