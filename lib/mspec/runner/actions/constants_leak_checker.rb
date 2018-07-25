@@ -36,25 +36,25 @@ class ConstantsLeakCheckerAction
   end
 
   def after(state)
-    constants_new = remove_helpers(constants_now - constants_before - constants_locked)
+    constants = remove_helpers(constants_now - constants_before - constants_locked)
 
-    unless constants_new.empty?
+    unless constants.empty?
       MSpec.protect 'Leaks check' do
-        raise ConstantLeakError, "Top level constants leaked: #{constants_new.join(', ')}"
+        raise ConstantLeakError, "Top level constants leaked: #{constants.join(', ')}"
       end
     end
   end
 
   def finish
-    constants_new = remove_helpers(constants_now - constants_start - constants_locked)
+    constants = remove_helpers(constants_now - constants_start - constants_locked)
 
     if ENV['CHECK_LEAKS'] == 'save'
-      ConstantsLockFile.dump(constants_locked + constants_new)
+      ConstantsLockFile.dump(constants_locked + constants)
     end
 
-    unless constants_new.empty?
+    unless constants.empty?
       MSpec.protect 'Global leaks check' do
-        raise ConstantLeakError, "Top level constants leaked in the whole test suite: #{constants_new.join(', ')}"
+        raise ConstantLeakError, "Top level constants leaked in the whole test suite: #{constants.join(', ')}"
       end
     end
   end
