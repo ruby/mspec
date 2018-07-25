@@ -1,5 +1,5 @@
 class ConstantsLockFile
-  LOCK_FILE_NAME = '.mspec.constants.lock'
+  LOCK_FILE_NAME = '.mspec.constants'
 
   def self.load
     if File.exist?(LOCK_FILE_NAME)
