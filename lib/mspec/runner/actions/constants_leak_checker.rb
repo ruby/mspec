@@ -47,7 +47,7 @@ class ConstantsLeakCheckerAction
   end
 
   def finish
-    constants_new = remove_helpers(constants_now - constants_start)
+    constants_new = remove_helpers(constants_now - constants_start - constants_locked)
 
     if MSpec.exit_code == 0 && !ENV['CHECK_LEAKS']
       ConstantsLockFile.dump(constants_locked + constants_new)
