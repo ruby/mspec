@@ -10,7 +10,8 @@ class ConstantsLockFile
   end
 
   def self.dump(ary)
-    File.write(LOCK_FILE_NAME, ary.map(&:to_s).uniq.sort.join("\n"))
+    contents = ary.map(&:to_s).uniq.sort.join("\n") + "\n"
+    File.write(LOCK_FILE_NAME, contents)
   end
 end
 
