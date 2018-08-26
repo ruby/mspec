@@ -30,8 +30,9 @@ class DottedFormatter
     (@timer = TimerAction.new).register
     (@tally = TallyAction.new).register
     if ENV['CHECK_LEAKS']
+      save = ENV['CHECK_LEAKS'] == 'save'
       LeakCheckerAction.new.register
-      ConstantsLeakCheckerAction.new.register
+      ConstantsLeakCheckerAction.new(save).register
     end
     @counter = @tally.counter
 
