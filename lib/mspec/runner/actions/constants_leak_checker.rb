@@ -23,6 +23,7 @@ class ConstantsLeakCheckerAction
     @save = save
     @check = !save
     @constants_locked = ConstantsLockFile.load
+    @exclude_patterns = MSpecScript.get(:toplevel_constants_excludes) || []
   end
 
   def register
@@ -41,7 +42,7 @@ class ConstantsLeakCheckerAction
   end
 
   def after(state)
-    constants = remove_helpers(constants_now - @constants_before - @constants_locked)
+    constants = remove_excludes(constants_now - @constants_before - @constants_locked)
 
     if @check && !constants.empty?
       MSpec.protect 'Constants leak check' do
@@ -51,7 +52,7 @@ class ConstantsLeakCheckerAction
   end
 
   def finish
-    constants = remove_helpers(constants_now - @constants_start - @constants_locked)
+    constants = remove_excludes(constants_now - @constants_start - @constants_locked)
 
     if @save
       ConstantsLockFile.dump(@constants_locked + constants)
@@ -70,7 +71,9 @@ class ConstantsLeakCheckerAction
     Object.constants.map(&:to_s)
   end
 
-  def remove_helpers(ary)
-    ary.reject { |s| s =~ /\wSpecs?$/ }
+  def remove_excludes(constants)
+    constants.reject { |name|
+      @exclude_patterns.any? { |pattern| pattern === name }
+    }
   end
 end
