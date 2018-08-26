@@ -18,8 +18,8 @@ class ConstantLeakError < StandardError
 end
 
 class ConstantsLeakCheckerAction
-  def initialize
-    @save = ENV['CHECK_LEAKS'] == 'save'
+  def initialize(save)
+    @save = save
     @constants_locked = ConstantsLockFile.load
   end
 
