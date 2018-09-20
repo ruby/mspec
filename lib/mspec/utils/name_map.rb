@@ -25,28 +25,21 @@ class NameMap
     '**'  => 'exponent',
     '!'   => 'not',
     '~'   => {'Integer' => 'complement',
-              'Regexp'  => 'match',
-              'String'  => 'match' },
+              :default  => 'match' },
     '!='  => 'not_equal',
     '!~'  => 'not_match',
     '=~'  => 'match',
     '&'   => {'Integer'    => 'bit_and',
               'Array'      => 'intersection',
-              'TrueClass'  => 'and',
-              'FalseClass' => 'and',
-              'NilClass'   => 'and',
-              'Set'        => 'intersection' },
+              'Set'        => 'intersection',
+              :default     => 'and' },
     '|'   => {'Integer'    => 'bit_or',
               'Array'      => 'union',
-              'TrueClass'  => 'or',
-              'FalseClass' => 'or',
-              'NilClass'   => 'or',
-              'Set'        => 'union' },
+              'Set'        => 'union',
+              :default     => 'or' },
     '^'   => {'Integer'    => 'bit_xor',
-              'TrueClass'  => 'xor',
-              'FalseClass' => 'xor',
-              'NilClass'   => 'xor',
-              'Set'        => 'exclusion'},
+              'Set'        => 'exclusion',
+              :default     => 'xor' },
   }
 
   EXCLUDED = %w[
@@ -114,7 +107,12 @@ class NameMap
 
   def file_name(m, c)
     if MAP.key?(m)
-      name = MAP[m].is_a?(Hash) ? MAP[m][c.split('::').last] || MAP[m][:default] : MAP[m]
+      mapping = MAP[m]
+      if mapping.is_a?(Hash)
+        name = mapping[c.split('::').last] || mapping.fetch(:default)
+      else
+        name = mapping
+      end
     else
       name = m.gsub(/[?!=]/, '')
     end
