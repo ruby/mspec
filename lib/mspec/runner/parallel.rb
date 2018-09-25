@@ -29,18 +29,22 @@ class ParallelRunner
     when '.'
       @formatter.unload
       send_new_file_or_quit(child)
-    when nil
-      raise "Worker died!"
     else
-      while chunk = (io.read_nonblock(4096) rescue nil)
-        message += chunk
+      if message == nil
+        msg = "A child mspec-run process died unexpectedly"
+      else
+        msg = "A child mspec-run process printed unexpected output on STDOUT"
+        while chunk = (child.read_nonblock(4096) rescue nil)
+          message += chunk
+        end
+        message.chomp!('.')
+        msg += ": #{message.inspect}"
       end
-      message.chomp!('.')
-      msg = "A child mspec-run process printed unexpected output on STDOUT"
+
       if last_file = @last_files[child]
         msg += " while running #{last_file}"
       end
-      abort "\n#{msg}: #{message.inspect}"
+      abort "\n#{msg}"
     end
   end
 
