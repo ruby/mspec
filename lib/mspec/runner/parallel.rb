@@ -44,6 +44,8 @@ class ParallelRunner
       if last_file = @last_files[child]
         msg += " while running #{last_file}"
       end
+
+      @success = false
       quit(child)
       abort "\n#{msg}"
     end
