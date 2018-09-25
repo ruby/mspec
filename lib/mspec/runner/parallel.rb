@@ -44,17 +44,26 @@ class ParallelRunner
       if last_file = @last_files[child]
         msg += " while running #{last_file}"
       end
+      quit(child)
       abort "\n#{msg}"
     end
   end
 
+  def quit(child)
+    begin
+      child.puts "QUIT"
+    rescue Errno::EPIPE
+      # The child process already died
+    end
+    _pid, status = Process.wait2(child.pid)
+    @success &&= status.success?
+    child.close
+    @children.delete(child)
+  end
+
   def send_new_file_or_quit(child)
     if @files.empty?
-      child.puts "QUIT"
-      _pid, status = Process.wait2(child.pid)
-      @success &&= status.success?
-      child.close
-      @children.delete(child)
+      quit(child)
     else
       file = @files.shift
       @last_files[child] = file
@@ -68,16 +77,19 @@ class ParallelRunner
 
     puts @children.map { |child| child.gets }.uniq
     @formatter.start
-    @children.each { |child| send_new_file_or_quit(child) }
+    begin
+      @children.each { |child| send_new_file_or_quit(child) }
 
-    until @children.empty?
-      IO.select(@children)[0].each { |child|
-        handle(child, child.read(1))
-      }
+      until @children.empty?
+        IO.select(@children)[0].each { |child|
+          handle(child, child.read(1))
+        }
+      end
+    ensure
+      @children.dup.each { |child| quit(child) }
+      @formatter.aggregate_results(@output_files)
+      @formatter.finish
     end
-
-    @formatter.aggregate_results(@output_files)
-    @formatter.finish
 
     @success
   end
