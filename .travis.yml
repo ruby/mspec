@@ -6,20 +6,8 @@ matrix:
   include:
   - rvm: 2.3.7
   - rvm: 2.4.4
-    before_install:
-      # https://github.com/travis-ci/travis-ci/issues/8978
-      - gem update --system
-      - gem install bundler
   - rvm: 2.5.1
-    before_install:
-      # https://github.com/travis-ci/travis-ci/issues/8978
-      - gem update --system
-      - gem install bundler
   - rvm: ruby-head
-    before_install:
-      # https://github.com/travis-ci/travis-ci/issues/8978
-      - gem update --system
-      - gem install bundler
   - name: TruffleRuby
     rvm: system
     install:
