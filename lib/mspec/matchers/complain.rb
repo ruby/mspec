@@ -10,7 +10,8 @@ class ComplainMatcher
     @verbose = $VERBOSE
     begin
       err = $stderr = IOStub.new
-      $VERBOSE = false
+      # It's easier than adding new matcher like complain_in_verbose_mode
+      $VERBOSE = false if ![false, true].include?($VERBOSE)
       Thread.current[:in_mspec_complain_matcher] = true
       proc.call
     ensure
