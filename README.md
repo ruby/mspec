@@ -8,7 +8,8 @@ MSpec contains additional features that assist in writing specs for
 Ruby implementations in [ruby/spec](https://github.com/ruby/spec).
 
 MSpec attempts to use the simplest Ruby language features so that beginning
-Ruby implementations can run the Ruby specs.
+Ruby implementations can run the Ruby specs. For example, no file from the
+standard library or RubyGems is necessary to run MSpec.
 
 MSpec is not intended as a replacement for RSpec. MSpec attempts to provide a
 subset of RSpec's features in some cases and a superset in others. It does not
@@ -32,7 +33,7 @@ specs in a manner compatible with multiple Ruby implementations.
      overrides.
 
   5. MSpec support "tagging", that is excluding specs known as failing on
-     a particular implementation, and automatically adding and removing tags
+     a particular Ruby implementation, and automatically adding and removing tags
      while running the specs.
 
 ## Requirements
@@ -63,12 +64,6 @@ After installing the gem dependencies, the specs can be run as follows:
 
 ```bash
 ruby -S bundle exec rspec
-```
-
-Or
-
-```bash
-ruby -S rake
 ```
 
 To run an individual spec file, use the following example:
