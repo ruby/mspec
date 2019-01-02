@@ -20,6 +20,7 @@ class RaiseErrorMatcher
 
   def matching_exception?(exc)
     return false unless @exception === exc
+
     if @message then
       case @message
       when String
