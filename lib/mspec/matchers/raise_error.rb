@@ -12,6 +12,9 @@ class RaiseErrorMatcher
   rescue Exception => actual
     @actual = actual
     if matching_exception?(actual)
+      # The block has its own expectations and will throw an exception if it fails
+      @block[actual] if @block
+
       return true
     else
       raise actual
@@ -29,9 +32,6 @@ class RaiseErrorMatcher
         return false if @message !~ exc.message
       end
     end
-
-    # The block has its own expectations and will throw an exception if it fails
-    @block[exc] if @block
 
     return true
   end
