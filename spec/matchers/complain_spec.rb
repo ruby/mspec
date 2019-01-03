@@ -52,11 +52,7 @@ describe ComplainMatcher do
 
   context "`verbose` option specified" do
     before do
-      $VERBOSE, @verbose = nil, $VERBOSE
-    end
-
-    after do
-      $VERBOSE = @verbose
+      $VERBOSE.should == nil
     end
 
     it "sets $VERBOSE with specified second optional parameter" do
