@@ -85,5 +85,13 @@ describe ComplainMatcher do
         ComplainMatcher.new(nil, verbose: true).matches?(proc)
       end.should_not change { $VERBOSE }
     end
+
+    it "accepts a verbose level as single argument" do
+      verbose = nil
+      proc = lambda { verbose = $VERBOSE }
+
+      ComplainMatcher.new(verbose: true).matches?(proc)
+      verbose.should == true
+    end
   end
 end

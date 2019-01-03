@@ -1,9 +1,17 @@
 require 'mspec/helpers/io'
 
 class ComplainMatcher
-  def initialize(complaint, options = {})
-    @complaint = complaint
-    @options = options
+  def initialize(complaint = nil, options = nil)
+    # the proper solution is to use double splat operator e.g.
+    #   def initialize(complaint = nil, **options)
+    # but we are trying to minimize language features required to run MSpec
+    if complaint.is_a?(Hash)
+      @complaint = nil
+      @options = complaint
+    else
+      @complaint = complaint
+      @options = options || {}
+    end
   end
 
   def matches?(proc)
@@ -55,18 +63,7 @@ class ComplainMatcher
 end
 
 module MSpecMatchers
-  private def complain(complaint=nil, options=nil)
-    # the proper solution is to use double splat operator e.g.
-    #   def complain(complain=nil, **options)
-    # but we are trying to minimize language features required to run MSpec
-    args = [complaint, options].compact
-
-    if args.size == 1 && args[0].is_a?(Hash) # complaint isn't passed
-      complaint, options = [nil, args[0]]
-    else
-      complaint, options = args
-    end
-
-    ComplainMatcher.new(complaint, options || {})
+  private def complain(complaint = nil, options = nil)
+    ComplainMatcher.new(complaint, options)
   end
 end
