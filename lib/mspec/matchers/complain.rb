@@ -61,12 +61,10 @@ module MSpecMatchers
     # but we are trying to minimize language features required to run MSpec
     args = [complaint, options].compact
 
-    if args.size != 1 # 0 or 2
-      complaint, options = args
-    elsif args[0].is_a?(Hash)
+    if args.size == 1 && args[0].is_a?(Hash) # complaint isn't passed
       complaint, options = [nil, args[0]]
     else
-      complaint, options = [args[0], nil]
+      complaint, options = args
     end
 
     ComplainMatcher.new(complaint, options || {})
