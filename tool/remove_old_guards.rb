@@ -59,6 +59,7 @@ end
 version = Regexp.escape(ARGV.fetch(0))
 remove_guards(/ruby_version_is ["']#{version}["'] do/, true)
 remove_guards(/ruby_version_is ["'][0-9.]*["']...["']#{version}["'] do/, false)
+remove_guards(/ruby_bug "#\d+", ["'][0-9.]*["']...["']#{version}["'] do/, true)
 
 search(/["']#{version}["']/)
 search(/^\s*#.+#{version}/)
