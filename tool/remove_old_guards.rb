@@ -10,8 +10,12 @@ def dedent(line)
   end
 end
 
+def each_spec_file(&block)
+  Dir["*/**/*.rb"].each(&block)
+end
+
 def remove_guards(guard, keep)
-  Dir["*/**/*.rb"].each do |file|
+  each_spec_file do |file|
     contents = File.binread(file)
     if contents =~ guard
       puts file
@@ -38,6 +42,23 @@ def remove_guards(guard, keep)
   end
 end
 
-version = ARGV.fetch(0)
+def search(regexp)
+  each_spec_file do |file|
+    contents = File.binread(file)
+    if contents =~ regexp
+      puts file
+      contents.each_line do |line|
+        if line =~ regexp
+          puts line
+        end
+      end
+    end
+  end
+end
+
+version = Regexp.escape(ARGV.fetch(0))
 remove_guards(/ruby_version_is ["']#{version}["'] do/, true)
 remove_guards(/ruby_version_is ["'][0-9.]*["']...["']#{version}["'] do/, false)
+
+search(/["']#{version}["']/)
+search(/^\s*#.+#{version}/)
