@@ -18,6 +18,8 @@ IMPLS = {
 
 MSPEC = ARGV.delete('--mspec')
 
+CHECK_LAST_MERGE = ENV['CHECK_LAST_MERGE'] != 'false'
+
 MSPEC_REPO = File.expand_path("../../..", __FILE__)
 raise MSPEC_REPO if !Dir.exist?(MSPEC_REPO) or !Dir.exist?("#{MSPEC_REPO}/.git")
 
@@ -144,7 +146,7 @@ def rebase_commits(impl)
 
       commit_date = Time.at(Integer(commit_timestamp))
       days_since_last_merge = (NOW-commit_date) / 86400
-      if days_since_last_merge > 60
+      if CHECK_LAST_MERGE and days_since_last_merge > 60
         raise "#{days_since_last_merge.floor} days since last merge, probably wrong commit"
       end
 
