@@ -65,8 +65,6 @@ end
 # with any Ruby object). The file descriptor can safely be passed
 # to IO.new without creating a Ruby object alias to the fd.
 def new_fd(name, mode="w:utf-8")
-  mode = options_or_mode(mode)
-
   if mode.kind_of? Hash
     if mode.key? :mode
       mode = mode[:mode]
@@ -75,13 +73,13 @@ def new_fd(name, mode="w:utf-8")
     end
   end
 
-  IO.sysopen name, fmode(mode)
+  IO.sysopen name, mode
 end
 
 # Creates an IO instance for a temporary file name. The file
 # must be deleted.
 def new_io(name, mode="w:utf-8")
-  IO.new new_fd(name, options_or_mode(mode)), options_or_mode(mode)
+  IO.new new_fd(name, mode), mode
 end
 
 def find_unused_fd
