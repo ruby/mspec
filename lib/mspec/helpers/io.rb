@@ -85,13 +85,3 @@ end
 def find_unused_fd
   Dir.entries("/dev/fd").map(&:to_i).max + 1
 end
-
-# Legacy :encoding helper
-def fmode(mode)
-  mode
-end
-
-# Legacy :encoding helper
-def options_or_mode(oom)
-  oom
-end
