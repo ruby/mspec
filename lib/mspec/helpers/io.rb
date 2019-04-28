@@ -88,28 +88,12 @@ def find_unused_fd
   Dir.entries("/dev/fd").map(&:to_i).max + 1
 end
 
-# This helper simplifies passing file access modes regardless of
-# whether the :encoding feature is enabled. Only the access specifier
-# itself will be returned if :encoding is not enabled. Otherwise,
-# the full mode string will be returned (i.e. the helper is a no-op).
+# Legacy :encoding helper
 def fmode(mode)
-  if FeatureGuard.enabled? :encoding
-    mode
-  else
-    mode.split(':').first
-  end
+  mode
 end
 
-# This helper simplifies passing file access modes or options regardless of
-# whether the :encoding feature is enabled. Only the access specifier itself
-# will be returned if :encoding is not enabled. Otherwise, the full mode
-# string or option will be returned (i.e. the helper is a no-op).
+# Legacy :encoding helper
 def options_or_mode(oom)
-  return fmode(oom) if oom.kind_of? String
-
-  if FeatureGuard.enabled? :encoding
-    oom
-  else
-    fmode(oom[:mode] || "r:utf-8")
-  end
+  oom
 end
