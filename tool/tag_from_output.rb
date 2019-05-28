@@ -15,7 +15,7 @@ NUMBER = /^\d+\)$/
 ERROR_OR_FAILED = / (ERROR|FAILED)$/
 SPEC_FILE = /^(\/.+_spec\.rb)\:\d+/
 
-failures = output.slice_before(NUMBER).select { |number, error_line, *rest|
+output.slice_before(NUMBER).select { |number, error_line, *rest|
   number =~ NUMBER and error_line =~ ERROR_OR_FAILED
 }.each { |number, error_line, *rest|
   description = error_line.match(ERROR_OR_FAILED).pre_match
@@ -31,9 +31,8 @@ failures = output.slice_before(NUMBER).select { |number, error_line, *rest|
   Dir.mkdir(dir) unless Dir.exist?(dir)
 
   tag_line = "fails:#{description}"
-  unless File.exist?(tags_file) and File.readlines(tags_file, chomp: true).include?(tag_line)
-    File.open(tags_file, 'a') do |f|
-      f.puts tag_line
-    end
+  lines = File.exist?(tags_file) ? File.readlines(tags_file, chomp: true) : []
+  unless lines.include?(tag_line)
+    File.write(tags_file, (lines + [tag_line]).join("\n") + "\n")
   end
 }
