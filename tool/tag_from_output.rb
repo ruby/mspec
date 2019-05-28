@@ -8,8 +8,6 @@ tags_dir = %w[
 abort 'Could not find tags directory' unless tags_dir
 
 output = ARGF.readlines
-# Remove leading "[exec] " from JRuby logs
-output = output.map { |line| line.sub(/^\[exec\] /, '') }
 
 NUMBER = /^\d+\)$/
 ERROR_OR_FAILED = / (ERROR|FAILED)$/
