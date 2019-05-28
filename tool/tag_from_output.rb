@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 # Adds tags based on error and failures output (e.g., from a CI log),
 # without running any spec code.
 
