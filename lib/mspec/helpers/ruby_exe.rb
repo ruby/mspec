@@ -100,6 +100,10 @@ def resolve_ruby_exe
   raise Exception, "Unable to find a suitable ruby executable."
 end
 
+unless Object.const_defined?(:RUBY_EXE) and RUBY_EXE
+  RUBY_EXE = resolve_ruby_exe
+end
+
 def ruby_exe(code = :not_given, opts = {})
   if opts[:dir]
     raise "ruby_exe(..., dir: dir) is no longer supported, use Dir.chdir"
@@ -150,8 +154,4 @@ def ruby_cmd(code, opts = {})
   end
 
   [RUBY_EXE, opts[:options], body, opts[:args]].compact.join(' ')
-end
-
-unless Object.const_defined?(:RUBY_EXE) and RUBY_EXE
-  RUBY_EXE = resolve_ruby_exe
 end
