@@ -14,8 +14,7 @@ describe "MSpec" do
       @out.should include <<-EOS
 1)
 MSpec expectation method #should causes a failue to be recorded FAILED
-Expected 1
- to equal 2
+Expected 1 to equal 2
 EOS
     end
 
@@ -33,8 +32,7 @@ EOS
       @out.should include <<-EOS
 3)
 MSpec expectation method #should_not causes a failure to be recorded FAILED
-Expected 1
- not to equal 1
+Expected 1 not to equal 1
 EOS
     end
 

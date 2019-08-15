@@ -24,8 +24,7 @@ Tag#me érròrs in unicode
 
 1)
 Tag#me errors FAILED
-Expected 1
- to equal 2
+Expected 1 to equal 2
 
 CWD/spec/fixtures/tagging_spec.rb:9:in `block (2 levels) in <top (required)>'
 CWD/spec/fixtures/tagging_spec.rb:3:in `<top (required)>'
@@ -33,8 +32,7 @@ CWD/bin/mspec-tag:7:in `<main>'
 
 2)
 Tag#me érròrs in unicode FAILED
-Expected 1
- to equal 2
+Expected 1 to equal 2
 
 CWD/spec/fixtures/tagging_spec.rb:13:in `block (2 levels) in <top (required)>'
 CWD/spec/fixtures/tagging_spec.rb:3:in `<top (required)>'
