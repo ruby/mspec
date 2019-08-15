@@ -16,6 +16,6 @@ class SpecExpectation
     else
       message = "#{expected_to_s} #{actual_to_s}"
     end
-    Kernel.raise SpecExpectationNotMetError, message
+    raise SpecExpectationNotMetError, message
   end
 end
