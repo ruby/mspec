@@ -18,4 +18,15 @@ class SpecExpectation
     end
     raise SpecExpectationNotMetError, message
   end
+
+  def self.fail_predicate(receiver, predicate, args, block, result, expectation)
+    receiver_to_s = MSpec.format(receiver)
+    before_method = predicate.to_s =~ /^[a-z]/ ? "." : " "
+    predicate_to_s = "#{before_method}#{predicate}"
+    predicate_to_s += " " unless args.empty?
+    args_to_s = args.map { |arg| MSpec.format(arg) }.join(', ')
+    args_to_s += " { ... }" if block
+    result_to_s = MSpec.format(result)
+    raise SpecExpectationNotMetError, "Expected #{receiver_to_s}#{predicate_to_s}#{args_to_s}\n#{expectation} but was #{result_to_s}"
+  end
 end
