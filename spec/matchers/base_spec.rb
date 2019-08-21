@@ -11,7 +11,7 @@ describe SpecPositiveOperatorMatcher, "== operator" do
   end
 
   it "provides a failure message that 'Expected x to equal y'" do
-    SpecExpectation.should_receive(:fail_with).with("Expected 1\n", "to equal 2\n")
+    SpecExpectation.should_receive(:fail_with).with("Expected 1", "to equal 2")
     SpecPositiveOperatorMatcher.new(1) == 2
   end
 
@@ -29,7 +29,7 @@ describe SpecPositiveOperatorMatcher, "=~ operator" do
 
   it "provides a failure message that 'Expected \"x\" to match y'" do
     SpecExpectation.should_receive(:fail_with).with(
-      "Expected \"real\"\n", "to match /fake/\n")
+      "Expected \"real\"", "to match /fake/")
     SpecPositiveOperatorMatcher.new('real') =~ /fake/
   end
 
@@ -47,7 +47,7 @@ describe SpecPositiveOperatorMatcher, "> operator" do
 
   it "provides a failure message that 'Expected x to be greater than y'" do
     SpecExpectation.should_receive(:fail_with).with(
-      "Expected 4\n", "to be greater than 5\n")
+      "Expected 4", "to be greater than 5")
     SpecPositiveOperatorMatcher.new(4) > 5
   end
 
@@ -65,7 +65,7 @@ describe SpecPositiveOperatorMatcher, ">= operator" do
 
   it "provides a failure message that 'Expected x to be greater than or equal to y'" do
     SpecExpectation.should_receive(:fail_with).with(
-      "Expected 4\n", "to be greater than or equal to 5\n")
+      "Expected 4", "to be greater than or equal to 5")
     SpecPositiveOperatorMatcher.new(4) >= 5
   end
 
@@ -83,7 +83,7 @@ describe SpecPositiveOperatorMatcher, "< operater" do
   end
 
   it "provides a failure message that 'Expected x to be less than y'" do
-    SpecExpectation.should_receive(:fail_with).with("Expected 5\n", "to be less than 4\n")
+    SpecExpectation.should_receive(:fail_with).with("Expected 5", "to be less than 4")
     SpecPositiveOperatorMatcher.new(5) < 4
   end
 
@@ -101,7 +101,7 @@ describe SpecPositiveOperatorMatcher, "<= operater" do
 
   it "provides a failure message that 'Expected x to be less than or equal to y'" do
     SpecExpectation.should_receive(:fail_with).with(
-      "Expected 5\n", "to be less than or equal to 4\n")
+      "Expected 5", "to be less than or equal to 4")
     SpecPositiveOperatorMatcher.new(5) <= 4
   end
 
@@ -119,7 +119,7 @@ describe SpecNegativeOperatorMatcher, "== operator" do
   end
 
   it "provides a failure message that 'Expected x not to equal y'" do
-    SpecExpectation.should_receive(:fail_with).with("Expected 1\n", "not to equal 1\n")
+    SpecExpectation.should_receive(:fail_with).with("Expected 1", "not to equal 1")
     SpecNegativeOperatorMatcher.new(1) == 1
   end
 
@@ -137,7 +137,7 @@ describe SpecNegativeOperatorMatcher, "=~ operator" do
 
   it "provides a failure message that 'Expected \"x\" not to match /y/'" do
     SpecExpectation.should_receive(:fail_with).with(
-      "Expected \"real\"\n", "not to match /real/\n")
+      "Expected \"real\"", "not to match /real/")
     SpecNegativeOperatorMatcher.new('real') =~ /real/
   end
 
@@ -155,7 +155,7 @@ describe SpecNegativeOperatorMatcher, "< operator" do
 
   it "provides a failure message that 'Expected x not to be less than y'" do
     SpecExpectation.should_receive(:fail_with).with(
-      "Expected 4\n", "not to be less than 5\n")
+      "Expected 4", "not to be less than 5")
     SpecNegativeOperatorMatcher.new(4) < 5
   end
 
@@ -176,7 +176,7 @@ describe SpecNegativeOperatorMatcher, "<= operator" do
 
   it "provides a failure message that 'Expected x not to be less than or equal to y'" do
     SpecExpectation.should_receive(:fail_with).with(
-      "Expected 4\n", "not to be less than or equal to 5\n")
+      "Expected 4", "not to be less than or equal to 5")
     SpecNegativeOperatorMatcher.new(4) <= 5
   end
 
@@ -194,7 +194,7 @@ describe SpecNegativeOperatorMatcher, "> operator" do
 
   it "provides a failure message that 'Expected x not to be greater than y'" do
     SpecExpectation.should_receive(:fail_with).with(
-      "Expected 5\n", "not to be greater than 4\n")
+      "Expected 5", "not to be greater than 4")
     SpecNegativeOperatorMatcher.new(5) > 4
   end
 
@@ -215,7 +215,7 @@ describe SpecNegativeOperatorMatcher, ">= operator" do
 
   it "provides a failure message that 'Expected x not to be greater than or equal to y'" do
     SpecExpectation.should_receive(:fail_with).with(
-      "Expected 5\n", "not to be greater than or equal to 4\n")
+      "Expected 5", "not to be greater than or equal to 4")
     SpecNegativeOperatorMatcher.new(5) >= 4
   end
 

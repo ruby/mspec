@@ -6,7 +6,6 @@ describe "Running mspec" do
 1)
 Foo#bar errors FAILED
 Expected 1 to equal 2
-
 CWD/spec/fixtures/a_spec.rb:8:in `block (2 levels) in <top (required)>'
 CWD/spec/fixtures/a_spec.rb:2:in `<top (required)>'
 CWD/bin/mspec-run:7:in `<main>'
