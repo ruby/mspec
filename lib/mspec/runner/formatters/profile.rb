@@ -2,7 +2,7 @@ require 'mspec/expectations/expectations'
 require 'mspec/runner/formatters/dotted'
 
 class ProfileFormatter < DottedFormatter
-  def initialize(out=nil)
+  def initialize(out = nil)
     super
 
     @describe_name = nil

@@ -2,7 +2,7 @@ require 'mspec/expectations/expectations'
 require 'mspec/runner/formatters/yaml'
 
 class JUnitFormatter < YamlFormatter
-  def initialize(out=nil)
+  def initialize(out = nil)
     super
     @tests = []
   end

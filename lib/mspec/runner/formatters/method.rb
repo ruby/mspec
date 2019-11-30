@@ -3,7 +3,7 @@ require 'mspec/runner/formatters/dotted'
 class MethodFormatter < DottedFormatter
   attr_accessor :methods
 
-  def initialize(out=nil)
+  def initialize(out = nil)
     super
     @methods = Hash.new do |h, k|
       hash = {}

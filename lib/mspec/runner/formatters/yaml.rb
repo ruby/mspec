@@ -2,7 +2,7 @@ require 'mspec/expectations/expectations'
 require 'mspec/runner/formatters/dotted'
 
 class YamlFormatter < DottedFormatter
-  def initialize(out=nil)
+  def initialize(out = nil)
     super(nil)
 
     if out.nil?

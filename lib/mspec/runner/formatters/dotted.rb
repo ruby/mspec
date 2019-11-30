@@ -10,7 +10,7 @@ end
 class DottedFormatter
   attr_reader :exceptions, :timer, :tally
 
-  def initialize(out=nil)
+  def initialize(out = nil)
     @exception = @failure = false
     @exceptions = []
     @count = 0 # For subclasses
@@ -66,7 +66,7 @@ class DottedFormatter
 
   # Callback for the MSpec :before event. Resets the
   # +#exception?+ and +#failure+ flags.
-  def before(state=nil)
+  def before(state = nil)
     @current_state = state
     @failure = @exception = false
   end

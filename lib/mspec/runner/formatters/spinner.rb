@@ -8,7 +8,7 @@ class SpinnerFormatter < DottedFormatter
   HOUR = 3600
   MIN = 60
 
-  def initialize(out=nil)
+  def initialize(out = nil)
     super(nil)
 
     @which = 0
