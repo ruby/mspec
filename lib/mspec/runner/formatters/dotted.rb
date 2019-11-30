@@ -98,11 +98,13 @@ class DottedFormatter
   end
 
   # Callback for the MSpec :start event. Calls :after event.
+  # Defined here, in the base class, and used by MultiFormatter.
   def start
     after
   end
 
   # Callback for the MSpec :unload event. Calls :after event.
+  # Defined here, in the base class, and used by MultiFormatter.
   def unload
     after
   end
