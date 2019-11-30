@@ -1,9 +1,8 @@
-require 'mspec/expectations/expectations'
 require 'mspec/runner/formatters/dotted'
 
 class ProfileFormatter < DottedFormatter
   def initialize(out = nil)
-    super
+    super(out)
 
     @describe_name = nil
     @describe_time = nil
@@ -30,7 +29,7 @@ class ProfileFormatter < DottedFormatter
   # Callback for the MSpec :before event. Prints the
   # +it+ block string.
   def before(state)
-    super
+    super(state)
 
     @it_name = state.it
     @it_time = Time.now.to_f
@@ -40,7 +39,7 @@ class ProfileFormatter < DottedFormatter
   # newline to finish the description string output.
   def after(state = nil)
     @its << [@describe_name, @it_name, Time.now.to_f - @it_time]
-    super
+    super(state)
   end
 
   def finish
