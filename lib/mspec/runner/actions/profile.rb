@@ -15,20 +15,20 @@ class ProfileAction
 
   def enter(describe)
     if @describe_time
-      @describes << [@describe_name, Time.now.to_f - @describe_time]
+      @describes << [@describe_name, now - @describe_time]
     end
 
     @describe_name = describe
-    @describe_time = Time.now.to_f
+    @describe_time = now
   end
 
   def before(state)
     @it_name = state.it
-    @it_time = Time.now.to_f
+    @it_time = now
   end
 
   def after(state = nil)
-    @its << [@describe_name, @it_name, Time.now.to_f - @it_time]
+    @its << [@describe_name, @it_name, now - @it_time]
   end
 
   def finish
@@ -52,5 +52,9 @@ class ProfileAction
     show.each do |des, it, time|
       printf "%3.3f - %s %s\n", time, des, it
     end
+  end
+
+  def now
+    Time.now.to_f
   end
 end
