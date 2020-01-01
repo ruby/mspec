@@ -16,6 +16,10 @@ if RUBY_ENGINE == "ruby" and ruby_version_is("2.4")
   end
 
   def Warning.warn(message)
+    # Suppress any warning inside the method to prevent recurse
+    verbose = $VERBOSE
+    $VERBOSE = nil
+
     if Thread.current[:in_mspec_complain_matcher]
       return $stderr.write(message)
     end
@@ -55,6 +59,8 @@ if RUBY_ENGINE == "ruby" and ruby_version_is("2.4")
     else
       $stderr.write message
     end
+  ensure
+    $VERBOSE = verbose
   end
 else
   $VERBOSE = nil unless ENV['OUTPUT_WARNINGS']
