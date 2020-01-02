@@ -157,7 +157,7 @@ end
 def test_new_specs
   require "yaml"
   Dir.chdir(SOURCE_REPO) do
-    workflow = YAML.load_file("#{MSPEC_REPO}/.github/workflows/ci.yml")
+    workflow = YAML.load_file(".github/workflows/ci.yml")
     versions = workflow.dig("jobs", "test", "strategy", "matrix", "ruby")
     versions = versions.grep(/^\d+\./) # Test on MRI
     min_version, max_version = versions.minmax
