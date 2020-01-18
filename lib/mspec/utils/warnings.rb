@@ -56,6 +56,7 @@ if RUBY_ENGINE == "ruby" and ruby_version_is("2.4")
     when /env\/shared\/key\.rb:\d+: warning: ENV\.index is deprecated; use ENV\.key/
     when /exponent(_spec)?\.rb:\d+: warning: in a\*\*b, b may be too big/
     when /enumerator\/(new_spec|initialize_spec)\.rb:\d+: warning: Enumerator\.new without a block is deprecated/
+    when /Pattern matching is experimental, and the behavior may change in future versions of Ruby!/
     else
       $stderr.write message
     end
