@@ -16,7 +16,7 @@ if RUBY_ENGINE == "ruby" and ruby_version_is("2.4")
   end
 
   def Warning.warn(message)
-    # Suppress any warning inside the method to prevent recurse
+    # Suppress any warning inside the method to prevent recursion
     verbose = $VERBOSE
     $VERBOSE = nil
 
