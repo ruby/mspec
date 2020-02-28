@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'mspec/expectations/expectations'
 require 'mspec/helpers/tmp'
 require 'mspec/helpers/fs'
 require 'mspec/matchers/base'
@@ -349,10 +350,12 @@ describe MSpec, ".files" do
   end
 
   it "registers the current file" do
-    MSpec.should_receive(:store).with(:file, :one)
-    MSpec.should_receive(:store).with(:file, :two)
-    MSpec.should_receive(:store).with(:file, :three)
+    load = double("load")
+    files = []
+    load.stub(:load).and_return { files << MSpec.retrieve(:file) }
+    MSpec.register :load, load
     MSpec.files
+    files.should == [:one, :two, :three]
   end
 end
 
