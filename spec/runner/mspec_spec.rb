@@ -9,7 +9,7 @@ require 'mspec/runner/example'
 describe MSpec, ".register_files" do
   it "records which spec files to run" do
     MSpec.register_files [:one, :two, :three]
-    MSpec.retrieve(:files).should == [:one, :two, :three]
+    MSpec.files_array.should == [:one, :two, :three]
   end
 end
 
@@ -352,7 +352,7 @@ describe MSpec, ".files" do
   it "registers the current file" do
     load = double("load")
     files = []
-    load.stub(:load).and_return { files << MSpec.retrieve(:file) }
+    load.stub(:load).and_return { files << MSpec.file }
     MSpec.register :load, load
     MSpec.files
     files.should == [:one, :two, :three]

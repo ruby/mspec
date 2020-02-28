@@ -25,8 +25,8 @@ class ExampleState
   end
 
   def filtered?
-    incl = MSpec.retrieve(:include) || []
-    excl = MSpec.retrieve(:exclude) || []
+    incl = MSpec.include
+    excl = MSpec.exclude
     included   = incl.empty? || incl.any? { |f| f === description }
     included &&= excl.empty? || !excl.any? { |f| f === description }
     !included

@@ -20,8 +20,8 @@ module MSpec
   @after   = nil
   @leave   = nil
   @finish  = nil
-  @exclude = nil
-  @include = nil
+  @exclude = []
+  @include = []
   @leave   = nil
   @load    = nil
   @unload  = nil
@@ -37,6 +37,11 @@ module MSpec
   @repeat       = nil
   @expectation  = nil
   @expectations = false
+
+  class << self
+    attr_reader :file, :include, :exclude
+    attr_accessor :formatter
+  end
 
   def self.describe(mod, options = nil, &block)
     state = ContextState.new mod, options
@@ -55,6 +60,10 @@ module MSpec
     actions :start
     files
     actions :finish
+  end
+
+  def self.files_array
+    @files
   end
 
   def self.each_file(&block)

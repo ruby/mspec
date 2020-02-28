@@ -392,10 +392,10 @@ class MSpecOptions
     on("-V", "--verbose", "Output the name of each file processed") do
       obj = Object.new
       def obj.start
-        @width = MSpec.retrieve(:files).inject(0) { |max, f| f.size > max ? f.size : max }
+        @width = MSpec.files_array.inject(0) { |max, f| f.size > max ? f.size : max }
       end
       def obj.load
-        file = MSpec.retrieve :file
+        file = MSpec.file
         STDERR.print "\n#{file.ljust(@width)}"
       end
       MSpec.register :start, obj
