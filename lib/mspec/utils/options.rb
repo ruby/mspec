@@ -377,7 +377,7 @@ class MSpecOptions
   def randomize
     on("-H", "--random",
        "Randomize the list of spec files") do
-      MSpec.randomize
+      MSpec.randomize = true
     end
   end
 

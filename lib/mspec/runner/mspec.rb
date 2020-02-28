@@ -33,13 +33,14 @@ module MSpec
   @guarded = []
   @features     = {}
   @exception    = nil
-  @randomize    = nil
+  @randomize    = false
   @repeat       = nil
   @expectation  = nil
   @expectations = false
 
   class << self
     attr_reader :file, :include, :exclude
+    attr_writer :repeat, :randomize
     attr_accessor :formatter
   end
 
@@ -268,16 +269,8 @@ module MSpec
     end
   end
 
-  def self.randomize(flag = true)
-    @randomize = flag
-  end
-
   def self.randomize?
-    @randomize == true
-  end
-
-  def self.repeat=(times)
-    @repeat = times
+    @randomize
   end
 
   def self.repeat

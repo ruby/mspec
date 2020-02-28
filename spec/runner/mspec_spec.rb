@@ -67,9 +67,9 @@ end
 describe MSpec, ".randomize" do
   it "sets the flag to randomize spec execution order" do
     MSpec.randomize?.should == false
-    MSpec.randomize
+    MSpec.randomize = true
     MSpec.randomize?.should == true
-    MSpec.randomize false
+    MSpec.randomize = false
     MSpec.randomize?.should == false
   end
 end
@@ -343,10 +343,10 @@ describe MSpec, ".files" do
   end
 
   it "shuffles the file list if .randomize? is true" do
-    MSpec.randomize
+    MSpec.randomize = true
     MSpec.should_receive(:shuffle)
     MSpec.files
-    MSpec.randomize false
+    MSpec.randomize = false
   end
 
   it "registers the current file" do
