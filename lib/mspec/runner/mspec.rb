@@ -34,7 +34,7 @@ module MSpec
   @features     = {}
   @exception    = nil
   @randomize    = false
-  @repeat       = nil
+  @repeat       = 1
   @expectation  = nil
   @expectations = false
 
@@ -274,8 +274,12 @@ module MSpec
   end
 
   def self.repeat
-    (@repeat || 1).times do
+    if @repeat == 1
       yield
+    else
+      @repeat.times do
+        yield
+      end
     end
   end
 
