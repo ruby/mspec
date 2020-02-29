@@ -207,7 +207,7 @@ class ContextState
       if protect "before :all", pre(:all)
         @examples.each do |state|
           MSpec.repeat do
-            @state  = state
+            @state = state
             example = state.example
             MSpec.actions :before, state
 
