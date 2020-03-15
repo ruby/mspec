@@ -12,15 +12,10 @@
 class ContextState
   attr_reader :state, :parent, :parents, :children, :examples, :to_s
 
-  def initialize(mod, options = nil)
-    @to_s = mod.to_s
-    if options.is_a? Hash
-      @options = options
-    else
-      @to_s += "#{".:#".include?(options[0,1]) ? "" : " "}#{options}" if options
-      @options = { }
-    end
-    @options[:shared] ||= false
+  def initialize(description, options = nil)
+    raise "#describe options should be a Hash or nil" unless Hash === options or options.nil?
+    @to_s = description.to_s
+    @shared = options && options[:shared]
 
     @parsed   = false
     @before   = { :all => [], :each => [] }
@@ -47,7 +42,7 @@ class ContextState
   # Returns true if this is a shared +ContextState+. Essentially, when
   # created with: describe "Something", :shared => true { ... }
   def shared?
-    return @options[:shared]
+    @shared
   end
 
   # Set the parent (enclosing) +ContextState+ for this state. Creates

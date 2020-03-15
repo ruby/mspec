@@ -14,7 +14,7 @@ end
 
 describe ExampleState, "#describe" do
   before :each do
-    @context = ContextState.new Object, "#to_s"
+    @context = ContextState.new "Object#to_s"
     @state = ExampleState.new @context, "it"
   end
 

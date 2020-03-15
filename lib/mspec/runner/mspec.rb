@@ -10,7 +10,6 @@ class MSpecEnv
 end
 
 module MSpec
-
   @exit    = nil
   @abort   = nil
   @start   = nil
@@ -44,8 +43,8 @@ module MSpec
     attr_accessor :formatter
   end
 
-  def self.describe(mod, options = nil, &block)
-    state = ContextState.new mod, options
+  def self.describe(description, options = nil, &block)
+    state = ContextState.new description, options
     state.parent = current
 
     MSpec.register_current state

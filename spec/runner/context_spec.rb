@@ -55,22 +55,6 @@ describe ContextState, "#to_s" do
   it "returns a description string for self when passed a String" do
     ContextState.new("SomeClass").to_s.should == "SomeClass"
   end
-
-  it "returns a description string for self when passed a Module, String" do
-    ContextState.new(Object, "when empty").to_s.should == "Object when empty"
-  end
-
-  it "returns a description string for self when passed a Module and String beginning with '#'" do
-    ContextState.new(Object, "#to_s").to_s.should == "Object#to_s"
-  end
-
-  it "returns a description string for self when passed a Module and String beginning with '.'" do
-    ContextState.new(Object, ".to_s").to_s.should == "Object.to_s"
-  end
-
-  it "returns a description string for self when passed a Module and String beginning with '::'" do
-    ContextState.new(Object, "::to_s").to_s.should == "Object::to_s"
-  end
 end
 
 describe ContextState, "#description" do
