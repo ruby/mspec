@@ -12,6 +12,10 @@
 class ContextState
   attr_reader :state, :parent, :parents, :children, :examples, :to_s
 
+  MOCK_VERIFY = Proc.new { Mock.verify_count }
+  MOCK_CLEANUP = Proc.new { Mock.cleanup }
+  EXPECTATION_MISSING = Proc.new { raise SpecExpectationNotFoundError }
+
   def initialize(description, options = nil)
     raise "#describe options should be a Hash or nil" unless Hash === options or options.nil?
     @to_s = description.to_s
@@ -27,10 +31,6 @@ class ContextState
     @parent   = nil
     @parents  = [self]
     @children = []
-
-    @mock_verify         = Proc.new { Mock.verify_count }
-    @mock_cleanup        = Proc.new { Mock.cleanup }
-    @expectation_missing = Proc.new { raise SpecExpectationNotFoundError }
   end
 
   # Remove caching when a ContextState is dup'd for shared specs.
@@ -211,20 +211,20 @@ class ContextState
               if example
                 passed = protect nil, example
                 MSpec.actions :example, state, example
-                protect nil, @expectation_missing if !MSpec.expectation? and passed
+                protect nil, EXPECTATION_MISSING if !MSpec.expectation? and passed
               end
             end
             protect "after :each", post(:each)
-            protect "Mock.verify_count", @mock_verify
+            protect "Mock.verify_count", MOCK_VERIFY
 
-            protect "Mock.cleanup", @mock_cleanup
+            protect "Mock.cleanup", MOCK_CLEANUP
             MSpec.actions :after, state
             @state = nil
           end
         end
         protect "after :all", post(:all)
       else
-        protect "Mock.cleanup", @mock_cleanup
+        protect "Mock.cleanup", MOCK_CLEANUP
       end
 
       MSpec.actions :leave
