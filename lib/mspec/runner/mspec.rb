@@ -96,6 +96,7 @@ module MSpec
       actions :load
       protect("loading #{file}") { Kernel.load file }
       actions :unload
+      raise "#{file} was executed but did not reset the current example: #{@current}" if @current
     end
   end
 
