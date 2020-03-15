@@ -110,7 +110,7 @@ module MSpec
 
   def self.protect(location, &block)
     begin
-      @env.instance_eval(&block)
+      @env.instance_exec(&block)
       return true
     rescue SystemExit => e
       raise e

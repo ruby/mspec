@@ -12,9 +12,9 @@
 class ContextState
   attr_reader :state, :parent, :parents, :children, :examples, :to_s
 
-  MOCK_VERIFY = Proc.new { Mock.verify_count }
-  MOCK_CLEANUP = Proc.new { Mock.cleanup }
-  EXPECTATION_MISSING = Proc.new { raise SpecExpectationNotFoundError }
+  MOCK_VERIFY = -> { Mock.verify_count }
+  MOCK_CLEANUP = -> { Mock.cleanup }
+  EXPECTATION_MISSING = -> { raise SpecExpectationNotFoundError }
 
   def initialize(description, options = nil)
     raise "#describe options should be a Hash or nil" unless Hash === options or options.nil?
