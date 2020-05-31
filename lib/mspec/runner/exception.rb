@@ -23,13 +23,15 @@ class ExceptionState
   end
 
   def message
-    if @exception.message.empty?
-      "<No message>"
-    elsif @exception.class == SpecExpectationNotMetError ||
-          @exception.class == SpecExpectationNotFoundError
-      @exception.message
+    message = @exception.message
+    message = "<No message>" if message.empty?
+
+    if @exception.class == SpecExpectationNotMetError || @exception.class == SpecExpectationNotFoundError
+      message
+    elsif raise_error_message = @exception.instance_variable_get(:@mspec_raise_error_message)
+      raise_error_message.join("\n")
     else
-      "#{@exception.class}: #{@exception.message}"
+      "#{@exception.class}: #{message}"
     end
   end
 
