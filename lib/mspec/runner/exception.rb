@@ -34,10 +34,9 @@ class ExceptionState
   end
 
   def backtrace
-    @backtrace_filter ||= MSpecScript.config[:backtrace_filter]
+    @backtrace_filter ||= MSpecScript.config[:backtrace_filter] || %r{(?:/bin/mspec|/lib/mspec/)}
 
     bt = @exception.backtrace || []
-
     bt.select { |line| $MSPEC_DEBUG or @backtrace_filter !~ line }.join("\n")
   end
 end
