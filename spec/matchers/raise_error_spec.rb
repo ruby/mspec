@@ -12,7 +12,7 @@ describe RaiseErrorMatcher do
     matcher.matches?(proc).should == true
   end
 
-  it "executes it's optional block if matched" do
+  it "executes its optional block if matched" do
     run = false
     proc = Proc.new { raise ExpectedException }
     matcher = RaiseErrorMatcher.new(ExpectedException, nil) { |error|

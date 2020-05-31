@@ -21,19 +21,23 @@ class RaiseErrorMatcher
     end
   end
 
-  def matching_exception?(exc)
-    return false unless @exception === exc
+  def matching_class?(exc)
+    @exception === exc
+  end
 
-    if @message then
-      case @message
-      when String
-        return false if @message != exc.message
-      when Regexp
-        return false if @message !~ exc.message
-      end
+  def matching_message?(exc)
+    case @message
+    when String
+      @message == exc.message
+    when Regexp
+      @message =~ exc.message
+    else
+      true
     end
+  end
 
-    return true
+  def matching_exception?(exc)
+    matching_class?(exc) and matching_message?(exc)
   end
 
   def exception_class_and_message(exception_class, message)
