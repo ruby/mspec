@@ -6,6 +6,7 @@ class ExceptionState
 
   def initialize(state, location, exception)
     @exception = exception
+    @failure = exception.class == SpecExpectationNotMetError || exception.class == SpecExpectationNotFoundError
 
     @description = location ? "An exception occurred during: #{location}" : ""
     if state
@@ -19,14 +20,14 @@ class ExceptionState
   end
 
   def failure?
-    [SpecExpectationNotMetError, SpecExpectationNotFoundError].any? { |e| @exception.is_a? e }
+    @failure
   end
 
   def message
     message = @exception.message
     message = "<No message>" if message.empty?
 
-    if @exception.class == SpecExpectationNotMetError || @exception.class == SpecExpectationNotFoundError
+    if @failure
       message
     elsif raise_error_message = @exception.instance_variable_get(:@mspec_raise_error_message)
       raise_error_message.join("\n")
