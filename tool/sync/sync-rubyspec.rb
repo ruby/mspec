@@ -178,7 +178,7 @@ def test_new_specs
 
     run_test[min_version]
     run_test[max_version]
-    run_test["master"] if TEST_MASTER
+    run_test["ruby-master"] if TEST_MASTER
   end
 end
 
