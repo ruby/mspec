@@ -158,11 +158,11 @@ def rebase_commits(impl)
 end
 
 def test_new_specs
-  diff = `git diff master`
-  abort "#{BRIGHT_YELLOW}No new commits, aborting#{RESET}" if diff.empty?
-
   require "yaml"
   Dir.chdir(SOURCE_REPO) do
+    diff = `git diff master`
+    abort "#{BRIGHT_YELLOW}No new commits, aborting#{RESET}" if diff.empty?
+
     workflow = YAML.load_file(".github/workflows/ci.yml")
     job_name = MSPEC ? "test" : "specs"
     versions = workflow.dig("jobs", job_name, "strategy", "matrix", "ruby")
