@@ -1,6 +1,6 @@
 require 'mspec/guards/version'
 
-if RUBY_ENGINE == "ruby"
+if Object.const_defined?(:Warning) and Warning.respond_to?(:warn)
   def Warning.warn(message)
     # Suppress any warning inside the method to prevent recursion
     verbose = $VERBOSE
