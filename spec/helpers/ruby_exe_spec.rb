@@ -146,6 +146,16 @@ RSpec.describe Object, "#ruby_exe" do
 
     @script = RubyExeSpecs.new
     allow(@script).to receive(:`)
+    allow($?).to receive(:success?).and_return(true)
+  end
+
+  it "returns command STDOUT when given command" do
+    code = "code"
+    options = {}
+    output = "output"
+    @script.stub(:`) { output }
+
+    @script.ruby_exe(code, options).should == output
   end
 
   it "returns an Array containing the interpreter executable and flags when given no arguments" do
@@ -158,6 +168,20 @@ RSpec.describe Object, "#ruby_exe" do
     expect(@script).to receive(:ruby_cmd).and_return("ruby_cmd")
     expect(@script).to receive(:`).with("ruby_cmd")
     @script.ruby_exe(code, options)
+  end
+
+  it "raises exception when command exit status is not successful" do
+    code = "code"
+    options = {}
+
+    @script.stub(:`) do
+      $?.stub(:success?) { false }
+      $?.stub(:exitstatus) { -1 }
+    end
+
+    -> {
+      @script.ruby_exe(code, options)
+    }.should raise_error(/Ruby command failed. Exit status -1/)
   end
 
   describe "with :dir option" do
@@ -195,6 +219,28 @@ RSpec.describe Object, "#ruby_exe" do
       expect do
         @script.ruby_exe nil, :env => { :ABC => "xyz" }
       end.to raise_error(Exception)
+    end
+  end
+
+  describe "with :exception option" do
+    context "when Ruby command fails" do
+      before do
+        $?.stub(:success?) { false }
+        $?.stub(:exitstatus) { -1 }
+      end
+
+      it "raises exception when exception: true" do
+        -> {
+          @script.ruby_exe("path", exception: true)
+        }.should raise_error(/Ruby command failed. Exit status -1/)
+      end
+
+      it "does not raise exception when exception: false" do
+        output = "output"
+        @script.stub(:`) { output }
+
+        @script.ruby_exe("path", exception: false).should == output
+      end
     end
   end
 end
