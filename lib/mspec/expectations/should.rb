@@ -23,6 +23,10 @@ class Object
     raise "should_not outside example" unless state
     MSpec.actions :expectation, state
 
+    if RaiseErrorMatcher === matcher
+      $stderr.puts "\nDeprecation: ->{}.should_not raise_error breaks code style and is deprecated"
+    end
+
     if NO_MATCHER_GIVEN.equal?(matcher)
       SpecNegativeOperatorMatcher.new(self)
     else

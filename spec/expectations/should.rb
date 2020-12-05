@@ -70,4 +70,8 @@ describe "MSpec expectation method #should_not" do
   it "invokes the MSpec :expectation actions" do
     1.should_not == 2
   end
+
+  it "deprecates using `{}.should_not raise_error`" do
+    -> { }.should_not raise_error
+  end
 end
