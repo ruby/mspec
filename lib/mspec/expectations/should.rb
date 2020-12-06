@@ -24,7 +24,7 @@ class Object
     MSpec.actions :expectation, state
 
     if RaiseErrorMatcher === matcher
-      $stderr.puts "\nDeprecation: ->{}.should_not raise_error breaks code style and is deprecated"
+      MSpec.deprecate('->{}.should_not raise_error', 'a matcher to verify the result')
     end
 
     if NO_MATCHER_GIVEN.equal?(matcher)

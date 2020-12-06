@@ -5,8 +5,8 @@ describe "MSpec" do
   before :all do
     path = RbConfig::CONFIG['bindir']
     exe  = RbConfig::CONFIG['ruby_install_name']
-    file = File.dirname(__FILE__) + '/should.rb 2>&1'
-    @out = `#{path}/#{exe} #{file}`
+    file = File.dirname(__FILE__) + '/should.rb'
+    @out = `#{path}/#{exe} #{file} 2>&1`
   end
 
   describe "#should" do
@@ -47,7 +47,8 @@ EOS
     end
 
     it 'prints a deprecation message about using `{}.should_not raise_error`' do
-      @out.should include "Deprecation: ->{}.should_not raise_error breaks code style and is deprecated"
+      @out.should include "->{}.should_not raise_error is deprecated, use a matcher to verify the result instead."
+      @out.should =~ /from .+spec\/expectations\/should.rb:75:in `block \(2 levels\) in <main>'/
     end
   end
 
