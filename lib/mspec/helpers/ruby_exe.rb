@@ -139,10 +139,11 @@ def ruby_exe(code = :not_given, opts = {})
 
   begin
     platform_is_not :opal do
-      output = `#{ruby_cmd(code, opts)}`
+      command = ruby_cmd(code, opts)
+      output = `#{command}`
 
       if !$?.success? && exception
-        raise "ruby_exe(#{code}, #{opts}) failed: #{$?.inspect}"
+        raise "ruby_exe(#{command}) failed: #{$?.inspect}"
       end
 
       output
