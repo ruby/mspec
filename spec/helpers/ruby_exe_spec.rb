@@ -181,7 +181,7 @@ RSpec.describe Object, "#ruby_exe" do
 
     -> {
       @script.ruby_exe(code, options)
-    }.should raise_error(%r{ruby_exe\(.+, \{\}\) failed: #<Process::Status: pid 75873 exit 4>})
+    }.should raise_error(%r{ruby_exe\(.+\) failed: #<Process::Status: pid 75873 exit 4>})
   end
 
   describe "with :dir option" do
@@ -231,7 +231,7 @@ RSpec.describe Object, "#ruby_exe" do
       it "raises exception when exception: true" do
         -> {
           @script.ruby_exe("path", exception: true)
-        }.should raise_error(%r{ruby_exe\(.+, \{:exception=>true\}\) failed:})
+        }.should raise_error(%r{ruby_exe\(.+\) failed:})
       end
 
       it "does not raise exception when exception: false" do
