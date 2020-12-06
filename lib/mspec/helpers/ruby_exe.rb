@@ -142,7 +142,7 @@ def ruby_exe(code = :not_given, opts = {})
       output = `#{ruby_cmd(code, opts)}`
 
       if !$?.success? && exception
-        raise "Ruby command failed. Exit status #{$?.exitstatus}"
+        raise "ruby_exe(#{code}, #{opts}) failed: #{$?.inspect}"
       end
 
       output

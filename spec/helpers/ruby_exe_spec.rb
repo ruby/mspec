@@ -176,12 +176,12 @@ RSpec.describe Object, "#ruby_exe" do
 
     @script.stub(:`) do
       $?.stub(:success?) { false }
-      $?.stub(:exitstatus) { -1 }
+      $?.stub(:inspect) { "#<Process::Status: pid 75873 exit 4>" }
     end
 
     -> {
       @script.ruby_exe(code, options)
-    }.should raise_error(/Ruby command failed. Exit status -1/)
+    }.should raise_error(%r{ruby_exe\(.+, \{\}\) failed: #<Process::Status: pid 75873 exit 4>})
   end
 
   describe "with :dir option" do
@@ -226,13 +226,12 @@ RSpec.describe Object, "#ruby_exe" do
     context "when Ruby command fails" do
       before do
         $?.stub(:success?) { false }
-        $?.stub(:exitstatus) { -1 }
       end
 
       it "raises exception when exception: true" do
         -> {
           @script.ruby_exe("path", exception: true)
-        }.should raise_error(/Ruby command failed. Exit status -1/)
+        }.should raise_error(%r{ruby_exe\(.+, \{:exception=>true\}\) failed:})
       end
 
       it "does not raise exception when exception: false" do
