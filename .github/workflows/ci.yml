@@ -14,3 +14,18 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
     - run: bundle exec rspec
+
+  rubyspec:
+    name: Check ruby/spec still passes with MSpec changes
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      with:
+        repository: ruby/spec
+        path: rubyspec
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler: none
+    - run: bin/mspec --timeout 30 rubyspec
