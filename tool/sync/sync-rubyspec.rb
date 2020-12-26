@@ -1,3 +1,6 @@
+# This script is based on commands from the wiki:
+# https://github.com/ruby/spec/wiki/Merging-specs-from-JRuby-and-other-sources
+
 IMPLS = {
   truffleruby: {
     git: "https://github.com/oracle/truffleruby.git",
