@@ -1,7 +1,8 @@
 require 'mspec/guards/version'
 
 # Always enable deprecation warnings when running MSpec, as ruby/spec tests for them,
-# and like in most test frameworks, all warnings should be enabled by default (same as -w).
+# and like in most test frameworks, deprecation warnings should be enabled by default,
+# so that deprecations are noticed before the breaking change.
 if Object.const_defined?(:Warning) and Warning.respond_to?(:[]=)
   Warning[:deprecated] = true
 end
