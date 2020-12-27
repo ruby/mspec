@@ -176,7 +176,7 @@ def test_new_specs
     versions = versions.grep(/^\d+\./) # Test on MRI
     min_version, max_version = versions.minmax
 
-    test_command = MSPEC ? "bundle exec rspec" : "../mspec/bin/mspec -j"
+    test_command = MSPEC ? "bundle install && bundle exec rspec" : "../mspec/bin/mspec -j"
 
     run_test = -> version {
       command = "chruby #{version} && #{test_command}"
