@@ -42,7 +42,6 @@ if Object.const_defined?(:Warning) and Warning.respond_to?(:warn)
     when /regexp\/shared\/new_ascii(_8bit)?\.rb:\d+: warning: Unknown escape .+ is ignored/
 
     # $VERBOSE = false warnings
-    when /constant ::(Fixnum|Bignum) is deprecated/
     when /\/(argf|io|stringio)\/.+(ARGF|IO)#(lines|chars|bytes|codepoints) is deprecated/
     when /Thread\.exclusive is deprecated.+\n.+thread\/exclusive_spec\.rb/
     when /hash\/shared\/index\.rb:\d+: warning: Hash#index is deprecated; use Hash#key/
