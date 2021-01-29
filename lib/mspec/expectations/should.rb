@@ -23,6 +23,10 @@ class Object
     raise "should_not outside example" unless state
     MSpec.actions :expectation, state
 
+    if RaiseErrorMatcher === matcher
+      MSpec.deprecate('->{}.should_not raise_error', 'a matcher to verify the result')
+    end
+
     if NO_MATCHER_GIVEN.equal?(matcher)
       SpecNegativeOperatorMatcher.new(self)
     else

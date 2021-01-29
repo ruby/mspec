@@ -6,7 +6,7 @@ describe "MSpec" do
     path = RbConfig::CONFIG['bindir']
     exe  = RbConfig::CONFIG['ruby_install_name']
     file = File.dirname(__FILE__) + '/should.rb'
-    @out = `#{path}/#{exe} #{file}`
+    @out = `#{path}/#{exe} #{file} 2>&1`
   end
 
   describe "#should" do
@@ -45,6 +45,11 @@ MSpec expectation method #should_not registers that an expectation has been enco
 No behavior expectation was found in the example
 EOS
     end
+
+    it 'prints a deprecation message about using `{}.should_not raise_error`' do
+      @out.should include "->{}.should_not raise_error is deprecated, use a matcher to verify the result instead."
+      @out.should =~ /from .+spec\/expectations\/should.rb:75:in `block \(2 levels\) in <main>'/
+    end
   end
 
   it "prints status information" do
@@ -52,10 +57,10 @@ EOS
   end
 
   it "prints out a summary" do
-    @out.should include "0 files, 8 examples, 6 expectations, 4 failures, 0 errors"
+    @out.should include "0 files, 9 examples, 7 expectations, 4 failures, 0 errors"
   end
 
   it "records expectations" do
-    @out.should include "I was called 6 times"
+    @out.should include "I was called 7 times"
   end
 end
