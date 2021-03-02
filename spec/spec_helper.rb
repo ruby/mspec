@@ -1,3 +1,15 @@
+RSpec.configure do |config|
+  config.expect_with :rspec do |expectations|
+    expectations.syntax = :expect
+  end
+  config.mock_with :rspec do |mocks|
+    mocks.syntax = :expect
+  end
+  # config.disable_monkey_patching!
+
+  config.raise_errors_for_deprecations!
+end
+
 require 'mspec/utils/format'
 require 'mspec/helpers/io'
 require 'mspec/helpers/scratch'
@@ -52,8 +64,4 @@ def run_mspec(command, args)
   out = out.gsub(/\d{2}:\d{2}:\d{2}/, "00:00:00") # Progress bar time
   out = out.gsub(cwd, "CWD")
   return out, ret
-end
-
-RSpec.configure do |config|
-  config.raise_errors_for_deprecations!
 end

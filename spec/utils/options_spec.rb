@@ -1177,7 +1177,7 @@ end
 
 describe "The --report-on GUARD option" do
   before :each do
-    MSpec.stub(:register_mode)
+    allow(MSpec).to receive(:register_mode)
 
     @options, @config = new_option
     @options.verify
