@@ -723,16 +723,16 @@ describe ContextState, "#process when an exception is raised in before(:each)" d
     expect(ScratchPad.recorded).to eq([])
   end
 
-  it "does call after(:each)" do
+  it "calls after(:each)" do
     @state.after(:each, &@a)
     @state.it("") { }
     @state.process
     expect(ScratchPad.recorded).to eq([:a])
   end
 
-  it "does not call Mock.verify_count" do
+  it "calls Mock.verify_count" do
     @state.it("") { }
-    expect(Mock).not_to receive(:verify_count)
+    expect(Mock).to receive(:verify_count)
     @state.process
   end
 end
