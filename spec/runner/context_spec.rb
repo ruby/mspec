@@ -6,7 +6,7 @@ require 'mspec/mocks/mock'
 require 'mspec/runner/context'
 require 'mspec/runner/example'
 
-describe ContextState, "#describe" do
+RSpec.describe ContextState, "#describe" do
   before :each do
     @state = ContextState.new "C#m"
     @proc = proc { ScratchPad.record :a }
@@ -37,7 +37,7 @@ describe ContextState, "#describe" do
   end
 end
 
-describe ContextState, "#shared?" do
+RSpec.describe ContextState, "#shared?" do
   it "returns false when the ContextState is not shared" do
     expect(ContextState.new("").shared?).to be_falsey
   end
@@ -47,7 +47,7 @@ describe ContextState, "#shared?" do
   end
 end
 
-describe ContextState, "#to_s" do
+RSpec.describe ContextState, "#to_s" do
   it "returns a description string for self when passed a Module" do
     expect(ContextState.new(Object).to_s).to eq("Object")
   end
@@ -57,7 +57,7 @@ describe ContextState, "#to_s" do
   end
 end
 
-describe ContextState, "#description" do
+RSpec.describe ContextState, "#description" do
   before :each do
     @state = ContextState.new "when empty"
     @parent = ContextState.new "Toplevel"
@@ -71,7 +71,7 @@ describe ContextState, "#description" do
   end
 end
 
-describe ContextState, "#it" do
+RSpec.describe ContextState, "#it" do
   before :each do
     @state = ContextState.new ""
     @proc = lambda {|*| }
@@ -98,7 +98,7 @@ describe ContextState, "#it" do
   end
 end
 
-describe ContextState, "#examples" do
+RSpec.describe ContextState, "#examples" do
   before :each do
     @state = ContextState.new ""
   end
@@ -110,7 +110,7 @@ describe ContextState, "#examples" do
   end
 end
 
-describe ContextState, "#before" do
+RSpec.describe ContextState, "#before" do
   before :each do
     @state = ContextState.new ""
     @proc = lambda {|*| }
@@ -127,7 +127,7 @@ describe ContextState, "#before" do
   end
 end
 
-describe ContextState, "#after" do
+RSpec.describe ContextState, "#after" do
   before :each do
     @state = ContextState.new ""
     @proc = lambda {|*| }
@@ -144,7 +144,7 @@ describe ContextState, "#after" do
   end
 end
 
-describe ContextState, "#pre" do
+RSpec.describe ContextState, "#pre" do
   before :each do
     @a = lambda {|*| }
     @b = lambda {|*| }
@@ -171,7 +171,7 @@ describe ContextState, "#pre" do
   end
 end
 
-describe ContextState, "#post" do
+RSpec.describe ContextState, "#post" do
   before :each do
     @a = lambda {|*| }
     @b = lambda {|*| }
@@ -198,7 +198,7 @@ describe ContextState, "#post" do
   end
 end
 
-describe ContextState, "#protect" do
+RSpec.describe ContextState, "#protect" do
   before :each do
     ScratchPad.record []
     @a = lambda {|*| ScratchPad << :a }
@@ -232,7 +232,7 @@ describe ContextState, "#protect" do
   end
 end
 
-describe ContextState, "#parent=" do
+RSpec.describe ContextState, "#parent=" do
   before :each do
     @state = ContextState.new ""
     @parent = double("describe")
@@ -263,7 +263,7 @@ describe ContextState, "#parent=" do
   end
 end
 
-describe ContextState, "#parent" do
+RSpec.describe ContextState, "#parent" do
   before :each do
     @state = ContextState.new ""
     @parent = double("describe")
@@ -281,7 +281,7 @@ describe ContextState, "#parent" do
   end
 end
 
-describe ContextState, "#parents" do
+RSpec.describe ContextState, "#parents" do
   before :each do
     @first = ContextState.new ""
     @second = ContextState.new ""
@@ -297,7 +297,7 @@ describe ContextState, "#parents" do
   end
 end
 
-describe ContextState, "#child" do
+RSpec.describe ContextState, "#child" do
   before :each do
     @first = ContextState.new ""
     @second = ContextState.new ""
@@ -312,7 +312,7 @@ describe ContextState, "#child" do
   end
 end
 
-describe ContextState, "#children" do
+RSpec.describe ContextState, "#children" do
   before :each do
     @parent = ContextState.new ""
     @first = ContextState.new ""
@@ -327,7 +327,7 @@ describe ContextState, "#children" do
   end
 end
 
-describe ContextState, "#state" do
+RSpec.describe ContextState, "#state" do
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
@@ -349,7 +349,7 @@ describe ContextState, "#state" do
   end
 end
 
-describe ContextState, "#process" do
+RSpec.describe ContextState, "#process" do
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
@@ -490,7 +490,7 @@ describe ContextState, "#process" do
   end
 end
 
-describe ContextState, "#process" do
+RSpec.describe ContextState, "#process" do
   before :each do
     MSpec.store :exception, []
 
@@ -530,7 +530,7 @@ describe ContextState, "#process" do
   end
 end
 
-describe ContextState, "#process" do
+RSpec.describe ContextState, "#process" do
   before :each do
     MSpec.store :example, []
 
@@ -565,7 +565,7 @@ describe ContextState, "#process" do
   end
 end
 
-describe ContextState, "#process" do
+RSpec.describe ContextState, "#process" do
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
@@ -605,7 +605,7 @@ describe ContextState, "#process" do
   end
 end
 
-describe ContextState, "#process" do
+RSpec.describe ContextState, "#process" do
   before :each do
     MSpec.store :enter, []
     MSpec.store :leave, []
@@ -637,7 +637,7 @@ describe ContextState, "#process" do
   end
 end
 
-describe ContextState, "#process when an exception is raised in before(:all)" do
+RSpec.describe ContextState, "#process when an exception is raised in before(:all)" do
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
@@ -697,7 +697,7 @@ describe ContextState, "#process when an exception is raised in before(:all)" do
   end
 end
 
-describe ContextState, "#process when an exception is raised in before(:each)" do
+RSpec.describe ContextState, "#process when an exception is raised in before(:each)" do
   before :each do
     MSpec.store :before, []
     MSpec.store :after, []
@@ -737,7 +737,7 @@ describe ContextState, "#process when an exception is raised in before(:each)" d
   end
 end
 
-describe ContextState, "#process in pretend mode" do
+RSpec.describe ContextState, "#process in pretend mode" do
   before :all do
     MSpec.register_mode :pretend
   end
@@ -786,7 +786,7 @@ describe ContextState, "#process in pretend mode" do
   end
 end
 
-describe ContextState, "#process in pretend mode" do
+RSpec.describe ContextState, "#process in pretend mode" do
   before :all do
     MSpec.register_mode :pretend
   end
@@ -861,7 +861,7 @@ describe ContextState, "#process in pretend mode" do
   end
 end
 
-describe ContextState, "#process in pretend mode" do
+RSpec.describe ContextState, "#process in pretend mode" do
   before :all do
     MSpec.register_mode :pretend
   end
@@ -901,7 +901,7 @@ describe ContextState, "#process in pretend mode" do
   end
 end
 
-describe ContextState, "#it_should_behave_like" do
+RSpec.describe ContextState, "#it_should_behave_like" do
   before :each do
     @shared_desc = :shared_context
     @shared = ContextState.new(@shared_desc, :shared => true)
@@ -1001,7 +1001,7 @@ describe ContextState, "#it_should_behave_like" do
   end
 end
 
-describe ContextState, "#filter_examples" do
+RSpec.describe ContextState, "#filter_examples" do
   before :each do
     @state = ContextState.new ""
     @state.it("one") { }

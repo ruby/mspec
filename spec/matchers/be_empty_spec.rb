@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe BeEmptyMatcher do
+RSpec.describe BeEmptyMatcher do
   it "matches when actual is empty" do
     expect(BeEmptyMatcher.new.matches?("")).to eq(true)
   end

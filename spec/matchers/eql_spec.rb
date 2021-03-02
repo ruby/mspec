@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe EqlMatcher do
+RSpec.describe EqlMatcher do
   it "matches when actual is eql? to expected" do
     expect(EqlMatcher.new(1).matches?(1)).to eq(true)
     expect(EqlMatcher.new(1.5).matches?(1.5)).to eq(true)

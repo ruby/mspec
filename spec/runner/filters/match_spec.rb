@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/mspec'
 require 'mspec/runner/filters/match'
 
-describe MatchFilter, "#===" do
+RSpec.describe MatchFilter, "#===" do
   before :each do
     @filter = MatchFilter.new nil, 'a', 'b', 'c'
   end
@@ -17,7 +17,7 @@ describe MatchFilter, "#===" do
   end
 end
 
-describe MatchFilter, "#register" do
+RSpec.describe MatchFilter, "#register" do
   it "registers itself with MSpec for the designated action list" do
     filter = MatchFilter.new :include
     expect(MSpec).to receive(:register).with(:include, filter)
@@ -25,7 +25,7 @@ describe MatchFilter, "#register" do
   end
 end
 
-describe MatchFilter, "#unregister" do
+RSpec.describe MatchFilter, "#unregister" do
   it "unregisters itself with MSpec for the designated action list" do
     filter = MatchFilter.new :exclude
     expect(MSpec).to receive(:unregister).with(:exclude, filter)

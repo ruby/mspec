@@ -16,7 +16,7 @@ class HPIMMSpecs
   end
 end
 
-describe HaveProtectedInstanceMethodMatcher do
+RSpec.describe HaveProtectedInstanceMethodMatcher do
   it "inherits from MethodMatcher" do
     expect(HaveProtectedInstanceMethodMatcher.new(:m)).to be_kind_of(MethodMatcher)
   end

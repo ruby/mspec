@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe FeatureGuard, ".enabled?" do
+RSpec.describe FeatureGuard, ".enabled?" do
   it "returns true if the feature is enabled" do
     expect(MSpec).to receive(:feature_enabled?).with(:encoding).and_return(true)
     expect(FeatureGuard.enabled?(:encoding)).to be_truthy
@@ -25,7 +25,7 @@ describe FeatureGuard, ".enabled?" do
   end
 end
 
-describe Object, "#with_feature" do
+RSpec.describe Object, "#with_feature" do
   before :each do
     ScratchPad.clear
 
@@ -47,7 +47,7 @@ describe Object, "#with_feature" do
   end
 end
 
-describe Object, "#with_feature" do
+RSpec.describe Object, "#with_feature" do
   before :each do
     ScratchPad.clear
   end
@@ -79,7 +79,7 @@ describe Object, "#with_feature" do
   end
 end
 
-describe Object, "#without_feature" do
+RSpec.describe Object, "#without_feature" do
   before :each do
     ScratchPad.clear
 
@@ -101,7 +101,7 @@ describe Object, "#without_feature" do
   end
 end
 
-describe Object, "#without_feature" do
+RSpec.describe Object, "#without_feature" do
   before :each do
     ScratchPad.clear
   end

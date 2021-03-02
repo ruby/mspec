@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe OutputMatcher do
+RSpec.describe OutputMatcher do
   it "matches when executing the proc results in the expected output to $stdout" do
     proc = Proc.new { puts "bang!" }
     expect(OutputMatcher.new("bang!\n", nil).matches?(proc)).to eq(true)

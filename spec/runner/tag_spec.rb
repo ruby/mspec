@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/runner/tag'
 
-describe SpecTag do
+RSpec.describe SpecTag do
   it "accepts an optional string to parse into fields" do
     tag = SpecTag.new "tag(comment):description"
     expect(tag.tag).to eq("tag")
@@ -10,7 +10,7 @@ describe SpecTag do
   end
 end
 
-describe SpecTag, "#parse" do
+RSpec.describe SpecTag, "#parse" do
   before :each do
     @tag = SpecTag.new
   end
@@ -72,7 +72,7 @@ describe SpecTag, "#parse" do
   end
 end
 
-describe SpecTag, "#to_s" do
+RSpec.describe SpecTag, "#to_s" do
   it "formats itself as 'tag(comment):description'" do
     txt = "tag(comment):description"
     tag = SpecTag.new txt
@@ -101,7 +101,7 @@ describe SpecTag, "#to_s" do
   end
 end
 
-describe SpecTag, "#==" do
+RSpec.describe SpecTag, "#==" do
   it "returns true if the tags have the same fields" do
     one = SpecTag.new "tag(this):unicorn"
     two = SpecTag.new "tag(this):unicorn"
@@ -110,7 +110,7 @@ describe SpecTag, "#==" do
   end
 end
 
-describe SpecTag, "#unescape" do
+RSpec.describe SpecTag, "#unescape" do
   it "replaces \\n by LF when the description is quoted" do
     tag = SpecTag.new 'tag:"desc with\nnew line"'
     expect(tag.description).to eq("desc with\nnew line")

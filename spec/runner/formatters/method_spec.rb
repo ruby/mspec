@@ -4,7 +4,7 @@ require 'mspec/runner/mspec'
 require 'mspec/runner/example'
 require 'mspec/utils/script'
 
-describe MethodFormatter, "#method_type" do
+RSpec.describe MethodFormatter, "#method_type" do
   before :each do
     @formatter = MethodFormatter.new
   end
@@ -23,7 +23,7 @@ describe MethodFormatter, "#method_type" do
   end
 end
 
-describe MethodFormatter, "#before" do
+RSpec.describe MethodFormatter, "#before" do
   before :each do
     @formatter = MethodFormatter.new
     allow(MSpec).to receive(:register)
@@ -91,7 +91,7 @@ describe MethodFormatter, "#before" do
   end
 end
 
-describe MethodFormatter, "#after" do
+RSpec.describe MethodFormatter, "#after" do
   before :each do
     @formatter = MethodFormatter.new
     allow(MSpec).to receive(:register)
@@ -132,7 +132,7 @@ describe MethodFormatter, "#after" do
   end
 end
 
-describe MethodFormatter, "#after" do
+RSpec.describe MethodFormatter, "#after" do
   before :each do
     $stdout = IOStub.new
     context = ContextState.new "Class#method"

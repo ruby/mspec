@@ -4,7 +4,7 @@ require 'mspec/runner/example'
 require 'mspec/runner/exception'
 require 'mspec/utils/script'
 
-describe ExceptionState, "#initialize" do
+RSpec.describe ExceptionState, "#initialize" do
   it "takes a state, location (e.g. before :each), and exception" do
     context = ContextState.new "Class#method"
     state = ExampleState.new context, "does something"
@@ -13,7 +13,7 @@ describe ExceptionState, "#initialize" do
   end
 end
 
-describe ExceptionState, "#description" do
+RSpec.describe ExceptionState, "#description" do
   before :each do
     context = ContextState.new "Class#method"
     @state = ExampleState.new context, "does something"
@@ -35,7 +35,7 @@ describe ExceptionState, "#description" do
   end
 end
 
-describe ExceptionState, "#describe" do
+RSpec.describe ExceptionState, "#describe" do
   before :each do
     context = ContextState.new "Class#method"
     @state = ExampleState.new context, "does something"
@@ -50,7 +50,7 @@ describe ExceptionState, "#describe" do
   end
 end
 
-describe ExceptionState, "#it" do
+RSpec.describe ExceptionState, "#it" do
   before :each do
     context = ContextState.new "Class#method"
     @state = ExampleState.new context, "does something"
@@ -65,7 +65,7 @@ describe ExceptionState, "#it" do
   end
 end
 
-describe ExceptionState, "#failure?" do
+RSpec.describe ExceptionState, "#failure?" do
   before :each do
     @state = ExampleState.new ContextState.new("C#m"), "works"
   end
@@ -86,7 +86,7 @@ describe ExceptionState, "#failure?" do
   end
 end
 
-describe ExceptionState, "#message" do
+RSpec.describe ExceptionState, "#message" do
   before :each do
     @state = ExampleState.new ContextState.new("C#m"), "works"
   end
@@ -113,7 +113,7 @@ describe ExceptionState, "#message" do
   end
 end
 
-describe ExceptionState, "#backtrace" do
+RSpec.describe ExceptionState, "#backtrace" do
   before :each do
     @state = ExampleState.new ContextState.new("C#m"), "works"
     begin

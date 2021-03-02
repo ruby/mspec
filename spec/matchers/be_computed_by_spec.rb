@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/matchers'
 
-describe BeComputedByMatcher do
+RSpec.describe BeComputedByMatcher do
   it "matches when all entries in the Array compute" do
     array = [ [65, "A"],
               [90, "Z"] ]

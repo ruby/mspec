@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe Object, "#cp" do
+RSpec.describe Object, "#cp" do
   before :each do
     @source = tmp("source.txt")
     @copy = tmp("copied.txt")
@@ -24,7 +24,7 @@ describe Object, "#cp" do
   end
 end
 
-describe Object, "#touch" do
+RSpec.describe Object, "#touch" do
   before :all do
     @name = tmp("touched.txt")
   end
@@ -57,7 +57,7 @@ describe Object, "#touch" do
   end
 end
 
-describe Object, "#touch" do
+RSpec.describe Object, "#touch" do
   before :all do
     @name = tmp("subdir/touched.txt")
   end
@@ -72,7 +72,7 @@ describe Object, "#touch" do
   end
 end
 
-describe Object, "#mkdir_p" do
+RSpec.describe Object, "#mkdir_p" do
   before :all do
     @dir1 = tmp("/nested")
     @dir2 = @dir1 + "/directory"
@@ -108,7 +108,7 @@ describe Object, "#mkdir_p" do
   end
 end
 
-describe Object, "#rm_r" do
+RSpec.describe Object, "#rm_r" do
   before :all do
     @topdir  = tmp("rm_r_tree")
     @topfile = @topdir + "/file.txt"

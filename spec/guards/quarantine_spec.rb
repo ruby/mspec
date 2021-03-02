@@ -1,13 +1,13 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe QuarantineGuard, "#match?" do
+RSpec.describe QuarantineGuard, "#match?" do
   it "returns true" do
     expect(QuarantineGuard.new.match?).to eq(true)
   end
 end
 
-describe Object, "#quarantine!" do
+RSpec.describe Object, "#quarantine!" do
   before :each do
     ScratchPad.clear
 

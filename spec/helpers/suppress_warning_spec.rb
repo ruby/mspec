@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe Object, "#suppress_warning" do
+RSpec.describe Object, "#suppress_warning" do
   it "hides warnings" do
     suppress_warning do
       warn "should not be shown"

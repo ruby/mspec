@@ -4,13 +4,13 @@ require 'mspec/runner/mspec'
 require 'mspec/runner/example'
 require 'mspec/runner/tag'
 
-describe TagListAction, "#include?" do
+RSpec.describe TagListAction, "#include?" do
   it "returns true" do
     expect(TagListAction.new.include?(:anything)).to be_truthy
   end
 end
 
-describe TagListAction, "#===" do
+RSpec.describe TagListAction, "#===" do
   before :each do
     tag = SpecTag.new "fails:description"
     allow(MSpec).to receive(:read_tags).and_return([tag])
@@ -31,7 +31,7 @@ describe TagListAction, "#===" do
   end
 end
 
-describe TagListAction, "#start" do
+RSpec.describe TagListAction, "#start" do
   before :each do
     @stdout = $stdout
     $stdout = IOStub.new
@@ -54,7 +54,7 @@ describe TagListAction, "#start" do
   end
 end
 
-describe TagListAction, "#load" do
+RSpec.describe TagListAction, "#load" do
   before :each do
     @t1 = SpecTag.new "fails:I fail"
     @t2 = SpecTag.new "unstable:I'm unstable"
@@ -79,7 +79,7 @@ describe TagListAction, "#load" do
   end
 end
 
-describe TagListAction, "#after" do
+RSpec.describe TagListAction, "#after" do
   before :each do
     @stdout = $stdout
     $stdout = IOStub.new
@@ -107,7 +107,7 @@ describe TagListAction, "#after" do
   end
 end
 
-describe TagListAction, "#register" do
+RSpec.describe TagListAction, "#register" do
   before :each do
     allow(MSpec).to receive(:register)
     @action = TagListAction.new
@@ -129,7 +129,7 @@ describe TagListAction, "#register" do
   end
 end
 
-describe TagListAction, "#unregister" do
+RSpec.describe TagListAction, "#unregister" do
   before :each do
     allow(MSpec).to receive(:unregister)
     @action = TagListAction.new

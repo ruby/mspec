@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe MatchYAMLMatcher do
+RSpec.describe MatchYAMLMatcher do
   before :each do
     @matcher = MatchYAMLMatcher.new("--- \nfoo: bar\n")
   end

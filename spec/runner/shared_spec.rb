@@ -3,7 +3,7 @@ require 'mspec/runner/shared'
 require 'mspec/runner/context'
 require 'mspec/runner/example'
 
-describe Object, "#it_behaves_like" do
+RSpec.describe Object, "#it_behaves_like" do
   before :each do
     ScratchPad.clear
 

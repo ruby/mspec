@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/formatters/describe'
 require 'mspec/runner/example'
 
-describe DescribeFormatter, "#finish" do
+RSpec.describe DescribeFormatter, "#finish" do
   before :each do
     allow(MSpec).to receive(:register)
     allow(MSpec).to receive(:unregister)

@@ -5,7 +5,7 @@ require 'mspec/matchers'
 class Parent; end
 class Child < Parent; end
 
-describe BeAncestorOfMatcher do
+RSpec.describe BeAncestorOfMatcher do
   it "matches when actual is an ancestor of expected" do
     expect(BeAncestorOfMatcher.new(Child).matches?(Parent)).to eq(true)
   end

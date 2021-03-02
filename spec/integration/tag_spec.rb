@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe "Running mspec tag" do
+RSpec.describe "Running mspec tag" do
   before :all do
     FileUtils.rm_rf 'spec/fixtures/tags'
   end

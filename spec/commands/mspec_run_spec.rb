@@ -5,7 +5,7 @@ require 'mspec/commands/mspec-run'
 one_spec = File.expand_path(File.dirname(__FILE__)) + '/fixtures/one_spec.rb'
 two_spec = File.expand_path(File.dirname(__FILE__)) + '/fixtures/two_spec.rb'
 
-describe MSpecRun, ".new" do
+RSpec.describe MSpecRun, ".new" do
   before :each do
     @script = MSpecRun.new
   end
@@ -15,7 +15,7 @@ describe MSpecRun, ".new" do
   end
 end
 
-describe MSpecRun, "#options" do
+RSpec.describe MSpecRun, "#options" do
   before :each do
     @argv = [one_spec, two_spec]
     @options, @config = new_option
@@ -125,7 +125,7 @@ describe MSpecRun, "#options" do
   end
 end
 
-describe MSpecRun, "#run" do
+RSpec.describe MSpecRun, "#run" do
   before :each do
     @script = MSpecRun.new
     allow(@script).to receive(:exit)

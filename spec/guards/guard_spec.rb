@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'rbconfig'
 
-describe SpecGuard, ".ruby_version" do
+RSpec.describe SpecGuard, ".ruby_version" do
   before :each do
     stub_const "RUBY_VERSION", "8.2.3"
   end
@@ -32,7 +32,7 @@ describe SpecGuard, ".ruby_version" do
   end
 end
 
-describe SpecGuard, "#yield?" do
+RSpec.describe SpecGuard, "#yield?" do
   before :each do
     MSpec.clear_modes
     @guard = SpecGuard.new
@@ -93,7 +93,7 @@ describe SpecGuard, "#yield?" do
   end
 end
 
-describe SpecGuard, "#match?" do
+RSpec.describe SpecGuard, "#match?" do
   before :each do
     @guard = SpecGuard.new
   end
@@ -105,7 +105,7 @@ describe SpecGuard, "#match?" do
   end
 end
 
-describe SpecGuard, "#unregister" do
+RSpec.describe SpecGuard, "#unregister" do
   before :each do
     allow(MSpec).to receive(:unregister)
     @guard = SpecGuard.new
@@ -117,7 +117,7 @@ describe SpecGuard, "#unregister" do
   end
 end
 
-describe SpecGuard, "#record" do
+RSpec.describe SpecGuard, "#record" do
   after :each do
     SpecGuard.clear
   end
@@ -132,13 +132,13 @@ describe SpecGuard, "#record" do
   end
 end
 
-describe SpecGuard, ".guards" do
+RSpec.describe SpecGuard, ".guards" do
   it "returns an Array" do
     expect(SpecGuard.guards).to be_kind_of(Array)
   end
 end
 
-describe SpecGuard, ".clear_guards" do
+RSpec.describe SpecGuard, ".clear_guards" do
   it "resets the array to empty" do
     SpecGuard.guards << :guard
     expect(SpecGuard.guards).to eq([:guard])
@@ -147,7 +147,7 @@ describe SpecGuard, ".clear_guards" do
   end
 end
 
-describe SpecGuard, ".finish" do
+RSpec.describe SpecGuard, ".finish" do
   before :each do
     $stdout = @out = IOStub.new
   end
@@ -174,7 +174,7 @@ SomeClass#reverse returns false
   end
 end
 
-describe SpecGuard, ".run_if" do
+RSpec.describe SpecGuard, ".run_if" do
   before :each do
     @guard = SpecGuard.new
     ScratchPad.clear
@@ -209,7 +209,7 @@ describe SpecGuard, ".run_if" do
   end
 end
 
-describe SpecGuard, ".run_unless" do
+RSpec.describe SpecGuard, ".run_unless" do
   before :each do
     @guard = SpecGuard.new
     ScratchPad.clear
@@ -244,7 +244,7 @@ describe SpecGuard, ".run_unless" do
   end
 end
 
-describe Object, "#guard" do
+RSpec.describe Object, "#guard" do
   before :each do
     ScratchPad.clear
   end
@@ -354,7 +354,7 @@ describe Object, "#guard" do
   end
 end
 
-describe Object, "#guard_not" do
+RSpec.describe Object, "#guard_not" do
   before :each do
     ScratchPad.clear
   end

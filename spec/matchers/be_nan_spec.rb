@@ -4,7 +4,7 @@ require 'mspec/guards'
 require 'mspec/helpers'
 require 'mspec/matchers'
 
-describe BeNaNMatcher do
+RSpec.describe BeNaNMatcher do
   it "matches when actual is NaN" do
     expect(BeNaNMatcher.new.matches?(nan_value)).to eq(true)
   end

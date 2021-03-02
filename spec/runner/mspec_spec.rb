@@ -6,14 +6,14 @@ require 'mspec/matchers/base'
 require 'mspec/runner/mspec'
 require 'mspec/runner/example'
 
-describe MSpec, ".register_files" do
+RSpec.describe MSpec, ".register_files" do
   it "records which spec files to run" do
     MSpec.register_files [:one, :two, :three]
     expect(MSpec.files_array).to eq([:one, :two, :three])
   end
 end
 
-describe MSpec, ".register_mode" do
+RSpec.describe MSpec, ".register_mode" do
   before :each do
     MSpec.clear_modes
   end
@@ -24,14 +24,14 @@ describe MSpec, ".register_mode" do
   end
 end
 
-describe MSpec, ".register_tags_patterns" do
+RSpec.describe MSpec, ".register_tags_patterns" do
   it "records the patterns for generating a tag file from a spec file" do
     MSpec.register_tags_patterns [[/spec\/ruby/, "spec/tags"], [/frozen/, "ruby"]]
     expect(MSpec.retrieve(:tags_patterns)).to eq([[/spec\/ruby/, "spec/tags"], [/frozen/, "ruby"]])
   end
 end
 
-describe MSpec, ".register_exit" do
+RSpec.describe MSpec, ".register_exit" do
   before :each do
     MSpec.store :exit, 0
   end
@@ -43,28 +43,28 @@ describe MSpec, ".register_exit" do
   end
 end
 
-describe MSpec, ".exit_code" do
+RSpec.describe MSpec, ".exit_code" do
   it "retrieves the code set with .register_exit" do
     MSpec.register_exit 99
     expect(MSpec.exit_code).to eq(99)
   end
 end
 
-describe MSpec, ".store" do
+RSpec.describe MSpec, ".store" do
   it "records data for MSpec settings" do
     MSpec.store :anything, :value
     expect(MSpec.retrieve(:anything)).to eq(:value)
   end
 end
 
-describe MSpec, ".retrieve" do
+RSpec.describe MSpec, ".retrieve" do
   it "accesses .store'd data" do
     MSpec.register :retrieve, :first
     expect(MSpec.retrieve(:retrieve)).to eq([:first])
   end
 end
 
-describe MSpec, ".randomize" do
+RSpec.describe MSpec, ".randomize" do
   it "sets the flag to randomize spec execution order" do
     expect(MSpec.randomize?).to eq(false)
     MSpec.randomize = true
@@ -74,7 +74,7 @@ describe MSpec, ".randomize" do
   end
 end
 
-describe MSpec, ".register" do
+RSpec.describe MSpec, ".register" do
   it "is the gateway behind the register(symbol, action) facility" do
     MSpec.register :bonus, :first
     MSpec.register :bonus, :second
@@ -83,7 +83,7 @@ describe MSpec, ".register" do
   end
 end
 
-describe MSpec, ".unregister" do
+RSpec.describe MSpec, ".unregister" do
   it "is the gateway behind the unregister(symbol, actions) facility" do
     MSpec.register :unregister, :first
     MSpec.register :unregister, :second
@@ -92,7 +92,7 @@ describe MSpec, ".unregister" do
   end
 end
 
-describe MSpec, ".protect" do
+RSpec.describe MSpec, ".protect" do
   before :each do
     MSpec.clear_current
     @cs = ContextState.new "C#m"
@@ -139,7 +139,7 @@ describe MSpec, ".protect" do
   end
 end
 
-describe MSpec, ".register_current" do
+RSpec.describe MSpec, ".register_current" do
   before :each do
     MSpec.clear_current
   end
@@ -151,7 +151,7 @@ describe MSpec, ".register_current" do
   end
 end
 
-describe MSpec, ".clear_current" do
+RSpec.describe MSpec, ".clear_current" do
   it "sets the value returned by MSpec.current to nil" do
     MSpec.register_current :a
     expect(MSpec.current).not_to be_nil
@@ -160,7 +160,7 @@ describe MSpec, ".clear_current" do
   end
 end
 
-describe MSpec, ".current" do
+RSpec.describe MSpec, ".current" do
   before :each do
     MSpec.clear_current
   end
@@ -179,7 +179,7 @@ describe MSpec, ".current" do
   end
 end
 
-describe MSpec, ".actions" do
+RSpec.describe MSpec, ".actions" do
   before :each do
     MSpec.store :start, []
     ScratchPad.record []
@@ -202,7 +202,7 @@ describe MSpec, ".actions" do
   end
 end
 
-describe MSpec, ".mode?" do
+RSpec.describe MSpec, ".mode?" do
   before :each do
     MSpec.clear_modes
   end
@@ -214,7 +214,7 @@ describe MSpec, ".mode?" do
   end
 end
 
-describe MSpec, ".clear_modes" do
+RSpec.describe MSpec, ".clear_modes" do
   it "clears all registered modes" do
     MSpec.register_mode(:pretend)
     MSpec.register_mode(:verify)
@@ -229,7 +229,7 @@ describe MSpec, ".clear_modes" do
   end
 end
 
-describe MSpec, ".guarded?" do
+RSpec.describe MSpec, ".guarded?" do
   before :each do
     MSpec.instance_variable_set :@guarded, []
   end
@@ -260,7 +260,7 @@ describe MSpec, ".guarded?" do
   end
 end
 
-describe MSpec, ".describe" do
+RSpec.describe MSpec, ".describe" do
   before :each do
     MSpec.clear_current
     @cs = ContextState.new ""
@@ -290,7 +290,7 @@ describe MSpec, ".describe" do
   end
 end
 
-describe MSpec, ".process" do
+RSpec.describe MSpec, ".process" do
   before :each do
     allow(MSpec).to receive(:files)
     MSpec.store :start, []
@@ -325,7 +325,7 @@ describe MSpec, ".process" do
   end
 end
 
-describe MSpec, ".files" do
+RSpec.describe MSpec, ".files" do
   before :each do
     MSpec.store :load, []
     MSpec.store :unload, []
@@ -358,7 +358,7 @@ describe MSpec, ".files" do
   end
 end
 
-describe MSpec, ".shuffle" do
+RSpec.describe MSpec, ".shuffle" do
   before :each do
     @base = (0..100).to_a
     @list = @base.clone
@@ -378,7 +378,7 @@ describe MSpec, ".shuffle" do
   end
 end
 
-describe MSpec, ".tags_file" do
+RSpec.describe MSpec, ".tags_file" do
   before :each do
     MSpec.store :file, "path/to/spec/something/some_spec.rb"
     MSpec.store :tags_patterns, nil
@@ -408,7 +408,7 @@ describe MSpec, ".tags_file" do
   end
 end
 
-describe MSpec, ".read_tags" do
+RSpec.describe MSpec, ".read_tags" do
   before :each do
     allow(MSpec).to receive(:tags_file).and_return(File.dirname(__FILE__) + '/tags.txt')
   end
@@ -423,7 +423,7 @@ describe MSpec, ".read_tags" do
   end
 end
 
-describe MSpec, ".read_tags" do
+RSpec.describe MSpec, ".read_tags" do
   before :each do
     @tag = SpecTag.new "fails:Some#method"
     File.open(tmp("tags.txt", false), "w") do |f|
@@ -439,7 +439,7 @@ describe MSpec, ".read_tags" do
   end
 end
 
-describe MSpec, ".write_tags" do
+RSpec.describe MSpec, ".write_tags" do
   before :each do
     FileUtils.cp File.dirname(__FILE__) + "/tags.txt", tmp("tags.txt", false)
     allow(MSpec).to receive(:tags_file).and_return(tmp("tags.txt", false))
@@ -464,7 +464,7 @@ broken:Tag#write_tags fails
   end
 end
 
-describe MSpec, ".write_tag" do
+RSpec.describe MSpec, ".write_tag" do
   before :each do
     allow(FileUtils).to receive(:mkdir_p)
     allow(MSpec).to receive(:tags_file).and_return(tmp("tags.txt", false))
@@ -487,7 +487,7 @@ describe MSpec, ".write_tag" do
   end
 end
 
-describe MSpec, ".delete_tag" do
+RSpec.describe MSpec, ".delete_tag" do
   before :each do
     FileUtils.cp File.dirname(__FILE__) + "/tags.txt", tmp("tags.txt", false)
     allow(MSpec).to receive(:tags_file).and_return(tmp("tags.txt", false))
@@ -533,7 +533,7 @@ extended():\"Multi-line\\ntext\\ntag\"
   end
 end
 
-describe MSpec, ".delete_tags" do
+RSpec.describe MSpec, ".delete_tags" do
   before :each do
     @tags = tmp("tags.txt", false)
     FileUtils.cp File.dirname(__FILE__) + "/tags.txt", @tags
@@ -546,7 +546,7 @@ describe MSpec, ".delete_tags" do
   end
 end
 
-describe MSpec, ".expectation" do
+RSpec.describe MSpec, ".expectation" do
   it "sets the flag that an expectation has been reported" do
     MSpec.clear_expectations
     expect(MSpec.expectation?).to be_falsey
@@ -555,7 +555,7 @@ describe MSpec, ".expectation" do
   end
 end
 
-describe MSpec, ".expectation?" do
+RSpec.describe MSpec, ".expectation?" do
   it "returns true if an expectation has been reported" do
     MSpec.expectation
     expect(MSpec.expectation?).to be_truthy
@@ -567,7 +567,7 @@ describe MSpec, ".expectation?" do
   end
 end
 
-describe MSpec, ".clear_expectations" do
+RSpec.describe MSpec, ".clear_expectations" do
   it "clears the flag that an expectation has been reported" do
     MSpec.expectation
     expect(MSpec.expectation?).to be_truthy
@@ -576,7 +576,7 @@ describe MSpec, ".clear_expectations" do
   end
 end
 
-describe MSpec, ".register_shared" do
+RSpec.describe MSpec, ".register_shared" do
   it "stores a shared ContextState by description" do
     parent = ContextState.new "container"
     state = ContextState.new "shared"
@@ -588,7 +588,7 @@ describe MSpec, ".register_shared" do
   end
 end
 
-describe MSpec, ".retrieve_shared" do
+RSpec.describe MSpec, ".retrieve_shared" do
   it "retrieves the shared ContextState matching description" do
     state = ContextState.new ""
     MSpec.retrieve(:shared)["shared"] = state

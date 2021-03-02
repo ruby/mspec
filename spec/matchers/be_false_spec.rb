@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe BeFalseMatcher do
+RSpec.describe BeFalseMatcher do
   it "matches when actual is false" do
     expect(BeFalseMatcher.new.matches?(false)).to eq(true)
   end

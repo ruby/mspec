@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe BeNilMatcher do
+RSpec.describe BeNilMatcher do
   it "matches when actual is nil" do
     expect(BeNilMatcher.new.matches?(nil)).to eq(true)
   end

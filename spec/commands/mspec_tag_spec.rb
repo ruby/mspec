@@ -8,7 +8,7 @@ require 'mspec/runner/actions/tagpurge'
 one_spec = File.expand_path(File.dirname(__FILE__)) + '/fixtures/one_spec.rb'
 two_spec = File.expand_path(File.dirname(__FILE__)) + '/fixtures/two_spec.rb'
 
-describe MSpecTag, ".new" do
+RSpec.describe MSpecTag, ".new" do
   before :each do
     @script = MSpecTag.new
   end
@@ -30,7 +30,7 @@ describe MSpecTag, ".new" do
   end
 end
 
-describe MSpecTag, "#options" do
+RSpec.describe MSpecTag, "#options" do
   before :each do
     @stdout, $stdout = $stdout, IOStub.new
 
@@ -109,7 +109,7 @@ describe MSpecTag, "#options" do
   end
 end
 
-describe MSpecTag, "options" do
+RSpec.describe MSpecTag, "options" do
   before :each do
     @options, @config = new_option
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -253,7 +253,7 @@ describe MSpecTag, "options" do
   end
 end
 
-describe MSpecTag, "#run" do
+RSpec.describe MSpecTag, "#run" do
   before :each do
     allow(MSpec).to receive(:process)
 
@@ -292,7 +292,7 @@ describe MSpecTag, "#run" do
   end
 end
 
-describe MSpecTag, "#register" do
+RSpec.describe MSpecTag, "#register" do
   before :each do
     @script = MSpecTag.new
     @config = @script.config

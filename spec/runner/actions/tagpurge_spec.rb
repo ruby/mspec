@@ -4,7 +4,7 @@ require 'mspec/runner/mspec'
 require 'mspec/runner/example'
 require 'mspec/runner/tag'
 
-describe TagPurgeAction, "#start" do
+RSpec.describe TagPurgeAction, "#start" do
   before :each do
     @stdout = $stdout
     $stdout = IOStub.new
@@ -21,7 +21,7 @@ describe TagPurgeAction, "#start" do
   end
 end
 
-describe TagPurgeAction, "#load" do
+RSpec.describe TagPurgeAction, "#load" do
   before :each do
     @t1 = SpecTag.new "fails:I fail"
     @t2 = SpecTag.new "unstable:I'm unstable"
@@ -34,7 +34,7 @@ describe TagPurgeAction, "#load" do
   end
 end
 
-describe TagPurgeAction, "#after" do
+RSpec.describe TagPurgeAction, "#after" do
   before :each do
     @state = double("ExampleState")
     allow(@state).to receive(:description).and_return("str")
@@ -55,7 +55,7 @@ describe TagPurgeAction, "#after" do
   end
 end
 
-describe TagPurgeAction, "#unload" do
+RSpec.describe TagPurgeAction, "#unload" do
   before :each do
     @stdout = $stdout
     $stdout = IOStub.new
@@ -102,7 +102,7 @@ describe TagPurgeAction, "#unload" do
   end
 end
 
-describe TagPurgeAction, "#unload" do
+RSpec.describe TagPurgeAction, "#unload" do
   before :each do
     @stdout = $stdout
     $stdout = IOStub.new
@@ -129,7 +129,7 @@ describe TagPurgeAction, "#unload" do
   end
 end
 
-describe TagPurgeAction, "#register" do
+RSpec.describe TagPurgeAction, "#register" do
   before :each do
     allow(MSpec).to receive(:register)
     @action = TagPurgeAction.new
@@ -141,7 +141,7 @@ describe TagPurgeAction, "#register" do
   end
 end
 
-describe TagPurgeAction, "#unregister" do
+RSpec.describe TagPurgeAction, "#unregister" do
   before :each do
     allow(MSpec).to receive(:unregister)
     @action = TagPurgeAction.new

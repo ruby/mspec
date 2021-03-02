@@ -3,7 +3,7 @@ require 'mspec/runner/mspec'
 require 'mspec/runner/filters/match'
 require 'mspec/runner/filters/tag'
 
-describe TagFilter, "#load" do
+RSpec.describe TagFilter, "#load" do
   before :each do
     @match = double("match filter").as_null_object
     @filter = TagFilter.new :include, "tag", "key"
@@ -31,7 +31,7 @@ describe TagFilter, "#load" do
   end
 end
 
-describe TagFilter, "#unload" do
+RSpec.describe TagFilter, "#unload" do
   before :each do
     @filter = TagFilter.new :include, "tag", "key"
     @tag = SpecTag.new "tag(comment):description"
@@ -46,7 +46,7 @@ describe TagFilter, "#unload" do
   end
 end
 
-describe TagFilter, "#register" do
+RSpec.describe TagFilter, "#register" do
   before :each do
     allow(MSpec).to receive(:register)
   end
@@ -59,7 +59,7 @@ describe TagFilter, "#register" do
   end
 end
 
-describe TagFilter, "#unregister" do
+RSpec.describe TagFilter, "#unregister" do
   before :each do
     allow(MSpec).to receive(:unregister)
   end
@@ -72,7 +72,7 @@ describe TagFilter, "#unregister" do
   end
 end
 
-describe TagFilter, "#===" do
+RSpec.describe TagFilter, "#===" do
   before :each do
     @filter = TagFilter.new nil, "tag", "key"
     @tag = SpecTag.new "tag(comment):description"

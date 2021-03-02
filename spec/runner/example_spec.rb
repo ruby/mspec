@@ -4,7 +4,7 @@ require 'mspec/runner/mspec'
 require 'mspec/mocks/mock'
 require 'mspec/runner/example'
 
-describe ExampleState do
+RSpec.describe ExampleState do
   it "is initialized with the ContextState, #it string, and #it block" do
     prc = lambda { }
     context = ContextState.new ""
@@ -12,7 +12,7 @@ describe ExampleState do
   end
 end
 
-describe ExampleState, "#describe" do
+RSpec.describe ExampleState, "#describe" do
   before :each do
     @context = ContextState.new "Object#to_s"
     @state = ExampleState.new @context, "it"
@@ -23,7 +23,7 @@ describe ExampleState, "#describe" do
   end
 end
 
-describe ExampleState, "#it" do
+RSpec.describe ExampleState, "#it" do
   before :each do
     @state = ExampleState.new ContextState.new("describe"), "it"
   end
@@ -33,7 +33,7 @@ describe ExampleState, "#it" do
   end
 end
 
-describe ExampleState, "#context=" do
+RSpec.describe ExampleState, "#context=" do
   before :each do
     @state = ExampleState.new ContextState.new("describe"), "it"
     @context = ContextState.new "New#context"
@@ -51,7 +51,7 @@ describe ExampleState, "#context=" do
   end
 end
 
-describe ExampleState, "#example" do
+RSpec.describe ExampleState, "#example" do
   before :each do
     @proc = lambda { }
     @state = ExampleState.new ContextState.new("describe"), "it", @proc
@@ -62,7 +62,7 @@ describe ExampleState, "#example" do
   end
 end
 
-describe ExampleState, "#filtered?" do
+RSpec.describe ExampleState, "#filtered?" do
   before :each do
     MSpec.store :include, []
     MSpec.store :exclude, []

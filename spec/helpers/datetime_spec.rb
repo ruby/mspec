@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe Object, "#new_datetime" do
+RSpec.describe Object, "#new_datetime" do
   it "returns a default DateTime instance" do
     expect(new_datetime).to eq(DateTime.new)
   end

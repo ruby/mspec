@@ -5,7 +5,7 @@ require 'mspec/matchers'
 class ExpectedException < Exception; end
 class UnexpectedException < Exception; end
 
-describe RaiseErrorMatcher do
+RSpec.describe RaiseErrorMatcher do
   it "matches when the proc raises the expected exception" do
     proc = Proc.new { raise ExpectedException }
     matcher = RaiseErrorMatcher.new(ExpectedException, nil)

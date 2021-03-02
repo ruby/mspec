@@ -3,7 +3,7 @@ require 'mspec/runner/formatters/yaml'
 require 'mspec/runner/example'
 require 'mspec/helpers'
 
-describe YamlFormatter, "#initialize" do
+RSpec.describe YamlFormatter, "#initialize" do
   it "permits zero arguments" do
     YamlFormatter.new
   end
@@ -13,7 +13,7 @@ describe YamlFormatter, "#initialize" do
   end
 end
 
-describe YamlFormatter, "#print" do
+RSpec.describe YamlFormatter, "#print" do
   before :each do
     $stdout = IOStub.new
     @out = IOStub.new
@@ -47,7 +47,7 @@ describe YamlFormatter, "#print" do
   end
 end
 
-describe YamlFormatter, "#finish" do
+RSpec.describe YamlFormatter, "#finish" do
   before :each do
     @tally = double("tally").as_null_object
     @counter = double("counter").as_null_object

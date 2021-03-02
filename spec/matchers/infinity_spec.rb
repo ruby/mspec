@@ -4,7 +4,7 @@ require 'mspec/guards'
 require 'mspec/helpers'
 require 'mspec/matchers'
 
-describe InfinityMatcher do
+RSpec.describe InfinityMatcher do
   it "matches when actual is infinite and has the correct sign" do
     expect(InfinityMatcher.new(1).matches?(infinity_value)).to eq(true)
     expect(InfinityMatcher.new(-1).matches?(-infinity_value)).to eq(true)

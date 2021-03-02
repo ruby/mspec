@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/commands/mkspec'
 require 'fileutils'
 
-describe "The -c, --constant CONSTANT option" do
+RSpec.describe "The -c, --constant CONSTANT option" do
   before :each do
     @options = MSpecOptions.new
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -26,7 +26,7 @@ describe "The -c, --constant CONSTANT option" do
   end
 end
 
-describe "The -b, --base DIR option" do
+RSpec.describe "The -b, --base DIR option" do
   before :each do
     @options = MSpecOptions.new
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -50,7 +50,7 @@ describe "The -b, --base DIR option" do
   end
 end
 
-describe "The -r, --require LIBRARY option" do
+RSpec.describe "The -r, --require LIBRARY option" do
   before :each do
     @options = MSpecOptions.new
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -74,7 +74,7 @@ describe "The -r, --require LIBRARY option" do
   end
 end
 
-describe "The -V, --version-guard VERSION option" do
+RSpec.describe "The -V, --version-guard VERSION option" do
   before :each do
     @options = MSpecOptions.new
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -98,7 +98,7 @@ describe "The -V, --version-guard VERSION option" do
   end
 end
 
-describe MkSpec, "#options" do
+RSpec.describe MkSpec, "#options" do
   before :each do
     @options = MSpecOptions.new
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -123,7 +123,7 @@ describe MkSpec, "#options" do
   end
 end
 
-describe MkSpec, "#create_directory" do
+RSpec.describe MkSpec, "#create_directory" do
   before :each do
     @script = MkSpec.new
     @script.config[:base] = "spec"
@@ -157,7 +157,7 @@ describe MkSpec, "#create_directory" do
   end
 end
 
-describe MkSpec, "#write_requires" do
+RSpec.describe MkSpec, "#write_requires" do
   before :each do
     @script = MkSpec.new
     @script.config[:base] = "spec"
@@ -180,7 +180,7 @@ describe MkSpec, "#write_requires" do
   end
 end
 
-describe MkSpec, "#write_spec" do
+RSpec.describe MkSpec, "#write_spec" do
   before :each do
     @file = IOStub.new
     allow(File).to receive(:open).and_yield(@file)
@@ -259,7 +259,7 @@ EOS
   end
 end
 
-describe MkSpec, "#create_file" do
+RSpec.describe MkSpec, "#create_file" do
   before :each do
     @script = MkSpec.new
     allow(@script).to receive(:write_requires)
@@ -294,7 +294,7 @@ describe MkSpec, "#create_file" do
   end
 end
 
-describe MkSpec, "#run" do
+RSpec.describe MkSpec, "#run" do
   before :each do
     @options = MSpecOptions.new
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -334,7 +334,7 @@ describe MkSpec, "#run" do
   end
 end
 
-describe MkSpec, ".main" do
+RSpec.describe MkSpec, ".main" do
   before :each do
     @script = double("MkSpec").as_null_object
     allow(MkSpec).to receive(:new).and_return(@script)

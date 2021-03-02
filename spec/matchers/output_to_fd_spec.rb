@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe OutputToFDMatcher do
+RSpec.describe OutputToFDMatcher do
   # Figure out how in the hell to achieve this
   it "matches when running the block produces the expected output to the given FD" do
     expect(OutputToFDMatcher.new("Hi\n", STDERR).matches?(lambda { $stderr.print "Hi\n" })).to eq(true)

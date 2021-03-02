@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe Object, "#argv" do
+RSpec.describe Object, "#argv" do
   before :each do
     ScratchPad.clear
 

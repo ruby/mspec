@@ -13,7 +13,7 @@ module BeAnInOfSpecs
   end
 end
 
-describe BeAnInstanceOfMatcher do
+RSpec.describe BeAnInstanceOfMatcher do
   it "matches when actual is an instance_of? expected" do
     a = BeAnInOfSpecs::A.new
     expect(BeAnInstanceOfMatcher.new(BeAnInOfSpecs::A).matches?(a)).to be_truthy

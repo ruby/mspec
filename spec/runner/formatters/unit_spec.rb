@@ -3,7 +3,7 @@ require 'mspec/runner/formatters/unit'
 require 'mspec/runner/example'
 require 'mspec/utils/script'
 
-describe UnitdiffFormatter, "#finish" do
+RSpec.describe UnitdiffFormatter, "#finish" do
   before :each do
     @tally = double("tally").as_null_object
     allow(TallyAction).to receive(:new).and_return(@tally)

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe EqualElementMatcher do
+RSpec.describe EqualElementMatcher do
   it "matches if it finds an element with the passed name, no matter what attributes/content" do
     expect(EqualElementMatcher.new("A").matches?('<A></A>')).to be_truthy
     expect(EqualElementMatcher.new("A").matches?('<A HREF="http://example.com"></A>')).to be_truthy

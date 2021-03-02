@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe HaveInstanceVariableMatcher do
+RSpec.describe HaveInstanceVariableMatcher do
   before :each do
     @object = Object.new
     def @object.instance_variables

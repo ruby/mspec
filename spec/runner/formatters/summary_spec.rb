@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/formatters/summary'
 require 'mspec/runner/example'
 
-describe SummaryFormatter, "#after" do
+RSpec.describe SummaryFormatter, "#after" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = SummaryFormatter.new

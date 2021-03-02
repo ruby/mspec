@@ -6,7 +6,7 @@ class HCMSpecs
   X = :x
 end
 
-describe HaveConstantMatcher do
+RSpec.describe HaveConstantMatcher do
   it "matches when mod has the constant" do
     matcher = HaveConstantMatcher.new :X
     expect(matcher.matches?(HCMSpecs)).to be_truthy

@@ -3,7 +3,7 @@ require 'mspec/runner/formatters/file'
 require 'mspec/runner/mspec'
 require 'mspec/runner/example'
 
-describe FileFormatter, "#register" do
+RSpec.describe FileFormatter, "#register" do
   before :each do
     @formatter = FileFormatter.new
     allow(MSpec).to receive(:register)
@@ -23,7 +23,7 @@ describe FileFormatter, "#register" do
   end
 end
 
-describe FileFormatter, "#load" do
+RSpec.describe FileFormatter, "#load" do
   before :each do
     @state = ExampleState.new ContextState.new("describe"), "it"
     @formatter = FileFormatter.new
@@ -43,7 +43,7 @@ describe FileFormatter, "#load" do
   end
 end
 
-describe FileFormatter, "#unload" do
+RSpec.describe FileFormatter, "#unload" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = FileFormatter.new

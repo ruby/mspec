@@ -3,7 +3,7 @@ require 'mspec/runner/mspec'
 require 'mspec/runner/filters/tag'
 require 'mspec/commands/mspec-ci'
 
-describe MSpecCI, "#options" do
+RSpec.describe MSpecCI, "#options" do
   before :each do
     @options, @config = new_option
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -84,7 +84,7 @@ describe MSpecCI, "#options" do
   end
 end
 
-describe MSpecCI, "#run" do
+RSpec.describe MSpecCI, "#run" do
   before :each do
     allow(MSpec).to receive(:process)
 

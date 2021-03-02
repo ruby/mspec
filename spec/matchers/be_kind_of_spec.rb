@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe BeKindOfMatcher do
+RSpec.describe BeKindOfMatcher do
   it "matches when actual is a kind_of? expected" do
     expect(BeKindOfMatcher.new(Numeric).matches?(1)).to eq(true)
     expect(BeKindOfMatcher.new(Integer).matches?(2)).to eq(true)

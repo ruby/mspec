@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Running mspec" do
+RSpec.describe "Running mspec" do
   a_spec_output = <<EOS
 
 1)

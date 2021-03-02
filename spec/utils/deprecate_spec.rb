@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/utils/deprecate'
 
-describe MSpec, "#deprecate" do
+RSpec.describe MSpec, "#deprecate" do
   it "warns when using a deprecated method" do
     warning = nil
     allow($stderr).to receive(:puts) { |str| warning = str }

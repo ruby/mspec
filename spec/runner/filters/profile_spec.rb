@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/mspec'
 require 'mspec/runner/filters/profile'
 
-describe ProfileFilter, "#find" do
+RSpec.describe ProfileFilter, "#find" do
   before :each do
     @filter = ProfileFilter.new nil
     allow(File).to receive(:exist?).and_return(false)
@@ -40,7 +40,7 @@ describe ProfileFilter, "#find" do
   end
 end
 
-describe ProfileFilter, "#parse" do
+RSpec.describe ProfileFilter, "#parse" do
   before :each do
     @filter = ProfileFilter.new nil
     @file = File.open(File.dirname(__FILE__) + "/b.yaml", "r")
@@ -58,7 +58,7 @@ describe ProfileFilter, "#parse" do
   end
 end
 
-describe ProfileFilter, "#load" do
+RSpec.describe ProfileFilter, "#load" do
   before :each do
     @filter = ProfileFilter.new nil
     @files = [
@@ -76,7 +76,7 @@ describe ProfileFilter, "#load" do
   end
 end
 
-describe ProfileFilter, "#===" do
+RSpec.describe ProfileFilter, "#===" do
   before :each do
     @filter = ProfileFilter.new nil
     allow(@filter).to receive(:load).and_return({ "A#" => ["[]=", "a", "a!", "a?", "aa="]})
@@ -100,7 +100,7 @@ describe ProfileFilter, "#===" do
   end
 end
 
-describe ProfileFilter, "#register" do
+RSpec.describe ProfileFilter, "#register" do
   it "registers itself with MSpec for the designated action list" do
     filter = ProfileFilter.new :include
     expect(MSpec).to receive(:register).with(:include, filter)
@@ -108,7 +108,7 @@ describe ProfileFilter, "#register" do
   end
 end
 
-describe ProfileFilter, "#unregister" do
+RSpec.describe ProfileFilter, "#unregister" do
   it "unregisters itself with MSpec for the designated action list" do
     filter = ProfileFilter.new :exclude
     expect(MSpec).to receive(:unregister).with(:exclude, filter)

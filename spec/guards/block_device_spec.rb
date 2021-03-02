@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe Object, "#with_block_device" do
+RSpec.describe Object, "#with_block_device" do
   before :each do
     ScratchPad.clear
 

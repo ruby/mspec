@@ -9,7 +9,7 @@ class HPMMSpecs
   private_class_method :private_method
 end
 
-describe HavePrivateMethodMatcher do
+RSpec.describe HavePrivateMethodMatcher do
   it "inherits from MethodMatcher" do
     expect(HavePrivateMethodMatcher.new(:m)).to be_kind_of(MethodMatcher)
   end

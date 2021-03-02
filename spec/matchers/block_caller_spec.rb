@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe BlockingMatcher do
+RSpec.describe BlockingMatcher do
   it 'matches when a Proc blocks the caller' do
     expect(BlockingMatcher.new.matches?(proc { sleep })).to eq(true)
   end

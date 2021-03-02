@@ -7,33 +7,33 @@ require 'mspec/runner/mspec'
 require 'mspec/mocks/mock'
 require 'mspec/mocks/proxy'
 
-describe Mock, ".mocks" do
+RSpec.describe Mock, ".mocks" do
   it "returns a Hash" do
     expect(Mock.mocks).to be_kind_of(Hash)
   end
 end
 
-describe Mock, ".stubs" do
+RSpec.describe Mock, ".stubs" do
   it "returns a Hash" do
     expect(Mock.stubs).to be_kind_of(Hash)
   end
 end
 
-describe Mock, ".replaced_name" do
+RSpec.describe Mock, ".replaced_name" do
   it "returns the name for a method that is being replaced by a mock method" do
     m = double('a fake id')
     expect(Mock.replaced_name(m, :method_call)).to eq(:"__mspec_#{m.object_id}_method_call__")
   end
 end
 
-describe Mock, ".replaced_key" do
+RSpec.describe Mock, ".replaced_key" do
   it "returns a key used internally by Mock" do
     m = double('a fake id')
     expect(Mock.replaced_key(m, :method_call)).to eq([:"__mspec_#{m.object_id}_method_call__", :method_call])
   end
 end
 
-describe Mock, ".replaced?" do
+RSpec.describe Mock, ".replaced?" do
   before :each do
     @mock = double('install_method')
     allow(MSpec).to receive(:actions)
@@ -55,7 +55,7 @@ describe Mock, ".replaced?" do
   end
 end
 
-describe Mock, ".name_or_inspect" do
+RSpec.describe Mock, ".name_or_inspect" do
   before :each do
     @mock = double("I have a #name")
   end
@@ -66,7 +66,7 @@ describe Mock, ".name_or_inspect" do
   end
 end
 
-describe Mock, ".install_method for mocks" do
+RSpec.describe Mock, ".install_method for mocks" do
   before :each do
     @mock = double('install_method')
     allow(MSpec).to receive(:actions)
@@ -138,7 +138,7 @@ describe Mock, ".install_method for mocks" do
   end
 end
 
-describe Mock, ".install_method for stubs" do
+RSpec.describe Mock, ".install_method for stubs" do
   before :each do
     @mock = double('install_method')
     allow(MSpec).to receive(:actions)
@@ -181,7 +181,7 @@ describe Mock, ".install_method for stubs" do
   end
 end
 
-describe Mock, ".install_method" do
+RSpec.describe Mock, ".install_method" do
   before :each do
     @mock = double('install_method')
     allow(MSpec).to receive(:actions)
@@ -207,7 +207,7 @@ end
 
 class MockAndRaiseError < Exception; end
 
-describe Mock, ".verify_call" do
+RSpec.describe Mock, ".verify_call" do
   before :each do
     allow(MSpec).to receive(:actions)
     allow(MSpec).to receive(:current).and_return(double("spec state").as_null_object)
@@ -313,7 +313,7 @@ describe Mock, ".verify_call" do
   end
 end
 
-describe Mock, ".verify_call mixing mocks and stubs" do
+RSpec.describe Mock, ".verify_call mixing mocks and stubs" do
   before :each do
     allow(MSpec).to receive(:actions)
     allow(MSpec).to receive(:current).and_return(double("spec state").as_null_object)
@@ -365,7 +365,7 @@ describe Mock, ".verify_call mixing mocks and stubs" do
   end
 end
 
-describe Mock, ".verify_count" do
+RSpec.describe Mock, ".verify_count" do
   before :each do
     allow(MSpec).to receive(:actions)
     allow(MSpec).to receive(:current).and_return(double("spec state").as_null_object)
@@ -428,7 +428,7 @@ describe Mock, ".verify_count" do
   end
 end
 
-describe Mock, ".verify_count mixing mocks and stubs" do
+RSpec.describe Mock, ".verify_count mixing mocks and stubs" do
   before :each do
     allow(MSpec).to receive(:actions)
     allow(MSpec).to receive(:current).and_return(double("spec state").as_null_object)
@@ -470,7 +470,7 @@ describe Mock, ".verify_count mixing mocks and stubs" do
   end
 end
 
-describe Mock, ".cleanup" do
+RSpec.describe Mock, ".cleanup" do
   before :each do
     allow(MSpec).to receive(:actions)
     allow(MSpec).to receive(:current).and_return(double("spec state").as_null_object)

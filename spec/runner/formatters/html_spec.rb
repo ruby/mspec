@@ -6,7 +6,7 @@ require 'mspec/runner/example'
 require 'mspec/utils/script'
 require 'mspec/helpers'
 
-describe HtmlFormatter do
+RSpec.describe HtmlFormatter do
   before :each do
     @formatter = HtmlFormatter.new
   end
@@ -20,7 +20,7 @@ describe HtmlFormatter do
   end
 end
 
-describe HtmlFormatter, "#start" do
+RSpec.describe HtmlFormatter, "#start" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = HtmlFormatter.new
@@ -59,7 +59,7 @@ ul {
   end
 end
 
-describe HtmlFormatter, "#enter" do
+RSpec.describe HtmlFormatter, "#enter" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = HtmlFormatter.new
@@ -75,7 +75,7 @@ describe HtmlFormatter, "#enter" do
   end
 end
 
-describe HtmlFormatter, "#leave" do
+RSpec.describe HtmlFormatter, "#leave" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = HtmlFormatter.new
@@ -91,7 +91,7 @@ describe HtmlFormatter, "#leave" do
   end
 end
 
-describe HtmlFormatter, "#exception" do
+RSpec.describe HtmlFormatter, "#exception" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = HtmlFormatter.new
@@ -114,7 +114,7 @@ describe HtmlFormatter, "#exception" do
   end
 end
 
-describe HtmlFormatter, "#after" do
+RSpec.describe HtmlFormatter, "#after" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = HtmlFormatter.new
@@ -140,7 +140,7 @@ describe HtmlFormatter, "#after" do
   end
 end
 
-describe HtmlFormatter, "#finish" do
+RSpec.describe HtmlFormatter, "#finish" do
   before :each do
     @tally = double("tally").as_null_object
     allow(TallyAction).to receive(:new).and_return(@tally)

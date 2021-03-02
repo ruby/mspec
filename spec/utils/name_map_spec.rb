@@ -25,7 +25,7 @@ module NameMapSpecs
   def n; end
 end
 
-describe NameMap, "#exception?" do
+RSpec.describe NameMap, "#exception?" do
   before :each do
     @map = NameMap.new
   end
@@ -50,7 +50,7 @@ describe NameMap, "#exception?" do
   end
 end
 
-describe NameMap, "#class_or_module" do
+RSpec.describe NameMap, "#class_or_module" do
   before :each do
     @map = NameMap.new true
   end
@@ -86,7 +86,7 @@ describe NameMap, "#class_or_module" do
   end
 end
 
-describe NameMap, "#dir_name" do
+RSpec.describe NameMap, "#dir_name" do
   before :each do
     @map = NameMap.new
   end
@@ -118,7 +118,7 @@ end
 # These specs do not cover all the mappings, but only describe how the
 # name is derived when the hash item maps to a single value, a hash with
 # a specific item, or a hash with a :default item.
-describe NameMap, "#file_name" do
+RSpec.describe NameMap, "#file_name" do
   before :each do
     @map = NameMap.new
   end
@@ -141,7 +141,7 @@ describe NameMap, "#file_name" do
   end
 end
 
-describe NameMap, "#namespace" do
+RSpec.describe NameMap, "#namespace" do
   before :each do
     @map = NameMap.new
   end
@@ -157,7 +157,7 @@ describe NameMap, "#namespace" do
   end
 end
 
-describe NameMap, "#map" do
+RSpec.describe NameMap, "#map" do
   before :each do
     @map = NameMap.new
   end

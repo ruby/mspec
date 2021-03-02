@@ -12,7 +12,7 @@ class HIMMSpecs
   end
 end
 
-describe HaveInstanceMethodMatcher do
+RSpec.describe HaveInstanceMethodMatcher do
   it "inherits from MethodMatcher" do
     expect(HaveInstanceMethodMatcher.new(:m)).to be_kind_of(MethodMatcher)
   end

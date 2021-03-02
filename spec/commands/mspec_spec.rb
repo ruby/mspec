@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'yaml'
 require 'mspec/commands/mspec'
 
-describe MSpecMain, "#options" do
+RSpec.describe MSpecMain, "#options" do
   before :each do
     @options, @config = new_option
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -44,7 +44,7 @@ describe MSpecMain, "#options" do
   end
 end
 
-describe MSpecMain, "#run" do
+RSpec.describe MSpecMain, "#run" do
   before :each do
     @options, @config = new_option
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -92,7 +92,7 @@ describe MSpecMain, "#run" do
   end
 end
 
-describe "The --warnings option" do
+RSpec.describe "The --warnings option" do
   before :each do
     @options, @config = new_option
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -119,7 +119,7 @@ describe "The --warnings option" do
   end
 end
 
-describe "The -j, --multi option" do
+RSpec.describe "The -j, --multi option" do
   before :each do
     @options, @config = new_option
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -142,7 +142,7 @@ describe "The -j, --multi option" do
   end
 end
 
-describe "The -h, --help option" do
+RSpec.describe "The -h, --help option" do
   before :each do
     @options, @config = new_option
     allow(MSpecOptions).to receive(:new).and_return(@options)
@@ -173,7 +173,7 @@ describe "The -h, --help option" do
   end
 end
 
-describe "The -v, --version option" do
+RSpec.describe "The -v, --version option" do
   before :each do
     @options, @config = new_option
     allow(MSpecOptions).to receive(:new).and_return(@options)

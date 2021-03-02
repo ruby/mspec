@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe Object, "#as_user" do
+RSpec.describe Object, "#as_user" do
   before :each do
     ScratchPad.clear
   end

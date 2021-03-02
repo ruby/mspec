@@ -3,7 +3,7 @@ require 'mspec/runner/actions/filter'
 require 'mspec/runner/mspec'
 require 'mspec/runner/tag'
 
-describe ActionFilter do
+RSpec.describe ActionFilter do
   it "creates a filter when not passed a description" do
     expect(MatchFilter).not_to receive(:new)
     ActionFilter.new(nil, nil)
@@ -20,7 +20,7 @@ describe ActionFilter do
   end
 end
 
-describe ActionFilter, "#===" do
+RSpec.describe ActionFilter, "#===" do
   before :each do
     allow(MSpec).to receive(:read_tags).and_return(["match"])
     @action = ActionFilter.new(nil, ["catch", "if you"])
@@ -42,7 +42,7 @@ describe ActionFilter, "#===" do
   end
 end
 
-describe ActionFilter, "#load" do
+RSpec.describe ActionFilter, "#load" do
   before :each do
     @tag = SpecTag.new "tag(comment):description"
   end
@@ -67,7 +67,7 @@ describe ActionFilter, "#load" do
   end
 end
 
-describe ActionFilter, "#register" do
+RSpec.describe ActionFilter, "#register" do
   it "registers itself with MSpec for the :load actions" do
     filter = ActionFilter.new
     expect(MSpec).to receive(:register).with(:load, filter)
@@ -75,7 +75,7 @@ describe ActionFilter, "#register" do
   end
 end
 
-describe ActionFilter, "#unregister" do
+RSpec.describe ActionFilter, "#unregister" do
   it "unregisters itself with MSpec for the :load actions" do
     filter = ActionFilter.new
     expect(MSpec).to receive(:unregister).with(:load, filter)

@@ -8,7 +8,7 @@ class IVarModMock
   end
 end
 
-describe HaveClassVariableMatcher, "on RUBY_VERSION >= 1.9" do
+RSpec.describe HaveClassVariableMatcher, "on RUBY_VERSION >= 1.9" do
   it "matches when mod has the class variable, given as string" do
     matcher = HaveClassVariableMatcher.new('@foo')
     expect(matcher.matches?(IVarModMock)).to be_truthy

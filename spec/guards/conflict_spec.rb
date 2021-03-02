@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe Object, "#conflicts_with" do
+RSpec.describe Object, "#conflicts_with" do
   before :each do
     hide_deprecation_warnings
     ScratchPad.clear
@@ -32,7 +32,7 @@ describe Object, "#conflicts_with" do
   end
 end
 
-describe Object, "#conflicts_with" do
+RSpec.describe Object, "#conflicts_with" do
   before :each do
     hide_deprecation_warnings
     @guard = ConflictsGuard.new

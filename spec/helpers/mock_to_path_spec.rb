@@ -3,7 +3,7 @@ require 'mspec/guards'
 require 'mspec/helpers'
 require 'mspec/mocks'
 
-describe Object, "#mock_to_path" do
+RSpec.describe Object, "#mock_to_path" do
   before :each do
     state = double("run state").as_null_object
     expect(MSpec).to receive(:current).and_return(state)

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe EqualMatcher do
+RSpec.describe EqualMatcher do
   it "matches when actual is equal? to expected" do
     expect(EqualMatcher.new(1).matches?(1)).to eq(true)
     expect(EqualMatcher.new(:blue).matches?(:blue)).to eq(true)

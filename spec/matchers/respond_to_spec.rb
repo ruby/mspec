@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe RespondToMatcher do
+RSpec.describe RespondToMatcher do
   it "matches when actual does respond_to? expected" do
     expect(RespondToMatcher.new(:to_s).matches?(Object.new)).to eq(true)
     expect(RespondToMatcher.new(:inject).matches?([])).to eq(true)

@@ -11,7 +11,7 @@ require 'mspec/guards'
 # is as typically understood: a..b means v >= a and v <= b;
 # a...b means v >= a and v < b.
 
-describe VersionGuard, "#match?" do
+RSpec.describe VersionGuard, "#match?" do
   before :each do
     hide_deprecation_warnings
     @current = '1.8.6'
@@ -49,7 +49,7 @@ describe VersionGuard, "#match?" do
   end
 end
 
-describe Object, "#ruby_version_is" do
+RSpec.describe Object, "#ruby_version_is" do
   before :each do
     @guard = VersionGuard.new '1.2.3', 'x.x.x'
     allow(VersionGuard).to receive(:new).and_return(@guard)
@@ -89,7 +89,7 @@ describe Object, "#ruby_version_is" do
   end
 end
 
-describe Object, "#version_is" do
+RSpec.describe Object, "#version_is" do
   before :each do
     hide_deprecation_warnings
   end

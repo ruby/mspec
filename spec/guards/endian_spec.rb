@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe Object, "#big_endian" do
+RSpec.describe Object, "#big_endian" do
   before :each do
     @guard = BigEndianGuard.new
     allow(BigEndianGuard).to receive(:new).and_return(@guard)
@@ -34,7 +34,7 @@ describe Object, "#big_endian" do
   end
 end
 
-describe Object, "#little_endian" do
+RSpec.describe Object, "#little_endian" do
   before :each do
     @guard = BigEndianGuard.new
     allow(BigEndianGuard).to receive(:new).and_return(@guard)

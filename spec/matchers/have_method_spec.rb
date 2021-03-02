@@ -12,7 +12,7 @@ class HMMSpecs
   end
 end
 
-describe HaveMethodMatcher do
+RSpec.describe HaveMethodMatcher do
   it "inherits from MethodMatcher" do
     expect(HaveMethodMatcher.new(:m)).to be_kind_of(MethodMatcher)
   end

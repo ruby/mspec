@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "The interpreter passed with -t" do
+RSpec.describe "The interpreter passed with -t" do
   it "is used in subprocess" do
     fixtures = "spec/fixtures"
     interpreter = "#{fixtures}/my_ruby"

@@ -4,7 +4,7 @@ require 'mspec/runner/actions/tally'
 require 'mspec/runner/mspec'
 require 'mspec/runner/example'
 
-describe Tally, "#files!" do
+RSpec.describe Tally, "#files!" do
   before :each do
     @tally = Tally.new
   end
@@ -17,7 +17,7 @@ describe Tally, "#files!" do
   end
 end
 
-describe Tally, "#examples!" do
+RSpec.describe Tally, "#examples!" do
   before :each do
     @tally = Tally.new
   end
@@ -30,7 +30,7 @@ describe Tally, "#examples!" do
   end
 end
 
-describe Tally, "#expectations!" do
+RSpec.describe Tally, "#expectations!" do
   before :each do
     @tally = Tally.new
   end
@@ -43,7 +43,7 @@ describe Tally, "#expectations!" do
   end
 end
 
-describe Tally, "#failures!" do
+RSpec.describe Tally, "#failures!" do
   before :each do
     @tally = Tally.new
   end
@@ -56,7 +56,7 @@ describe Tally, "#failures!" do
   end
 end
 
-describe Tally, "#errors!" do
+RSpec.describe Tally, "#errors!" do
   before :each do
     @tally = Tally.new
   end
@@ -69,7 +69,7 @@ describe Tally, "#errors!" do
   end
 end
 
-describe Tally, "#guards!" do
+RSpec.describe Tally, "#guards!" do
   before :each do
     @tally = Tally.new
   end
@@ -82,7 +82,7 @@ describe Tally, "#guards!" do
   end
 end
 
-describe Tally, "#file" do
+RSpec.describe Tally, "#file" do
   before :each do
     @tally = Tally.new
   end
@@ -96,7 +96,7 @@ describe Tally, "#file" do
   end
 end
 
-describe Tally, "#example" do
+RSpec.describe Tally, "#example" do
   before :each do
     @tally = Tally.new
   end
@@ -110,7 +110,7 @@ describe Tally, "#example" do
   end
 end
 
-describe Tally, "#expectation" do
+RSpec.describe Tally, "#expectation" do
   before :each do
     @tally = Tally.new
   end
@@ -124,7 +124,7 @@ describe Tally, "#expectation" do
   end
 end
 
-describe Tally, "#failure" do
+RSpec.describe Tally, "#failure" do
   before :each do
     @tally = Tally.new
   end
@@ -138,7 +138,7 @@ describe Tally, "#failure" do
   end
 end
 
-describe Tally, "#error" do
+RSpec.describe Tally, "#error" do
   before :each do
     @tally = Tally.new
   end
@@ -152,7 +152,7 @@ describe Tally, "#error" do
   end
 end
 
-describe Tally, "#guard" do
+RSpec.describe Tally, "#guard" do
   before :each do
     @tally = Tally.new
   end
@@ -166,7 +166,7 @@ describe Tally, "#guard" do
   end
 end
 
-describe Tally, "#format" do
+RSpec.describe Tally, "#format" do
   before :each do
     @tally = Tally.new
   end
@@ -223,7 +223,7 @@ describe Tally, "#format" do
   end
 end
 
-describe TallyAction, "#counter" do
+RSpec.describe TallyAction, "#counter" do
   before :each do
     @tally = TallyAction.new
     @state = ExampleState.new("describe", "it")
@@ -234,7 +234,7 @@ describe TallyAction, "#counter" do
   end
 end
 
-describe TallyAction, "#load" do
+RSpec.describe TallyAction, "#load" do
   before :each do
     @tally = TallyAction.new
     @state = ExampleState.new("describe", "it")
@@ -246,7 +246,7 @@ describe TallyAction, "#load" do
   end
 end
 
-describe TallyAction, "#expectation" do
+RSpec.describe TallyAction, "#expectation" do
   before :each do
     @tally = TallyAction.new
     @state = ExampleState.new("describe", "it")
@@ -258,7 +258,7 @@ describe TallyAction, "#expectation" do
   end
 end
 
-describe TallyAction, "#example" do
+RSpec.describe TallyAction, "#example" do
   before :each do
     @tally = TallyAction.new
     @state = ExampleState.new("describe", "it")
@@ -273,7 +273,7 @@ describe TallyAction, "#example" do
   end
 end
 
-describe TallyAction, "#exception" do
+RSpec.describe TallyAction, "#exception" do
   before :each do
     @tally = TallyAction.new
     @state = ExampleState.new("describe", "it")
@@ -289,7 +289,7 @@ describe TallyAction, "#exception" do
   end
 end
 
-describe TallyAction, "#exception" do
+RSpec.describe TallyAction, "#exception" do
   before :each do
     @tally = TallyAction.new
     @state = ExampleState.new("describe", "it")
@@ -305,7 +305,7 @@ describe TallyAction, "#exception" do
   end
 end
 
-describe TallyAction, "#format" do
+RSpec.describe TallyAction, "#format" do
   before :each do
     @tally = TallyAction.new
     @state = ExampleState.new("describe", "it")
@@ -322,7 +322,7 @@ describe TallyAction, "#format" do
   end
 end
 
-describe TallyAction, "#register" do
+RSpec.describe TallyAction, "#register" do
   before :each do
     @tally = TallyAction.new
     @state = ExampleState.new("describe", "it")
@@ -338,7 +338,7 @@ describe TallyAction, "#register" do
   end
 end
 
-describe TallyAction, "#unregister" do
+RSpec.describe TallyAction, "#unregister" do
   before :each do
     @tally = TallyAction.new
     @state = ExampleState.new("describe", "it")

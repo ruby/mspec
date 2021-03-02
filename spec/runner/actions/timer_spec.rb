@@ -3,7 +3,7 @@ require 'mspec/runner/actions/timer'
 require 'mspec/runner/mspec'
 require 'time'
 
-describe TimerAction do
+RSpec.describe TimerAction do
   before :each do
     @timer = TimerAction.new
     @start_time = Time.utc(2009, 3, 30, 14, 5, 19)

@@ -10,7 +10,7 @@ class RubyExeSpecs
   public :ruby_exe
 end
 
-describe "#ruby_exe_options" do
+RSpec.describe "#ruby_exe_options" do
   before :each do
     @ruby_exe_env = ENV['RUBY_EXE']
     @script = RubyExeSpecs.new
@@ -63,7 +63,7 @@ describe "#ruby_exe_options" do
   end
 end
 
-describe "#resolve_ruby_exe" do
+RSpec.describe "#resolve_ruby_exe" do
   before :each do
     @name = "ruby_spec_exe"
     @script = RubyExeSpecs.new
@@ -104,7 +104,7 @@ describe "#resolve_ruby_exe" do
   end
 end
 
-describe Object, "#ruby_cmd" do
+RSpec.describe Object, "#ruby_cmd" do
   before :each do
     stub_const 'RUBY_EXE', 'ruby_spec_exe -w -Q'
 
@@ -140,7 +140,7 @@ describe Object, "#ruby_cmd" do
   end
 end
 
-describe Object, "#ruby_exe" do
+RSpec.describe Object, "#ruby_exe" do
   before :each do
     stub_const 'RUBY_EXE', 'ruby_spec_exe -w -Q'
 

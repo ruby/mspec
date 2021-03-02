@@ -5,7 +5,7 @@ require 'mspec/guards/guard'
 require 'mspec/runner/mspec'
 require 'mspec/runner/formatters'
 
-describe MSpecOption, ".new" do
+RSpec.describe MSpecOption, ".new" do
   before :each do
     @opt = MSpecOption.new("-a", "--bdc", "ARG", "desc", :block)
   end
@@ -31,7 +31,7 @@ describe MSpecOption, ".new" do
   end
 end
 
-describe MSpecOption, "#arg?" do
+RSpec.describe MSpecOption, "#arg?" do
   it "returns true if arg attribute is not nil" do
     expect(MSpecOption.new(nil, nil, "ARG", nil, nil).arg?).to be_truthy
   end
@@ -41,7 +41,7 @@ describe MSpecOption, "#arg?" do
   end
 end
 
-describe MSpecOption, "#match?" do
+RSpec.describe MSpecOption, "#match?" do
   before :each do
     @opt = MSpecOption.new("-a", "--bdc", "ARG", "desc", :block)
   end
@@ -60,7 +60,7 @@ describe MSpecOption, "#match?" do
   end
 end
 
-describe MSpecOptions, ".new" do
+RSpec.describe MSpecOptions, ".new" do
   before :each do
     @opt = MSpecOptions.new("cmd", 20, :config)
   end
@@ -82,7 +82,7 @@ describe MSpecOptions, ".new" do
   end
 end
 
-describe MSpecOptions, "#on" do
+RSpec.describe MSpecOptions, "#on" do
   before :each do
     @opt = MSpecOptions.new
   end
@@ -123,7 +123,7 @@ describe MSpecOptions, "#on" do
   end
 end
 
-describe MSpecOptions, "#add" do
+RSpec.describe MSpecOptions, "#add" do
   before :each do
     @opt = MSpecOptions.new "cmd", 20
     @prc = lambda { }
@@ -153,7 +153,7 @@ describe MSpecOptions, "#add" do
   end
 end
 
-describe MSpecOptions, "#match?" do
+RSpec.describe MSpecOptions, "#match?" do
   before :each do
     @opt = MSpecOptions.new
   end
@@ -169,7 +169,7 @@ describe MSpecOptions, "#match?" do
   end
 end
 
-describe MSpecOptions, "#process" do
+RSpec.describe MSpecOptions, "#process" do
   before :each do
     @opt = MSpecOptions.new
     ScratchPad.clear
@@ -213,7 +213,7 @@ describe MSpecOptions, "#process" do
   end
 end
 
-describe MSpecOptions, "#split" do
+RSpec.describe MSpecOptions, "#split" do
   before :each do
     @opt = MSpecOptions.new
   end
@@ -233,7 +233,7 @@ describe MSpecOptions, "#split" do
   end
 end
 
-describe MSpecOptions, "#parse" do
+RSpec.describe MSpecOptions, "#parse" do
   before :each do
     @opt = MSpecOptions.new
     @prc = lambda { ScratchPad.record :parsed }
@@ -326,7 +326,7 @@ describe MSpecOptions, "#parse" do
   end
 end
 
-describe MSpecOptions, "#banner=" do
+RSpec.describe MSpecOptions, "#banner=" do
   before :each do
     @opt = MSpecOptions.new
   end
@@ -338,7 +338,7 @@ describe MSpecOptions, "#banner=" do
   end
 end
 
-describe MSpecOptions, "#width=" do
+RSpec.describe MSpecOptions, "#width=" do
   before :each do
     @opt = MSpecOptions.new
   end
@@ -350,7 +350,7 @@ describe MSpecOptions, "#width=" do
   end
 end
 
-describe MSpecOptions, "#config=" do
+RSpec.describe MSpecOptions, "#config=" do
   before :each do
     @opt = MSpecOptions.new
   end
@@ -362,7 +362,7 @@ describe MSpecOptions, "#config=" do
   end
 end
 
-describe MSpecOptions, "#doc" do
+RSpec.describe MSpecOptions, "#doc" do
   before :each do
     @opt = MSpecOptions.new "command"
   end
@@ -379,7 +379,7 @@ EOD
   end
 end
 
-describe MSpecOptions, "#version" do
+RSpec.describe MSpecOptions, "#version" do
   before :each do
     @opt = MSpecOptions.new
     ScratchPad.clear
@@ -399,7 +399,7 @@ describe MSpecOptions, "#version" do
   end
 end
 
-describe MSpecOptions, "#help" do
+RSpec.describe MSpecOptions, "#help" do
   before :each do
     @opt = MSpecOptions.new
     ScratchPad.clear
@@ -419,7 +419,7 @@ describe MSpecOptions, "#help" do
   end
 end
 
-describe MSpecOptions, "#on_extra" do
+RSpec.describe MSpecOptions, "#on_extra" do
   before :each do
     @opt = MSpecOptions.new
     ScratchPad.clear
@@ -432,7 +432,7 @@ describe MSpecOptions, "#on_extra" do
   end
 end
 
-describe MSpecOptions, "#to_s" do
+RSpec.describe MSpecOptions, "#to_s" do
   before :each do
     @opt = MSpecOptions.new "command"
   end
@@ -447,7 +447,7 @@ EOD
   end
 end
 
-describe "The -B, --config FILE option" do
+RSpec.describe "The -B, --config FILE option" do
   before :each do
     @options, @config = new_option
   end
@@ -469,7 +469,7 @@ describe "The -B, --config FILE option" do
   end
 end
 
-describe "The -C, --chdir DIR option" do
+RSpec.describe "The -C, --chdir DIR option" do
   before :each do
     @options, @config = new_option
     @options.chdir
@@ -489,7 +489,7 @@ describe "The -C, --chdir DIR option" do
   end
 end
 
-describe "The --prefix STR option" do
+RSpec.describe "The --prefix STR option" do
   before :each do
     @options, @config = new_option
   end
@@ -507,7 +507,7 @@ describe "The --prefix STR option" do
   end
 end
 
-describe "The -t, --target TARGET option" do
+RSpec.describe "The -t, --target TARGET option" do
   before :each do
     @options, @config = new_option
     @options.targets
@@ -589,7 +589,7 @@ describe "The -t, --target TARGET option" do
   end
 end
 
-describe "The -T, --target-opt OPT option" do
+RSpec.describe "The -T, --target-opt OPT option" do
   before :each do
     @options, @config = new_option
     @options.targets
@@ -611,7 +611,7 @@ describe "The -T, --target-opt OPT option" do
   end
 end
 
-describe "The -I, --include DIR option" do
+RSpec.describe "The -I, --include DIR option" do
   before :each do
     @options, @config = new_option
     @options.targets
@@ -633,7 +633,7 @@ describe "The -I, --include DIR option" do
   end
 end
 
-describe "The -r, --require LIBRARY option" do
+RSpec.describe "The -r, --require LIBRARY option" do
   before :each do
     @options, @config = new_option
     @options.targets
@@ -655,7 +655,7 @@ describe "The -r, --require LIBRARY option" do
   end
 end
 
-describe "The -f, --format FORMAT option" do
+RSpec.describe "The -f, --format FORMAT option" do
   before :each do
     @options, @config = new_option
     @options.formatters
@@ -779,7 +779,7 @@ describe "The -f, --format FORMAT option" do
   end
 end
 
-describe "The -o, --output FILE option" do
+RSpec.describe "The -o, --output FILE option" do
   before :each do
     @options, @config = new_option
     @options.formatters
@@ -801,7 +801,7 @@ describe "The -o, --output FILE option" do
   end
 end
 
-describe "The -e, --example STR" do
+RSpec.describe "The -e, --example STR" do
   before :each do
     @options, @config = new_option
     @options.filters
@@ -823,7 +823,7 @@ describe "The -e, --example STR" do
   end
 end
 
-describe "The -E, --exclude STR" do
+RSpec.describe "The -E, --exclude STR" do
   before :each do
     @options, @config = new_option
     @options.filters
@@ -845,7 +845,7 @@ describe "The -E, --exclude STR" do
   end
 end
 
-describe "The -p, --pattern PATTERN" do
+RSpec.describe "The -p, --pattern PATTERN" do
   before :each do
     @options, @config = new_option
     @options.filters
@@ -867,7 +867,7 @@ describe "The -p, --pattern PATTERN" do
   end
 end
 
-describe "The -P, --excl-pattern PATTERN" do
+RSpec.describe "The -P, --excl-pattern PATTERN" do
   before :each do
     @options, @config = new_option
     @options.filters
@@ -889,7 +889,7 @@ describe "The -P, --excl-pattern PATTERN" do
   end
 end
 
-describe "The -g, --tag TAG" do
+RSpec.describe "The -g, --tag TAG" do
   before :each do
     @options, @config = new_option
     @options.filters
@@ -911,7 +911,7 @@ describe "The -g, --tag TAG" do
   end
 end
 
-describe "The -G, --excl-tag TAG" do
+RSpec.describe "The -G, --excl-tag TAG" do
   before :each do
     @options, @config = new_option
     @options.filters
@@ -933,7 +933,7 @@ describe "The -G, --excl-tag TAG" do
   end
 end
 
-describe "The -w, --profile FILE option" do
+RSpec.describe "The -w, --profile FILE option" do
   before :each do
     @options, @config = new_option
     @options.filters
@@ -955,7 +955,7 @@ describe "The -w, --profile FILE option" do
   end
 end
 
-describe "The -W, --excl-profile FILE option" do
+RSpec.describe "The -W, --excl-profile FILE option" do
   before :each do
     @options, @config = new_option
     @options.filters
@@ -977,7 +977,7 @@ describe "The -W, --excl-profile FILE option" do
   end
 end
 
-describe "The -Z, --dry-run option" do
+RSpec.describe "The -Z, --dry-run option" do
   before :each do
     @options, @config = new_option
     @options.pretend
@@ -996,7 +996,7 @@ describe "The -Z, --dry-run option" do
   end
 end
 
-describe "The --unguarded option" do
+RSpec.describe "The --unguarded option" do
   before :each do
     @options, @config = new_option
     @options.unguarded
@@ -1014,7 +1014,7 @@ describe "The --unguarded option" do
   end
 end
 
-describe "The --no-ruby_guard option" do
+RSpec.describe "The --no-ruby_guard option" do
   before :each do
     @options, @config = new_option
     @options.unguarded
@@ -1032,7 +1032,7 @@ describe "The --no-ruby_guard option" do
   end
 end
 
-describe "The -H, --random option" do
+RSpec.describe "The -H, --random option" do
   before :each do
     @options, @config = new_option
     @options.randomize
@@ -1051,7 +1051,7 @@ describe "The -H, --random option" do
   end
 end
 
-describe "The -R, --repeat option" do
+RSpec.describe "The -R, --repeat option" do
   before :each do
     @options, @config = new_option
     @options.repeat
@@ -1075,7 +1075,7 @@ describe "The -R, --repeat option" do
   end
 end
 
-describe "The -V, --verbose option" do
+RSpec.describe "The -V, --verbose option" do
   before :each do
     @options, @config = new_option
     @options.verbose
@@ -1096,7 +1096,7 @@ describe "The -V, --verbose option" do
   end
 end
 
-describe "The -m, --marker MARKER option" do
+RSpec.describe "The -m, --marker MARKER option" do
   before :each do
     @options, @config = new_option
     @options.verbose
@@ -1117,7 +1117,7 @@ describe "The -m, --marker MARKER option" do
   end
 end
 
-describe "The --int-spec option" do
+RSpec.describe "The --int-spec option" do
   before :each do
     @options, @config = new_option
     @options.interrupt
@@ -1135,7 +1135,7 @@ describe "The --int-spec option" do
   end
 end
 
-describe "The -Y, --verify option" do
+RSpec.describe "The -Y, --verify option" do
   before :each do
     @options, @config = new_option
     @options.verify
@@ -1155,7 +1155,7 @@ describe "The -Y, --verify option" do
   end
 end
 
-describe "The -O, --report option" do
+RSpec.describe "The -O, --report option" do
   before :each do
     @options, @config = new_option
     @options.verify
@@ -1175,7 +1175,7 @@ describe "The -O, --report option" do
   end
 end
 
-describe "The --report-on GUARD option" do
+RSpec.describe "The --report-on GUARD option" do
   before :each do
     allow(MSpec).to receive(:register_mode)
 
@@ -1212,7 +1212,7 @@ describe "The --report-on GUARD option" do
   end
 end
 
-describe "The -K, --action-tag TAG option" do
+RSpec.describe "The -K, --action-tag TAG option" do
   before :each do
     @options, @config = new_option
     @options.action_filters
@@ -1234,7 +1234,7 @@ describe "The -K, --action-tag TAG option" do
   end
 end
 
-describe "The -S, --action-string STR option" do
+RSpec.describe "The -S, --action-string STR option" do
   before :each do
     @options, @config = new_option
     @options.action_filters
@@ -1256,7 +1256,7 @@ describe "The -S, --action-string STR option" do
   end
 end
 
-describe "The -d, --debug option" do
+RSpec.describe "The -d, --debug option" do
   before :each do
     @options, @config = new_option
     @options.debug
@@ -1282,7 +1282,7 @@ describe "The -d, --debug option" do
   end
 end
 
-describe "MSpecOptions#all" do
+RSpec.describe "MSpecOptions#all" do
   it "includes all options" do
     meth = MSpecOptions.instance_method(:all)
     file, line = meth.source_location

@@ -4,7 +4,7 @@ require 'mspec/runner/mspec'
 require 'mspec/runner/example'
 require 'mspec/runner/tag'
 
-describe TagAction, ".new" do
+RSpec.describe TagAction, ".new" do
   it "creates an MatchFilter with its tag and desc arguments" do
     filter = double('action filter').as_null_object
     expect(MatchFilter).to receive(:new).with(nil, "some", "thing").and_return(filter)
@@ -12,7 +12,7 @@ describe TagAction, ".new" do
   end
 end
 
-describe TagAction, "#===" do
+RSpec.describe TagAction, "#===" do
   before :each do
     allow(MSpec).to receive(:read_tags).and_return(["match"])
     @action = TagAction.new :add, :fail, nil, nil, nil, ["catch", "if you"]
@@ -34,7 +34,7 @@ describe TagAction, "#===" do
   end
 end
 
-describe TagAction, "#exception?" do
+RSpec.describe TagAction, "#exception?" do
   before :each do
     @action = TagAction.new :add, :fail, nil, nil, nil, nil
   end
@@ -49,7 +49,7 @@ describe TagAction, "#exception?" do
   end
 end
 
-describe TagAction, "#outcome?" do
+RSpec.describe TagAction, "#outcome?" do
   before :each do
     allow(MSpec).to receive(:read_tags).and_return([])
     @exception = ExceptionState.new nil, nil, Exception.new("failed")
@@ -84,7 +84,7 @@ describe TagAction, "#outcome?" do
   end
 end
 
-describe TagAction, "#before" do
+RSpec.describe TagAction, "#before" do
   it "resets the #exception? flag to false" do
     action = TagAction.new :add, :fail, nil, nil, nil, nil
     expect(action.exception?).to be_falsey
@@ -95,7 +95,7 @@ describe TagAction, "#before" do
   end
 end
 
-describe TagAction, "#exception" do
+RSpec.describe TagAction, "#exception" do
   it "sets the #exception? flag" do
     action = TagAction.new :add, :fail, nil, nil, nil, nil
     expect(action.exception?).to be_falsey
@@ -104,7 +104,7 @@ describe TagAction, "#exception" do
   end
 end
 
-describe TagAction, "#after when action is :add" do
+RSpec.describe TagAction, "#after when action is :add" do
   before :each do
     allow(MSpec).to receive(:read_tags).and_return([])
     context = ContextState.new "Catch#me"
@@ -153,7 +153,7 @@ describe TagAction, "#after when action is :add" do
   end
 end
 
-describe TagAction, "#after when action is :del" do
+RSpec.describe TagAction, "#after when action is :del" do
   before :each do
     allow(MSpec).to receive(:read_tags).and_return([])
     context = ContextState.new "Catch#me"
@@ -202,7 +202,7 @@ describe TagAction, "#after when action is :del" do
   end
 end
 
-describe TagAction, "#finish" do
+RSpec.describe TagAction, "#finish" do
   before :each do
     $stdout = @out = IOStub.new
     context = ContextState.new "Catch#me"
@@ -256,7 +256,7 @@ Catch#me if you can
   end
 end
 
-describe TagAction, "#register" do
+RSpec.describe TagAction, "#register" do
   before :each do
     allow(MSpec).to receive(:register)
     allow(MSpec).to receive(:read_tags).and_return([])
@@ -284,7 +284,7 @@ describe TagAction, "#register" do
   end
 end
 
-describe TagAction, "#unregister" do
+RSpec.describe TagAction, "#unregister" do
   before :each do
     allow(MSpec).to receive(:unregister)
     allow(MSpec).to receive(:read_tags).and_return([])

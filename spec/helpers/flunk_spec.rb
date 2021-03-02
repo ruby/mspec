@@ -4,7 +4,7 @@ require 'mspec/runner/mspec'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe Object, "#flunk" do
+RSpec.describe Object, "#flunk" do
   before :each do
     allow(MSpec).to receive(:actions)
     allow(MSpec).to receive(:current).and_return(double("spec state").as_null_object)

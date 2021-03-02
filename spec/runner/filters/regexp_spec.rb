@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/mspec'
 require 'mspec/runner/filters/regexp'
 
-describe MatchFilter, "#===" do
+RSpec.describe MatchFilter, "#===" do
   before :each do
     @filter = RegexpFilter.new nil, 'a(b|c)', 'b[^ab]', 'cc?'
   end
@@ -20,7 +20,7 @@ describe MatchFilter, "#===" do
   end
 end
 
-describe RegexpFilter, "#to_regexp" do
+RSpec.describe RegexpFilter, "#to_regexp" do
   before :each do
     @filter = RegexpFilter.new nil
   end

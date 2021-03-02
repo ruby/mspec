@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe IncludeAnyOfMatcher do
+RSpec.describe IncludeAnyOfMatcher do
   it "matches when actual includes expected" do
     expect(IncludeAnyOfMatcher.new(2).matches?([1,2,3])).to eq(true)
     expect(IncludeAnyOfMatcher.new("b").matches?("abc")).to eq(true)

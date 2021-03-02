@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/mocks/proxy'
 
-describe MockObject, ".new" do
+RSpec.describe MockObject, ".new" do
   it "creates a new mock object" do
     m = MockObject.new('not a null object')
     expect { m.not_a_method }.to raise_error(NoMethodError)
@@ -13,7 +13,7 @@ describe MockObject, ".new" do
   end
 end
 
-describe MockProxy, ".new" do
+RSpec.describe MockProxy, ".new" do
   it "creates a mock proxy by default" do
     expect(MockProxy.new.mock?).to be_truthy
   end
@@ -31,7 +31,7 @@ describe MockProxy, ".new" do
   end
 end
 
-describe MockProxy, "#count" do
+RSpec.describe MockProxy, "#count" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -42,7 +42,7 @@ describe MockProxy, "#count" do
   end
 end
 
-describe MockProxy, "#arguments" do
+RSpec.describe MockProxy, "#arguments" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -52,7 +52,7 @@ describe MockProxy, "#arguments" do
   end
 end
 
-describe MockProxy, "#with" do
+RSpec.describe MockProxy, "#with" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -71,7 +71,7 @@ describe MockProxy, "#with" do
   end
 end
 
-describe MockProxy, "#once" do
+RSpec.describe MockProxy, "#once" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -90,7 +90,7 @@ describe MockProxy, "#once" do
   end
 end
 
-describe MockProxy, "#twice" do
+RSpec.describe MockProxy, "#twice" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -109,7 +109,7 @@ describe MockProxy, "#twice" do
   end
 end
 
-describe MockProxy, "#exactly" do
+RSpec.describe MockProxy, "#exactly" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -128,7 +128,7 @@ describe MockProxy, "#exactly" do
   end
 end
 
-describe MockProxy, "#at_least" do
+RSpec.describe MockProxy, "#at_least" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -154,7 +154,7 @@ describe MockProxy, "#at_least" do
   end
 end
 
-describe MockProxy, "#at_most" do
+RSpec.describe MockProxy, "#at_most" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -180,7 +180,7 @@ describe MockProxy, "#at_most" do
   end
 end
 
-describe MockProxy, "#any_number_of_times" do
+RSpec.describe MockProxy, "#any_number_of_times" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -199,7 +199,7 @@ describe MockProxy, "#any_number_of_times" do
   end
 end
 
-describe MockProxy, "#and_return" do
+RSpec.describe MockProxy, "#and_return" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -234,7 +234,7 @@ describe MockProxy, "#and_return" do
   end
 end
 
-describe MockProxy, "#returning" do
+RSpec.describe MockProxy, "#returning" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -260,7 +260,7 @@ describe MockProxy, "#returning" do
   end
 end
 
-describe MockProxy, "#calls" do
+RSpec.describe MockProxy, "#calls" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -270,7 +270,7 @@ describe MockProxy, "#calls" do
   end
 end
 
-describe MockProxy, "#called" do
+RSpec.describe MockProxy, "#called" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -282,7 +282,7 @@ describe MockProxy, "#called" do
   end
 end
 
-describe MockProxy, "#times" do
+RSpec.describe MockProxy, "#times" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -292,7 +292,7 @@ describe MockProxy, "#times" do
   end
 end
 
-describe MockProxy, "#stub?" do
+RSpec.describe MockProxy, "#stub?" do
   it "returns true if the proxy is created as a stub" do
     expect(MockProxy.new(:stub).stub?).to be_truthy
   end
@@ -302,7 +302,7 @@ describe MockProxy, "#stub?" do
   end
 end
 
-describe MockProxy, "#mock?" do
+RSpec.describe MockProxy, "#mock?" do
   it "returns true if the proxy is created as a mock" do
     expect(MockProxy.new(:mock).mock?).to be_truthy
   end
@@ -312,7 +312,7 @@ describe MockProxy, "#mock?" do
   end
 end
 
-describe MockProxy, "#and_yield" do
+RSpec.describe MockProxy, "#and_yield" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -330,7 +330,7 @@ describe MockProxy, "#and_yield" do
   end
 end
 
-describe MockProxy, "#raising" do
+RSpec.describe MockProxy, "#raising" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -353,7 +353,7 @@ describe MockProxy, "#raising" do
   end
 end
 
-describe MockProxy, "#yielding" do
+RSpec.describe MockProxy, "#yielding" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -373,7 +373,7 @@ describe MockProxy, "#yielding" do
   end
 end
 
-describe MockProxy, "#yielding?" do
+RSpec.describe MockProxy, "#yielding?" do
   before :each do
     @proxy = MockProxy.new
   end
@@ -388,7 +388,7 @@ describe MockProxy, "#yielding?" do
   end
 end
 
-describe MockIntObject, "#to_int" do
+RSpec.describe MockIntObject, "#to_int" do
   before :each do
     @int = MockIntObject.new(10)
   end

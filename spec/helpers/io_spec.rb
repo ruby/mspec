@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe IOStub do
+RSpec.describe IOStub do
   before :each do
     @out = IOStub.new
     @sep = $\
@@ -49,7 +49,7 @@ describe IOStub do
   end
 end
 
-describe Object, "#new_fd" do
+RSpec.describe Object, "#new_fd" do
   before :each do
     @name = tmp("io_specs")
     @io = nil
@@ -89,7 +89,7 @@ describe Object, "#new_fd" do
   end
 end
 
-describe Object, "#new_io" do
+RSpec.describe Object, "#new_io" do
   before :each do
     @name = tmp("io_specs.txt")
   end

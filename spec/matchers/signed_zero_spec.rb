@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe SignedZeroMatcher do
+RSpec.describe SignedZeroMatcher do
   it "matches when actual is zero and has the correct sign" do
     expect(SignedZeroMatcher.new(1).matches?(0.0)).to eq(true)
     expect(SignedZeroMatcher.new(-1).matches?(-0.0)).to eq(true)

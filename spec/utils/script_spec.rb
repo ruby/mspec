@@ -4,27 +4,27 @@ require 'mspec/runner/mspec'
 require 'mspec/runner/filters'
 require 'mspec/runner/actions/filter'
 
-describe MSpecScript, ".config" do
+RSpec.describe MSpecScript, ".config" do
   it "returns a Hash" do
     expect(MSpecScript.config).to be_kind_of(Hash)
   end
 end
 
-describe MSpecScript, ".set" do
+RSpec.describe MSpecScript, ".set" do
   it "sets the config hash key, value" do
     MSpecScript.set :a, 10
     expect(MSpecScript.config[:a]).to eq(10)
   end
 end
 
-describe MSpecScript, ".get" do
+RSpec.describe MSpecScript, ".get" do
   it "gets the config hash value for a key" do
     MSpecScript.set :a, 10
     expect(MSpecScript.get(:a)).to eq(10)
   end
 end
 
-describe MSpecScript, "#config" do
+RSpec.describe MSpecScript, "#config" do
   it "returns the MSpecScript config hash" do
     MSpecScript.set :b, 5
     expect(MSpecScript.new.config[:b]).to eq(5)
@@ -37,7 +37,7 @@ describe MSpecScript, "#config" do
   end
 end
 
-describe MSpecScript, "#load_default" do
+RSpec.describe MSpecScript, "#load_default" do
   before :all do
     @verbose = $VERBOSE
     $VERBOSE = nil
@@ -78,7 +78,7 @@ describe MSpecScript, "#load_default" do
   end
 end
 
-describe MSpecScript, ".main" do
+RSpec.describe MSpecScript, ".main" do
   before :each do
     @script = double("MSpecScript").as_null_object
     allow(MSpecScript).to receive(:new).and_return(@script)
@@ -127,7 +127,7 @@ describe MSpecScript, ".main" do
   end
 end
 
-describe MSpecScript, "#initialize" do
+RSpec.describe MSpecScript, "#initialize" do
   before :each do
     @config = MSpecScript.new.config
   end
@@ -147,7 +147,7 @@ describe MSpecScript, "#initialize" do
   end
 end
 
-describe MSpecScript, "#load" do
+RSpec.describe MSpecScript, "#load" do
   before :each do
     allow(File).to receive(:exist?).and_return(false)
     @script = MSpecScript.new
@@ -209,7 +209,7 @@ describe MSpecScript, "#load" do
   end
 end
 
-describe MSpecScript, "#custom_options" do
+RSpec.describe MSpecScript, "#custom_options" do
   before :each do
     @script = MSpecScript.new
   end
@@ -224,7 +224,7 @@ describe MSpecScript, "#custom_options" do
   end
 end
 
-describe MSpecScript, "#register" do
+RSpec.describe MSpecScript, "#register" do
   before :each do
     @script = MSpecScript.new
 
@@ -261,7 +261,7 @@ describe MSpecScript, "#register" do
   end
 end
 
-describe MSpecScript, "#register" do
+RSpec.describe MSpecScript, "#register" do
   before :each do
     @script = MSpecScript.new
 
@@ -323,7 +323,7 @@ describe MSpecScript, "#register" do
   end
 end
 
-describe MSpecScript, "#signals" do
+RSpec.describe MSpecScript, "#signals" do
   before :each do
     @script = MSpecScript.new
     @abort = @script.config[:abort]
@@ -346,7 +346,7 @@ describe MSpecScript, "#signals" do
   end
 end
 
-describe MSpecScript, "#entries" do
+RSpec.describe MSpecScript, "#entries" do
   before :each do
     @script = MSpecScript.new
 
@@ -401,7 +401,7 @@ describe MSpecScript, "#entries" do
   end
 end
 
-describe MSpecScript, "#files" do
+RSpec.describe MSpecScript, "#files" do
   before :each do
     @script = MSpecScript.new
   end
@@ -422,7 +422,7 @@ describe MSpecScript, "#files" do
   end
 end
 
-describe MSpecScript, "#files" do
+RSpec.describe MSpecScript, "#files" do
   before :each do
     MSpecScript.set :files, ["file1", "file2"]
 
@@ -444,7 +444,7 @@ describe MSpecScript, "#files" do
   end
 end
 
-describe MSpecScript, "#setup_env" do
+RSpec.describe MSpecScript, "#setup_env" do
   before :each do
     @script = MSpecScript.new
     @options, @config = new_option

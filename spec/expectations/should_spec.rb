@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rbconfig'
 
-describe "MSpec" do
+RSpec.describe "MSpec" do
   before :all do
     path = RbConfig::CONFIG['bindir']
     exe  = RbConfig::CONFIG['ruby_install_name']

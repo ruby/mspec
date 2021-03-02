@@ -3,7 +3,7 @@ require 'mspec/runner/formatters/spinner'
 require 'mspec/runner/mspec'
 require 'mspec/runner/example'
 
-describe SpinnerFormatter, "#initialize" do
+RSpec.describe SpinnerFormatter, "#initialize" do
   it "permits zero arguments" do
     SpinnerFormatter.new
   end
@@ -13,7 +13,7 @@ describe SpinnerFormatter, "#initialize" do
   end
 end
 
-describe SpinnerFormatter, "#register" do
+RSpec.describe SpinnerFormatter, "#register" do
   before :each do
     @formatter = SpinnerFormatter.new
     allow(MSpec).to receive(:register)
@@ -39,7 +39,7 @@ describe SpinnerFormatter, "#register" do
   end
 end
 
-describe SpinnerFormatter, "#print" do
+RSpec.describe SpinnerFormatter, "#print" do
   after :each do
     $stdout = STDOUT
   end
@@ -52,7 +52,7 @@ describe SpinnerFormatter, "#print" do
   end
 end
 
-describe SpinnerFormatter, "#after" do
+RSpec.describe SpinnerFormatter, "#after" do
   before :each do
     $stdout = IOStub.new
     MSpec.store(:files, ["a", "b", "c", "d"])

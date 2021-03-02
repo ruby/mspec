@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
-describe ComplainMatcher do
+RSpec.describe ComplainMatcher do
   it "matches when executing the proc results in output to $stderr" do
     proc = lambda { warn "I'm gonna tell yo mama" }
     expect(ComplainMatcher.new(nil).matches?(proc)).to eq(true)

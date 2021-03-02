@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe Object, "#tmp" do
+RSpec.describe Object, "#tmp" do
   before :all do
     @dir = SPEC_TEMP_DIR
   end

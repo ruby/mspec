@@ -4,7 +4,7 @@ require 'mspec/runner/formatters/junit'
 require 'mspec/runner/example'
 require 'mspec/helpers'
 
-describe JUnitFormatter, "#initialize" do
+RSpec.describe JUnitFormatter, "#initialize" do
   it "permits zero arguments" do
     expect { JUnitFormatter.new }.not_to raise_error
   end
@@ -14,7 +14,7 @@ describe JUnitFormatter, "#initialize" do
   end
 end
 
-describe JUnitFormatter, "#print" do
+RSpec.describe JUnitFormatter, "#print" do
   before :each do
     $stdout = IOStub.new
     @out = IOStub.new
@@ -48,7 +48,7 @@ describe JUnitFormatter, "#print" do
   end
 end
 
-describe JUnitFormatter, "#finish" do
+RSpec.describe JUnitFormatter, "#finish" do
   before :each do
     @tally = double("tally").as_null_object
     @counter = double("counter").as_null_object

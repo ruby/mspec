@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe Object, "#argf" do
+RSpec.describe Object, "#argf" do
   before :each do
     @saved_argv = ARGV.dup
     @argv = [__FILE__]

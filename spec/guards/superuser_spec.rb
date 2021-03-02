@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe Object, "#as_superuser" do
+RSpec.describe Object, "#as_superuser" do
   before :each do
     @guard = SuperUserGuard.new
     allow(SuperUserGuard).to receive(:new).and_return(@guard)

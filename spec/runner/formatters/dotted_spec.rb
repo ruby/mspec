@@ -4,7 +4,7 @@ require 'mspec/runner/mspec'
 require 'mspec/runner/example'
 require 'mspec/utils/script'
 
-describe DottedFormatter, "#initialize" do
+RSpec.describe DottedFormatter, "#initialize" do
   it "permits zero arguments" do
     DottedFormatter.new
   end
@@ -14,7 +14,7 @@ describe DottedFormatter, "#initialize" do
   end
 end
 
-describe DottedFormatter, "#register" do
+RSpec.describe DottedFormatter, "#register" do
   before :each do
     @formatter = DottedFormatter.new
     allow(MSpec).to receive(:register)
@@ -40,7 +40,7 @@ describe DottedFormatter, "#register" do
   end
 end
 
-describe DottedFormatter, "#print" do
+RSpec.describe DottedFormatter, "#print" do
   before :each do
     $stdout = IOStub.new
   end
@@ -70,7 +70,7 @@ describe DottedFormatter, "#print" do
   end
 end
 
-describe DottedFormatter, "#exception" do
+RSpec.describe DottedFormatter, "#exception" do
   before :each do
     @formatter = DottedFormatter.new
     @failure = ExceptionState.new nil, nil, SpecExpectationNotMetError.new("failed")
@@ -99,7 +99,7 @@ describe DottedFormatter, "#exception" do
   end
 end
 
-describe DottedFormatter, "#exception?" do
+RSpec.describe DottedFormatter, "#exception?" do
   before :each do
     @formatter = DottedFormatter.new
     @failure = ExceptionState.new nil, nil, SpecExpectationNotMetError.new("failed")
@@ -129,7 +129,7 @@ describe DottedFormatter, "#exception?" do
   end
 end
 
-describe DottedFormatter, "#failure?" do
+RSpec.describe DottedFormatter, "#failure?" do
   before :each do
     @formatter = DottedFormatter.new
     @failure = ExceptionState.new nil, nil, SpecExpectationNotMetError.new("failed")
@@ -153,7 +153,7 @@ describe DottedFormatter, "#failure?" do
   end
 end
 
-describe DottedFormatter, "#before" do
+RSpec.describe DottedFormatter, "#before" do
   before :each do
     @state = ExampleState.new ContextState.new("describe"), "it"
     @formatter = DottedFormatter.new
@@ -173,7 +173,7 @@ describe DottedFormatter, "#before" do
   end
 end
 
-describe DottedFormatter, "#after" do
+RSpec.describe DottedFormatter, "#after" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = DottedFormatter.new
@@ -213,7 +213,7 @@ describe DottedFormatter, "#after" do
   end
 end
 
-describe DottedFormatter, "#finish" do
+RSpec.describe DottedFormatter, "#finish" do
   before :each do
     @tally = double("tally").as_null_object
     allow(TallyAction).to receive(:new).and_return(@tally)

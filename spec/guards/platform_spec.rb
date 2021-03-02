@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe Object, "#platform_is" do
+RSpec.describe Object, "#platform_is" do
   before :each do
     @guard = PlatformGuard.new :dummy
     allow(PlatformGuard).to receive(:new).and_return(@guard)
@@ -41,7 +41,7 @@ describe Object, "#platform_is" do
   end
 end
 
-describe Object, "#platform_is_not" do
+RSpec.describe Object, "#platform_is_not" do
   before :each do
     @guard = PlatformGuard.new :dummy
     allow(PlatformGuard).to receive(:new).and_return(@guard)
@@ -81,7 +81,7 @@ describe Object, "#platform_is_not" do
   end
 end
 
-describe Object, "#platform_is :wordsize => SIZE_SPEC" do
+RSpec.describe Object, "#platform_is :wordsize => SIZE_SPEC" do
   before :each do
     @guard = PlatformGuard.new :darwin, :wordsize => 32
     allow(PlatformGuard).to receive(:os?).and_return(true)
@@ -102,7 +102,7 @@ describe Object, "#platform_is :wordsize => SIZE_SPEC" do
   end
 end
 
-describe Object, "#platform_is_not :wordsize => SIZE_SPEC" do
+RSpec.describe Object, "#platform_is_not :wordsize => SIZE_SPEC" do
   before :each do
     @guard = PlatformGuard.new :darwin, :wordsize => 32
     allow(PlatformGuard).to receive(:os?).and_return(true)
@@ -123,7 +123,7 @@ describe Object, "#platform_is_not :wordsize => SIZE_SPEC" do
   end
 end
 
-describe PlatformGuard, ".implementation?" do
+RSpec.describe PlatformGuard, ".implementation?" do
   it "returns true if passed :ruby and RUBY_ENGINE == 'ruby'" do
     stub_const 'RUBY_ENGINE', 'ruby'
     expect(PlatformGuard.implementation?(:ruby)).to eq(true)
@@ -172,7 +172,7 @@ describe PlatformGuard, ".implementation?" do
   end
 end
 
-describe PlatformGuard, ".standard?" do
+RSpec.describe PlatformGuard, ".standard?" do
   it "returns true if implementation? returns true" do
     expect(PlatformGuard).to receive(:implementation?).with(:ruby).and_return(true)
     expect(PlatformGuard.standard?).to be_truthy
@@ -184,7 +184,7 @@ describe PlatformGuard, ".standard?" do
   end
 end
 
-describe PlatformGuard, ".wordsize?" do
+RSpec.describe PlatformGuard, ".wordsize?" do
   it "returns true when arg is 32 and 1.size is 4" do
     expect(PlatformGuard.wordsize?(32)).to eq(1.size == 4)
   end
@@ -194,7 +194,7 @@ describe PlatformGuard, ".wordsize?" do
   end
 end
 
-describe PlatformGuard, ".os?" do
+RSpec.describe PlatformGuard, ".os?" do
   before :each do
     stub_const 'PlatformGuard::PLATFORM', 'solarce'
   end
@@ -236,7 +236,7 @@ describe PlatformGuard, ".os?" do
   end
 end
 
-describe PlatformGuard, ".os?" do
+RSpec.describe PlatformGuard, ".os?" do
   it "returns true if called with the current OS or architecture" do
     os = RbConfig::CONFIG["host_os"].sub("-gnu", "")
     arch = RbConfig::CONFIG["host_arch"]
@@ -246,7 +246,7 @@ describe PlatformGuard, ".os?" do
   end
 end
 
-describe PlatformGuard, ".os? on JRuby" do
+RSpec.describe PlatformGuard, ".os? on JRuby" do
   before :all do
     @verbose = $VERBOSE
     $VERBOSE = nil
@@ -282,7 +282,7 @@ describe PlatformGuard, ".os? on JRuby" do
   end
 end
 
-describe PlatformGuard, ".os?" do
+RSpec.describe PlatformGuard, ".os?" do
   before :each do
     stub_const 'PlatformGuard::PLATFORM', 'unreal'
   end
@@ -324,7 +324,7 @@ describe PlatformGuard, ".os?" do
   end
 end
 
-describe PlatformGuard, ".windows?" do
+RSpec.describe PlatformGuard, ".windows?" do
   it "returns true on windows" do
     stub_const 'PlatformGuard::PLATFORM', 'i386-mingw32'
     expect(PlatformGuard.windows?).to eq(true)

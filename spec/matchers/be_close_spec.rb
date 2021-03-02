@@ -3,7 +3,7 @@ require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 
 # Adapted from RSpec 1.0.8
-describe BeCloseMatcher do
+RSpec.describe BeCloseMatcher do
   it "matches when actual == expected" do
     expect(BeCloseMatcher.new(5.0, 0.5).matches?(5.0)).to eq(true)
   end

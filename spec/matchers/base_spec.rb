@@ -3,7 +3,7 @@ require 'mspec/expectations/expectations'
 require 'mspec/matchers'
 require 'time'
 
-describe SpecPositiveOperatorMatcher, "== operator" do
+RSpec.describe SpecPositiveOperatorMatcher, "== operator" do
   it "provides a failure message that 'Expected x to equal y'" do
     expect {
       SpecPositiveOperatorMatcher.new(1) == 2
@@ -15,7 +15,7 @@ describe SpecPositiveOperatorMatcher, "== operator" do
   end
 end
 
-describe SpecPositiveOperatorMatcher, "=~ operator" do
+RSpec.describe SpecPositiveOperatorMatcher, "=~ operator" do
   it "provides a failure message that 'Expected \"x\" to match y'" do
     expect {
       SpecPositiveOperatorMatcher.new('real') =~ /fake/
@@ -27,7 +27,7 @@ describe SpecPositiveOperatorMatcher, "=~ operator" do
   end
 end
 
-describe SpecPositiveOperatorMatcher, "> operator" do
+RSpec.describe SpecPositiveOperatorMatcher, "> operator" do
   it "provides a failure message that 'Expected x to be greater than y'" do
     expect {
       SpecPositiveOperatorMatcher.new(4) > 5
@@ -39,7 +39,7 @@ describe SpecPositiveOperatorMatcher, "> operator" do
   end
 end
 
-describe SpecPositiveOperatorMatcher, ">= operator" do
+RSpec.describe SpecPositiveOperatorMatcher, ">= operator" do
   it "provides a failure message that 'Expected x to be greater than or equal to y'" do
     expect {
       SpecPositiveOperatorMatcher.new(4) >= 5
@@ -52,7 +52,7 @@ describe SpecPositiveOperatorMatcher, ">= operator" do
   end
 end
 
-describe SpecPositiveOperatorMatcher, "< operator" do
+RSpec.describe SpecPositiveOperatorMatcher, "< operator" do
   it "provides a failure message that 'Expected x to be less than y'" do
     expect {
       SpecPositiveOperatorMatcher.new(5) < 4
@@ -64,7 +64,7 @@ describe SpecPositiveOperatorMatcher, "< operator" do
   end
 end
 
-describe SpecPositiveOperatorMatcher, "<= operator" do
+RSpec.describe SpecPositiveOperatorMatcher, "<= operator" do
   it "provides a failure message that 'Expected x to be less than or equal to y'" do
     expect {
       SpecPositiveOperatorMatcher.new(5) <= 4
@@ -77,7 +77,7 @@ describe SpecPositiveOperatorMatcher, "<= operator" do
   end
 end
 
-describe SpecPositiveOperatorMatcher, "arbitrary predicates" do
+RSpec.describe SpecPositiveOperatorMatcher, "arbitrary predicates" do
   it "do not raise an exception when the predicate is truthy" do
     SpecPositiveOperatorMatcher.new(2).eql?(2)
     SpecPositiveOperatorMatcher.new(2).equal?(2)
@@ -113,7 +113,7 @@ describe SpecPositiveOperatorMatcher, "arbitrary predicates" do
   end
 end
 
-describe SpecNegativeOperatorMatcher, "arbitrary predicates" do
+RSpec.describe SpecNegativeOperatorMatcher, "arbitrary predicates" do
   it "do not raise an exception when the predicate returns a falsy value" do
     SpecNegativeOperatorMatcher.new(2).eql?(3)
     SpecNegativeOperatorMatcher.new(2).equal?(3)
@@ -149,7 +149,7 @@ describe SpecNegativeOperatorMatcher, "arbitrary predicates" do
   end
 end
 
-describe SpecNegativeOperatorMatcher, "== operator" do
+RSpec.describe SpecNegativeOperatorMatcher, "== operator" do
   it "provides a failure message that 'Expected x not to equal y'" do
     expect {
       SpecNegativeOperatorMatcher.new(1) == 1
@@ -161,7 +161,7 @@ describe SpecNegativeOperatorMatcher, "== operator" do
   end
 end
 
-describe SpecNegativeOperatorMatcher, "=~ operator" do
+RSpec.describe SpecNegativeOperatorMatcher, "=~ operator" do
   it "provides a failure message that 'Expected \"x\" not to match /y/'" do
     expect {
       SpecNegativeOperatorMatcher.new('real') =~ /real/
@@ -173,7 +173,7 @@ describe SpecNegativeOperatorMatcher, "=~ operator" do
   end
 end
 
-describe SpecNegativeOperatorMatcher, "< operator" do
+RSpec.describe SpecNegativeOperatorMatcher, "< operator" do
   it "provides a failure message that 'Expected x not to be less than y'" do
     expect {
       SpecNegativeOperatorMatcher.new(4) < 5
@@ -185,7 +185,7 @@ describe SpecNegativeOperatorMatcher, "< operator" do
   end
 end
 
-describe SpecNegativeOperatorMatcher, "<= operator" do
+RSpec.describe SpecNegativeOperatorMatcher, "<= operator" do
   it "provides a failure message that 'Expected x not to be less than or equal to y'" do
     expect {
       SpecNegativeOperatorMatcher.new(4) <= 5
@@ -200,7 +200,7 @@ describe SpecNegativeOperatorMatcher, "<= operator" do
   end
 end
 
-describe SpecNegativeOperatorMatcher, "> operator" do
+RSpec.describe SpecNegativeOperatorMatcher, "> operator" do
   it "provides a failure message that 'Expected x not to be greater than y'" do
     expect {
       SpecNegativeOperatorMatcher.new(5) > 4
@@ -212,7 +212,7 @@ describe SpecNegativeOperatorMatcher, "> operator" do
   end
 end
 
-describe SpecNegativeOperatorMatcher, ">= operator" do
+RSpec.describe SpecNegativeOperatorMatcher, ">= operator" do
   it "provides a failure message that 'Expected x not to be greater than or equal to y'" do
     expect {
       SpecNegativeOperatorMatcher.new(5) >= 4

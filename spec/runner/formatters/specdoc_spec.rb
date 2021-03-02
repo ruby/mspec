@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/formatters/specdoc'
 require 'mspec/runner/example'
 
-describe SpecdocFormatter do
+RSpec.describe SpecdocFormatter do
   before :each do
     @formatter = SpecdocFormatter.new
   end
@@ -14,7 +14,7 @@ describe SpecdocFormatter do
   end
 end
 
-describe SpecdocFormatter, "#enter" do
+RSpec.describe SpecdocFormatter, "#enter" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = SpecdocFormatter.new
@@ -30,7 +30,7 @@ describe SpecdocFormatter, "#enter" do
   end
 end
 
-describe SpecdocFormatter, "#before" do
+RSpec.describe SpecdocFormatter, "#before" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = SpecdocFormatter.new
@@ -55,7 +55,7 @@ describe SpecdocFormatter, "#before" do
   end
 end
 
-describe SpecdocFormatter, "#exception" do
+RSpec.describe SpecdocFormatter, "#exception" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = SpecdocFormatter.new
@@ -88,7 +88,7 @@ describe SpecdocFormatter, "#exception" do
   end
 end
 
-describe SpecdocFormatter, "#after" do
+RSpec.describe SpecdocFormatter, "#after" do
   before :each do
     $stdout = @out = IOStub.new
     @formatter = SpecdocFormatter.new

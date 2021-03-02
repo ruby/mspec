@@ -4,7 +4,7 @@ require 'mspec/runner/formatters/multi'
 require 'mspec/runner/example'
 require 'yaml'
 
-describe MultiFormatter, "#aggregate_results" do
+RSpec.describe MultiFormatter, "#aggregate_results" do
   before :each do
     @stdout, $stdout = $stdout, IOStub.new
 

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe BugGuard, "#match? when #implementation? is 'ruby'" do
+RSpec.describe BugGuard, "#match? when #implementation? is 'ruby'" do
   before :all do
     @verbose = $VERBOSE
     $VERBOSE = nil
@@ -63,7 +63,7 @@ describe BugGuard, "#match? when #implementation? is 'ruby'" do
   end
 end
 
-describe BugGuard, "#match? when #implementation? is not 'ruby'" do
+RSpec.describe BugGuard, "#match? when #implementation? is not 'ruby'" do
   before :all do
     @verbose = $VERBOSE
     $VERBOSE = nil
@@ -112,7 +112,7 @@ describe BugGuard, "#match? when #implementation? is not 'ruby'" do
   end
 end
 
-describe Object, "#ruby_bug" do
+RSpec.describe Object, "#ruby_bug" do
   before :each do
     hide_deprecation_warnings
     @guard = BugGuard.new "#1234", "x.x.x"

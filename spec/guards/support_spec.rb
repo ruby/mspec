@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mspec/guards'
 
-describe Object, "#not_supported_on" do
+RSpec.describe Object, "#not_supported_on" do
   before :each do
     ScratchPad.clear
   end
@@ -33,7 +33,7 @@ describe Object, "#not_supported_on" do
   end
 end
 
-describe Object, "#not_supported_on" do
+RSpec.describe Object, "#not_supported_on" do
   before :each do
     @guard = SupportedGuard.new
     allow(SupportedGuard).to receive(:new).and_return(@guard)

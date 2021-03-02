@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mspec/guards'
 require 'mspec/helpers'
 
-describe Object, "#fixture" do
+RSpec.describe Object, "#fixture" do
   before :each do
     @dir = File.realpath("..", __FILE__)
   end
