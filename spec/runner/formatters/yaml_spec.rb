@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'mspec/runner/formatters/yaml'
 require 'mspec/runner/example'
+require 'mspec/helpers'
 
 describe YamlFormatter, "#initialize" do
   it "permits zero arguments" do
@@ -56,11 +57,12 @@ describe YamlFormatter, "#finish" do
     @timer = double("timer").as_null_object
     allow(TimerAction).to receive(:new).and_return(@timer)
 
-    $stdout = IOStub.new
+    @out = tmp("YamlFormatter")
+
     context = ContextState.new "describe"
     @state = ExampleState.new(context, "it")
 
-    @formatter = YamlFormatter.new
+    @formatter = YamlFormatter.new(@out)
     allow(@formatter).to receive(:backtrace).and_return("")
     allow(MSpec).to receive(:register)
     @formatter.register
@@ -72,54 +74,61 @@ describe YamlFormatter, "#finish" do
   end
 
   after :each do
-    $stdout = STDOUT
+    rm_r @out
   end
 
   it "calls #switch" do
-    expect(@formatter).to receive(:switch)
+    expect(@formatter).to receive(:switch).and_call_original
     @formatter.finish
   end
 
   it "outputs a failure message and backtrace" do
     @formatter.finish
-    expect($stdout).to include "describe it ERROR"
-    expect($stdout).to include "MSpecExampleError: broken\\n"
-    expect($stdout).to include "path/to/some/file.rb:35:in method"
+    output = File.read(@out)
+    expect(output).to include "describe it ERROR"
+    expect(output).to include "MSpecExampleError: broken\\n"
+    expect(output).to include "path/to/some/file.rb:35:in method"
   end
 
   it "outputs an elapsed time" do
     expect(@timer).to receive(:elapsed).and_return(4.2)
     @formatter.finish
-    expect($stdout).to include "time: 4.2"
+    output = File.read(@out)
+    expect(output).to include "time: 4.2"
   end
 
   it "outputs a file count" do
     expect(@counter).to receive(:files).and_return(3)
     @formatter.finish
-    expect($stdout).to include "files: 3"
+    output = File.read(@out)
+    expect(output).to include "files: 3"
   end
 
   it "outputs an example count" do
     expect(@counter).to receive(:examples).and_return(3)
     @formatter.finish
-    expect($stdout).to include "examples: 3"
+    output = File.read(@out)
+    expect(output).to include "examples: 3"
   end
 
   it "outputs an expectation count" do
     expect(@counter).to receive(:expectations).and_return(9)
     @formatter.finish
-    expect($stdout).to include "expectations: 9"
+    output = File.read(@out)
+    expect(output).to include "expectations: 9"
   end
 
   it "outputs a failure count" do
     expect(@counter).to receive(:failures).and_return(2)
     @formatter.finish
-    expect($stdout).to include "failures: 2"
+    output = File.read(@out)
+    expect(output).to include "failures: 2"
   end
 
   it "outputs an error count" do
     expect(@counter).to receive(:errors).and_return(1)
     @formatter.finish
-    expect($stdout).to include "errors: 1"
+    output = File.read(@out)
+    expect(output).to include "errors: 1"
   end
 end
