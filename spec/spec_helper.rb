@@ -56,3 +56,13 @@ def run_mspec(command, args)
   out = out.gsub(cwd, "CWD")
   return out, ret
 end
+
+def ensure_mspec_method(method)
+  file, _line = method.source_location
+  expect(file).to start_with(File.expand_path('../../lib/mspec', __FILE__ ))
+end
+
+PublicMSpecMatchers = Class.new {
+  include MSpecMatchers
+  public :raise_error
+}.new

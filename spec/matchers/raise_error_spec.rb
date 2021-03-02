@@ -1,26 +1,39 @@
 require 'spec_helper'
-require 'mspec/expectations/expectations'
-require 'mspec/matchers'
 
 class ExpectedException < Exception; end
 class UnexpectedException < Exception; end
 
 RSpec.describe RaiseErrorMatcher do
+  before :each do
+    state = double("run state").as_null_object
+    allow(MSpec).to receive(:current).and_return(state)
+  end
+
   it "matches when the proc raises the expected exception" do
     proc = Proc.new { raise ExpectedException }
     matcher = RaiseErrorMatcher.new(ExpectedException, nil)
     expect(matcher.matches?(proc)).to eq(true)
   end
 
-  it "executes its optional block if matched" do
-    run = false
-    proc = Proc.new { raise ExpectedException }
-    matcher = RaiseErrorMatcher.new(ExpectedException, nil) { |error|
-      run = true
-      expect(error.class).to eq(ExpectedException)
-    }
+  it "executes its optional {/} block if matched" do
+    ensure_mspec_method(-> {}.method(:should))
 
-    expect(matcher.matches?(proc)).to eq(true)
+    run = false
+    -> { raise ExpectedException }.should PublicMSpecMatchers.raise_error { |error|
+      expect(error.class).to eq(ExpectedException)
+      run = true
+    }
+    expect(run).to eq(true)
+  end
+
+  it "executes its optional do/end block if matched" do
+    ensure_mspec_method(-> {}.method(:should))
+
+    run = false
+    -> { raise ExpectedException }.should PublicMSpecMatchers.raise_error do |error|
+      expect(error.class).to eq(ExpectedException)
+      run = true
+    end
     expect(run).to eq(true)
   end
 
