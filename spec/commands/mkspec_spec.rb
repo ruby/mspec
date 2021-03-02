@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'mspec/commands/mkspec'
-
+require 'fileutils'
 
 describe "The -c, --constant CONSTANT option" do
   before :each do
