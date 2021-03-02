@@ -285,9 +285,8 @@ describe MSpec, ".describe" do
   end
 
   it "invokes the ContextState#describe method" do
-    prc = lambda { }
-    expect(@cs).to receive(:describe).with(&prc)
-    MSpec.describe(Object, "msg", &prc)
+    expect(@cs).to receive(:describe)
+    MSpec.describe(Object, "msg") {}
   end
 end
 

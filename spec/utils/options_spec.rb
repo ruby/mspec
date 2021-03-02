@@ -1176,11 +1176,9 @@ describe "The -O, --report option" do
 end
 
 describe "The --report-on GUARD option" do
-  before :all do
-    MSpec.stub(:register_mode)
-  end
-
   before :each do
+    MSpec.stub(:register_mode)
+
     @options, @config = new_option
     @options.verify
 

@@ -74,7 +74,7 @@ describe Mock, ".install_method for mocks" do
   end
 
   after :each do
-    Mock.cleanup
+    Mock.reset
   end
 
   it "returns a MockProxy instance" do

@@ -53,3 +53,7 @@ def run_mspec(command, args)
   out = out.gsub(cwd, "CWD")
   return out, ret
 end
+
+RSpec.configure do |config|
+  config.raise_errors_for_deprecations!
+end
