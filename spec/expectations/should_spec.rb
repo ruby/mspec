@@ -5,7 +5,7 @@ describe "MSpec" do
   before :all do
     path = RbConfig::CONFIG['bindir']
     exe  = RbConfig::CONFIG['ruby_install_name']
-    file = File.dirname(__FILE__) + '/should.rb'
+    file = File.expand_path('../../fixtures/should.rb', __FILE__)
     @out = `#{path}/#{exe} #{file}`
   end
 
