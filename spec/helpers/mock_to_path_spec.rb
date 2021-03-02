@@ -5,13 +5,13 @@ require 'mspec/helpers'
 describe Object, "#mock_to_path" do
   it "returns an object that responds to #to_path" do
     obj = mock_to_path("foo")
-    obj.should be_a(MockObject)
-    obj.should respond_to(:to_path)
+    expect(obj).to be_a(MockObject)
+    expect(obj).to respond_to(:to_path)
     obj.to_path
   end
 
   it "returns the provided path when #to_path is called" do
     obj = mock_to_path("/tmp/foo")
-    obj.to_path.should == "/tmp/foo"
+    expect(obj.to_path).to eq("/tmp/foo")
   end
 end

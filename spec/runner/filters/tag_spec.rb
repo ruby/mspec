@@ -8,25 +8,25 @@ describe TagFilter, "#load" do
     @match = double("match filter").as_null_object
     @filter = TagFilter.new :include, "tag", "key"
     @tag = SpecTag.new "tag(comment):description"
-    MSpec.stub(:read_tags).and_return([@tag])
-    MSpec.stub(:register)
+    allow(MSpec).to receive(:read_tags).and_return([@tag])
+    allow(MSpec).to receive(:register)
   end
 
   it "loads tags from the tag file" do
-    MSpec.should_receive(:read_tags).with(["tag", "key"]).and_return([])
+    expect(MSpec).to receive(:read_tags).with(["tag", "key"]).and_return([])
     @filter.load
   end
 
 
   it "registers itself with MSpec for the :include action" do
     filter = TagFilter.new(:include)
-    MSpec.should_receive(:register).with(:include, filter)
+    expect(MSpec).to receive(:register).with(:include, filter)
     filter.load
   end
 
   it "registers itself with MSpec for the :exclude action" do
     filter = TagFilter.new(:exclude)
-    MSpec.should_receive(:register).with(:exclude, filter)
+    expect(MSpec).to receive(:register).with(:exclude, filter)
     filter.load
   end
 end
@@ -35,39 +35,39 @@ describe TagFilter, "#unload" do
   before :each do
     @filter = TagFilter.new :include, "tag", "key"
     @tag = SpecTag.new "tag(comment):description"
-    MSpec.stub(:read_tags).and_return([@tag])
-    MSpec.stub(:register)
+    allow(MSpec).to receive(:read_tags).and_return([@tag])
+    allow(MSpec).to receive(:register)
   end
 
   it "unregisters itself" do
     @filter.load
-    MSpec.should_receive(:unregister).with(:include, @filter)
+    expect(MSpec).to receive(:unregister).with(:include, @filter)
     @filter.unload
   end
 end
 
 describe TagFilter, "#register" do
   before :each do
-    MSpec.stub(:register)
+    allow(MSpec).to receive(:register)
   end
 
   it "registers itself with MSpec for the :load, :unload actions" do
     filter = TagFilter.new(nil)
-    MSpec.should_receive(:register).with(:load, filter)
-    MSpec.should_receive(:register).with(:unload, filter)
+    expect(MSpec).to receive(:register).with(:load, filter)
+    expect(MSpec).to receive(:register).with(:unload, filter)
     filter.register
   end
 end
 
 describe TagFilter, "#unregister" do
   before :each do
-    MSpec.stub(:unregister)
+    allow(MSpec).to receive(:unregister)
   end
 
   it "unregisters itself with MSpec for the :load, :unload actions" do
     filter = TagFilter.new(nil)
-    MSpec.should_receive(:unregister).with(:load, filter)
-    MSpec.should_receive(:unregister).with(:unload, filter)
+    expect(MSpec).to receive(:unregister).with(:load, filter)
+    expect(MSpec).to receive(:unregister).with(:unload, filter)
     filter.unregister
   end
 end
@@ -76,17 +76,17 @@ describe TagFilter, "#===" do
   before :each do
     @filter = TagFilter.new nil, "tag", "key"
     @tag = SpecTag.new "tag(comment):description"
-    MSpec.stub(:read_tags).and_return([@tag])
-    MSpec.stub(:register)
+    allow(MSpec).to receive(:read_tags).and_return([@tag])
+    allow(MSpec).to receive(:register)
     @filter.load
   end
 
   it "returns true if the argument matches any of the descriptions" do
-    @filter.===('description').should == true
+    expect(@filter.===('description')).to eq(true)
   end
 
   it "returns false if the argument matches none of the descriptions" do
-    @filter.===('descriptionA').should == false
-    @filter.===('adescription').should == false
+    expect(@filter.===('descriptionA')).to eq(false)
+    expect(@filter.===('adescription')).to eq(false)
   end
 end

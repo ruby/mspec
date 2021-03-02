@@ -11,33 +11,33 @@ describe MSpecOption, ".new" do
   end
 
   it "sets the short attribute" do
-    @opt.short.should == "-a"
+    expect(@opt.short).to eq("-a")
   end
 
   it "sets the long attribute" do
-    @opt.long.should == "--bdc"
+    expect(@opt.long).to eq("--bdc")
   end
 
   it "sets the arg attribute" do
-    @opt.arg.should == "ARG"
+    expect(@opt.arg).to eq("ARG")
   end
 
   it "sets the description attribute" do
-    @opt.description.should == "desc"
+    expect(@opt.description).to eq("desc")
   end
 
   it "sets the block attribute" do
-    @opt.block.should == :block
+    expect(@opt.block).to eq(:block)
   end
 end
 
 describe MSpecOption, "#arg?" do
   it "returns true if arg attribute is not nil" do
-    MSpecOption.new(nil, nil, "ARG", nil, nil).arg?.should be_true
+    expect(MSpecOption.new(nil, nil, "ARG", nil, nil).arg?).to be_truthy
   end
 
   it "returns false if arg attribute is nil" do
-    MSpecOption.new(nil, nil, nil, nil, nil).arg?.should be_false
+    expect(MSpecOption.new(nil, nil, nil, nil, nil).arg?).to be_falsey
   end
 end
 
@@ -47,16 +47,16 @@ describe MSpecOption, "#match?" do
   end
 
   it "returns true if the argument matches the short option" do
-    @opt.match?("-a").should be_true
+    expect(@opt.match?("-a")).to be_truthy
   end
 
   it "returns true if the argument matches the long option" do
-    @opt.match?("--bdc").should be_true
+    expect(@opt.match?("--bdc")).to be_truthy
   end
 
   it "returns false if the argument matches neither the short nor long option" do
-    @opt.match?("-b").should be_false
-    @opt.match?("-abdc").should be_false
+    expect(@opt.match?("-b")).to be_falsey
+    expect(@opt.match?("-abdc")).to be_falsey
   end
 end
 
@@ -66,19 +66,19 @@ describe MSpecOptions, ".new" do
   end
 
   it "sets the banner attribute" do
-    @opt.banner.should == "cmd"
+    expect(@opt.banner).to eq("cmd")
   end
 
   it "sets the config attribute" do
-    @opt.config.should == :config
+    expect(@opt.config).to eq(:config)
   end
 
   it "sets the width attribute" do
-    @opt.width.should == 20
+    expect(@opt.width).to eq(20)
   end
 
   it "sets the default width attribute" do
-    MSpecOptions.new.width.should == 30
+    expect(MSpecOptions.new.width).to eq(30)
   end
 end
 
@@ -88,38 +88,38 @@ describe MSpecOptions, "#on" do
   end
 
   it "adds a short option" do
-    @opt.should_receive(:add).with("-a", nil, nil, "desc", nil)
+    expect(@opt).to receive(:add).with("-a", nil, nil, "desc", nil)
     @opt.on("-a", "desc")
   end
 
   it "adds a short option taking an argument" do
-    @opt.should_receive(:add).with("-a", nil, "ARG", "desc", nil)
+    expect(@opt).to receive(:add).with("-a", nil, "ARG", "desc", nil)
     @opt.on("-a", "ARG", "desc")
   end
 
   it "adds a long option" do
-    @opt.should_receive(:add).with("-a", nil, nil, "desc", nil)
+    expect(@opt).to receive(:add).with("-a", nil, nil, "desc", nil)
     @opt.on("-a", "desc")
   end
 
   it "adds a long option taking an argument" do
-    @opt.should_receive(:add).with("-a", nil, nil, "desc", nil)
+    expect(@opt).to receive(:add).with("-a", nil, nil, "desc", nil)
     @opt.on("-a", "desc")
   end
 
   it "adds a short and long option" do
-    @opt.should_receive(:add).with("-a", nil, nil, "desc", nil)
+    expect(@opt).to receive(:add).with("-a", nil, nil, "desc", nil)
     @opt.on("-a", "desc")
   end
 
   it "adds a short and long option taking an argument" do
-    @opt.should_receive(:add).with("-a", nil, nil, "desc", nil)
+    expect(@opt).to receive(:add).with("-a", nil, nil, "desc", nil)
     @opt.on("-a", "desc")
   end
 
   it "raises MSpecOptions::OptionError if pass less than 2 arguments" do
-    lambda { @opt.on    }.should raise_error(MSpecOptions::OptionError)
-    lambda { @opt.on "" }.should raise_error(MSpecOptions::OptionError)
+    expect { @opt.on    }.to raise_error(MSpecOptions::OptionError)
+    expect { @opt.on "" }.to raise_error(MSpecOptions::OptionError)
   end
 end
 
@@ -130,26 +130,26 @@ describe MSpecOptions, "#add" do
   end
 
   it "adds documentation for an option" do
-    @opt.should_receive(:doc).with("   -t, --typo ARG   Correct typo ARG")
+    expect(@opt).to receive(:doc).with("   -t, --typo ARG   Correct typo ARG")
     @opt.add("-t", "--typo", "ARG", "Correct typo ARG", @prc)
   end
 
   it "leaves spaces in the documentation for a missing short option" do
-    @opt.should_receive(:doc).with("       --typo ARG   Correct typo ARG")
+    expect(@opt).to receive(:doc).with("       --typo ARG   Correct typo ARG")
     @opt.add(nil, "--typo", "ARG", "Correct typo ARG", @prc)
   end
 
   it "handles a short option with argument but no long argument" do
-    @opt.should_receive(:doc).with("   -t ARG           Correct typo ARG")
+    expect(@opt).to receive(:doc).with("   -t ARG           Correct typo ARG")
     @opt.add("-t", nil, "ARG", "Correct typo ARG", @prc)
   end
 
   it "registers an option" do
     option = MSpecOption.new "-t", "--typo", "ARG", "Correct typo ARG", @prc
-    MSpecOption.should_receive(:new).with(
+    expect(MSpecOption).to receive(:new).with(
         "-t", "--typo", "ARG", "Correct typo ARG", @prc).and_return(option)
     @opt.add("-t", "--typo", "ARG", "Correct typo ARG", @prc)
-    @opt.options.should == [option]
+    expect(@opt.options).to eq([option])
   end
 end
 
@@ -161,11 +161,11 @@ describe MSpecOptions, "#match?" do
   it "returns the MSpecOption instance matching the argument" do
     @opt.on "-a", "--abdc", "desc"
     option = @opt.match? "-a"
-    @opt.match?("--abdc").should be(option)
-    option.should be_kind_of(MSpecOption)
-    option.short.should == "-a"
-    option.long.should == "--abdc"
-    option.description.should == "desc"
+    expect(@opt.match?("--abdc")).to be(option)
+    expect(option).to be_kind_of(MSpecOption)
+    expect(option.short).to eq("-a")
+    expect(option.long).to eq("--abdc")
+    expect(option.description).to eq("desc")
   end
 end
 
@@ -178,38 +178,38 @@ describe MSpecOptions, "#process" do
   it "calls the on_extra block if the argument does not match any option" do
     @opt.on_extra { ScratchPad.record :extra }
     @opt.process ["-a"], "-a", "-a", nil
-    ScratchPad.recorded.should == :extra
+    expect(ScratchPad.recorded).to eq(:extra)
   end
 
   it "returns the matching option" do
     @opt.on "-a", "ARG", "desc"
     option = @opt.process [], "-a", "-a", "ARG"
-    option.should be_kind_of(MSpecOption)
-    option.short.should == "-a"
-    option.arg.should == "ARG"
-    option.description.should == "desc"
+    expect(option).to be_kind_of(MSpecOption)
+    expect(option.short).to eq("-a")
+    expect(option.arg).to eq("ARG")
+    expect(option.description).to eq("desc")
   end
 
   it "raises an MSpecOptions::ParseError if arg is nil and there are no more entries in argv" do
     @opt.on "-a", "ARG", "desc"
-    lambda { @opt.process [], "-a", "-a", nil }.should raise_error(MSpecOptions::ParseError)
+    expect { @opt.process [], "-a", "-a", nil }.to raise_error(MSpecOptions::ParseError)
   end
 
   it "fetches the argument for the option from argv if arg is nil" do
     @opt.on("-a", "ARG", "desc") { |o| ScratchPad.record o }
     @opt.process ["ARG"], "-a", "-a", nil
-    ScratchPad.recorded.should == "ARG"
+    expect(ScratchPad.recorded).to eq("ARG")
   end
 
   it "calls the option's block" do
     @opt.on("-a", "ARG", "desc") { ScratchPad.record :option }
     @opt.process [], "-a", "-a", "ARG"
-    ScratchPad.recorded.should == :option
+    expect(ScratchPad.recorded).to eq(:option)
   end
 
   it "does not call the option's block if it is nil" do
     @opt.on "-a", "ARG", "desc"
-    lambda { @opt.process [], "-a", "-a", "ARG" }.should_not raise_error
+    expect { @opt.process [], "-a", "-a", "ARG" }.not_to raise_error
   end
 end
 
@@ -220,16 +220,16 @@ describe MSpecOptions, "#split" do
 
   it "breaks a string at the nth character" do
     opt, arg, rest = @opt.split "-bdc", 2
-    opt.should == "-b"
-    arg.should == "dc"
-    rest.should == "dc"
+    expect(opt).to eq("-b")
+    expect(arg).to eq("dc")
+    expect(rest).to eq("dc")
   end
 
   it "returns nil for arg if there are no characters left" do
     opt, arg, rest = @opt.split "-b", 2
-    opt.should == "-b"
-    arg.should == nil
-    rest.should == ""
+    expect(opt).to eq("-b")
+    expect(arg).to eq(nil)
+    expect(rest).to eq("")
   end
 end
 
@@ -244,43 +244,43 @@ describe MSpecOptions, "#parse" do
   it "parses a short option" do
     @opt.on "-a", "desc", &@prc
     @opt.parse ["-a"]
-    ScratchPad.recorded.should == :parsed
+    expect(ScratchPad.recorded).to eq(:parsed)
   end
 
   it "parse a long option" do
     @opt.on "--abdc", "desc", &@prc
     @opt.parse ["--abdc"]
-    ScratchPad.recorded.should == :parsed
+    expect(ScratchPad.recorded).to eq(:parsed)
   end
 
   it "parses a short option group" do
     @opt.on "-a", "ARG", "desc", &@arg_prc
     @opt.parse ["-a", "ARG"]
-    ScratchPad.recorded.should == [:parsed, "ARG"]
+    expect(ScratchPad.recorded).to eq([:parsed, "ARG"])
   end
 
   it "parses a short option with an argument" do
     @opt.on "-a", "ARG", "desc", &@arg_prc
     @opt.parse ["-a", "ARG"]
-    ScratchPad.recorded.should == [:parsed, "ARG"]
+    expect(ScratchPad.recorded).to eq([:parsed, "ARG"])
   end
 
   it "parses a short option with connected argument" do
     @opt.on "-a", "ARG", "desc", &@arg_prc
     @opt.parse ["-aARG"]
-    ScratchPad.recorded.should == [:parsed, "ARG"]
+    expect(ScratchPad.recorded).to eq([:parsed, "ARG"])
   end
 
   it "parses a long option with an argument" do
     @opt.on "--abdc", "ARG", "desc", &@arg_prc
     @opt.parse ["--abdc", "ARG"]
-    ScratchPad.recorded.should == [:parsed, "ARG"]
+    expect(ScratchPad.recorded).to eq([:parsed, "ARG"])
   end
 
   it "parses a long option with an '=' argument" do
     @opt.on "--abdc", "ARG", "desc", &@arg_prc
     @opt.parse ["--abdc=ARG"]
-    ScratchPad.recorded.should == [:parsed, "ARG"]
+    expect(ScratchPad.recorded).to eq([:parsed, "ARG"])
   end
 
   it "parses a short option group with the final option taking an argument" do
@@ -288,7 +288,7 @@ describe MSpecOptions, "#parse" do
     @opt.on("-a", "desc") { |o| ScratchPad << :a }
     @opt.on("-b", "ARG", "desc") { |o| ScratchPad << [:b, o] }
     @opt.parse ["-ab", "ARG"]
-    ScratchPad.recorded.should == [:a, [:b, "ARG"]]
+    expect(ScratchPad.recorded).to eq([:a, [:b, "ARG"]])
   end
 
   it "parses a short option group with a connected argument" do
@@ -297,12 +297,12 @@ describe MSpecOptions, "#parse" do
     @opt.on("-b", "ARG", "desc") { |o| ScratchPad << [:b, o] }
     @opt.on("-c", "desc") { |o| ScratchPad << :c }
     @opt.parse ["-acbARG"]
-    ScratchPad.recorded.should == [:a, :c, [:b, "ARG"]]
+    expect(ScratchPad.recorded).to eq([:a, :c, [:b, "ARG"]])
   end
 
   it "returns the unprocessed entries" do
     @opt.on "-a", "ARG", "desc", &@arg_prc
-    @opt.parse(["abdc", "-a", "ilny"]).should == ["abdc"]
+    expect(@opt.parse(["abdc", "-a", "ilny"])).to eq(["abdc"])
   end
 
   it "calls the on_extra handler with unrecognized options" do
@@ -310,18 +310,18 @@ describe MSpecOptions, "#parse" do
     @opt.on_extra { |o| ScratchPad << o }
     @opt.on "-a", "desc"
     @opt.parse ["-a", "-b"]
-    ScratchPad.recorded.should == ["-b"]
+    expect(ScratchPad.recorded).to eq(["-b"])
   end
 
   it "does not attempt to call the block if it is nil" do
     @opt.on "-a", "ARG", "desc"
-    @opt.parse(["-a", "ARG"]).should == []
+    expect(@opt.parse(["-a", "ARG"])).to eq([])
   end
 
   it "raises MSpecOptions::ParseError if passed an unrecognized option" do
-    @opt.should_receive(:raise).with(MSpecOptions::ParseError, an_instance_of(String))
-    @opt.stub(:puts)
-    @opt.stub(:exit)
+    expect(@opt).to receive(:raise).with(MSpecOptions::ParseError, an_instance_of(String))
+    allow(@opt).to receive(:puts)
+    allow(@opt).to receive(:exit)
     @opt.parse "-u"
   end
 end
@@ -332,9 +332,9 @@ describe MSpecOptions, "#banner=" do
   end
 
   it "sets the banner attribute" do
-    @opt.banner.should == ""
+    expect(@opt.banner).to eq("")
     @opt.banner = "banner"
-    @opt.banner.should == "banner"
+    expect(@opt.banner).to eq("banner")
   end
 end
 
@@ -344,9 +344,9 @@ describe MSpecOptions, "#width=" do
   end
 
   it "sets the width attribute" do
-    @opt.width.should == 30
+    expect(@opt.width).to eq(30)
     @opt.width = 20
-    @opt.width.should == 20
+    expect(@opt.width).to eq(20)
   end
 end
 
@@ -356,9 +356,9 @@ describe MSpecOptions, "#config=" do
   end
 
   it "sets the config attribute" do
-    @opt.config.should be_nil
+    expect(@opt.config).to be_nil
     @opt.config = :config
-    @opt.config.should == :config
+    expect(@opt.config).to eq(:config)
   end
 end
 
@@ -370,7 +370,7 @@ describe MSpecOptions, "#doc" do
   it "adds text to be displayed with #to_s" do
     @opt.doc "Some message"
     @opt.doc "Another message"
-    @opt.to_s.should == <<-EOD
+    expect(@opt.to_s).to eq <<-EOD
 command
 
 Some message
@@ -386,8 +386,8 @@ describe MSpecOptions, "#version" do
   end
 
   it "installs a basic -v, --version option" do
-    @opt.should_receive(:puts)
-    @opt.should_receive(:exit)
+    expect(@opt).to receive(:puts)
+    expect(@opt).to receive(:exit)
     @opt.version "1.0.0"
     @opt.parse "-v"
   end
@@ -395,7 +395,7 @@ describe MSpecOptions, "#version" do
   it "accepts a block instead of using the default block" do
     @opt.version("1.0.0") { |o| ScratchPad.record :version }
     @opt.parse "-v"
-    ScratchPad.recorded.should == :version
+    expect(ScratchPad.recorded).to eq(:version)
   end
 end
 
@@ -406,8 +406,8 @@ describe MSpecOptions, "#help" do
   end
 
   it "installs a basic -h, --help option" do
-    @opt.should_receive(:puts)
-    @opt.should_receive(:exit).with(1)
+    expect(@opt).to receive(:puts)
+    expect(@opt).to receive(:exit).with(1)
     @opt.help
     @opt.parse "-h"
   end
@@ -415,7 +415,7 @@ describe MSpecOptions, "#help" do
   it "accepts a block instead of using the default block" do
     @opt.help { |o| ScratchPad.record :help }
     @opt.parse "-h"
-    ScratchPad.recorded.should == :help
+    expect(ScratchPad.recorded).to eq(:help)
   end
 end
 
@@ -428,7 +428,7 @@ describe MSpecOptions, "#on_extra" do
   it "registers a block to be called when an option is not recognized" do
     @opt.on_extra { ScratchPad.record :extra }
     @opt.parse "-g"
-    ScratchPad.recorded.should == :extra
+    expect(ScratchPad.recorded).to eq(:extra)
   end
 end
 
@@ -439,7 +439,7 @@ describe MSpecOptions, "#to_s" do
 
   it "returns the banner and descriptive strings for all registered options" do
     @opt.on "-t", "--this ARG", "Adds this ARG to the list"
-    @opt.to_s.should == <<-EOD
+    expect(@opt.to_s).to eq <<-EOD
 command
 
    -t, --this ARG             Adds this ARG to the list
@@ -453,7 +453,7 @@ describe "The -B, --config FILE option" do
   end
 
   it "is enabled with #configure { }" do
-    @options.should_receive(:on).with("-B", "--config", "FILE",
+    expect(@options).to receive(:on).with("-B", "--config", "FILE",
         an_instance_of(String))
     @options.configure {}
   end
@@ -464,7 +464,7 @@ describe "The -B, --config FILE option" do
 
       @options.configure { |x| ScratchPad.record x }
       @options.parse [opt, "file"]
-      ScratchPad.recorded.should == "file"
+      expect(ScratchPad.recorded).to eq("file")
     end
   end
 end
@@ -476,13 +476,13 @@ describe "The -C, --chdir DIR option" do
   end
 
   it "is enabled with #chdir" do
-    @options.should_receive(:on).with("-C", "--chdir", "DIR",
+    expect(@options).to receive(:on).with("-C", "--chdir", "DIR",
         an_instance_of(String))
     @options.chdir
   end
 
   it "changes the working directory to DIR" do
-    Dir.should_receive(:chdir).with("dir").twice
+    expect(Dir).to receive(:chdir).with("dir").twice
     ["-C", "--chdir"].each do |opt|
       @options.parse [opt, "dir"]
     end
@@ -495,7 +495,7 @@ describe "The --prefix STR option" do
   end
 
   it "is enabled with #prefix" do
-    @options.should_receive(:on).with("--prefix", "STR",
+    expect(@options).to receive(:on).with("--prefix", "STR",
        an_instance_of(String))
     @options.prefix
   end
@@ -503,7 +503,7 @@ describe "The --prefix STR option" do
   it "sets the prefix config value" do
     @options.prefix
     @options.parse ["--prefix", "some/dir"]
-    @config[:prefix].should == "some/dir"
+    expect(@config[:prefix]).to eq("some/dir")
   end
 end
 
@@ -514,8 +514,8 @@ describe "The -t, --target TARGET option" do
   end
 
   it "is enabled with #targets" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-t", "--target", "TARGET",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-t", "--target", "TARGET",
         an_instance_of(String))
     @options.targets
   end
@@ -525,7 +525,7 @@ describe "The -t, --target TARGET option" do
       ["r", "ruby"].each do |t|
         @config[:target] = nil
         @options.parse [opt, t]
-        @config[:target].should == "ruby"
+        expect(@config[:target]).to eq("ruby")
       end
     end
   end
@@ -535,7 +535,7 @@ describe "The -t, --target TARGET option" do
       ["j", "jruby"].each do |t|
         @config[:target] = nil
         @options.parse [opt, t]
-        @config[:target].should == "jruby"
+        expect(@config[:target]).to eq("jruby")
       end
     end
   end
@@ -545,7 +545,7 @@ describe "The -t, --target TARGET option" do
       ["x", "rubinius"].each do |t|
         @config[:target] = nil
         @options.parse [opt, t]
-        @config[:target].should == "./bin/rbx"
+        expect(@config[:target]).to eq("./bin/rbx")
       end
     end
   end
@@ -555,7 +555,7 @@ describe "The -t, --target TARGET option" do
       ["X", "rbx"].each do |t|
         @config[:target] = nil
         @options.parse [opt, t]
-        @config[:target].should == "rbx"
+        expect(@config[:target]).to eq("rbx")
       end
     end
   end
@@ -565,7 +565,7 @@ describe "The -t, --target TARGET option" do
       ["m", "maglev"].each do |t|
         @config[:target] = nil
         @options.parse [opt, t]
-        @config[:target].should == "maglev-ruby"
+        expect(@config[:target]).to eq("maglev-ruby")
       end
     end
   end
@@ -575,7 +575,7 @@ describe "The -t, --target TARGET option" do
       ["t", "topaz"].each do |t|
         @config[:target] = nil
         @options.parse [opt, t]
-        @config[:target].should == "topaz"
+        expect(@config[:target]).to eq("topaz")
       end
     end
   end
@@ -584,7 +584,7 @@ describe "The -t, --target TARGET option" do
     ["-t", "--target"].each do |opt|
       @config[:target] = nil
       @options.parse [opt, "whateva"]
-      @config[:target].should == "whateva"
+      expect(@config[:target]).to eq("whateva")
     end
   end
 end
@@ -596,8 +596,8 @@ describe "The -T, --target-opt OPT option" do
   end
 
   it "is enabled with #targets" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-T", "--target-opt", "OPT",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-T", "--target-opt", "OPT",
         an_instance_of(String))
     @options.targets
   end
@@ -606,7 +606,7 @@ describe "The -T, --target-opt OPT option" do
     ["-T", "--target-opt"].each do |opt|
       @config[:flags].delete "--whateva"
       @options.parse [opt, "--whateva"]
-      @config[:flags].should include("--whateva")
+      expect(@config[:flags]).to include("--whateva")
     end
   end
 end
@@ -618,8 +618,8 @@ describe "The -I, --include DIR option" do
   end
 
   it "is enabled with #targets" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-I", "--include", "DIR",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-I", "--include", "DIR",
         an_instance_of(String))
     @options.targets
   end
@@ -628,7 +628,7 @@ describe "The -I, --include DIR option" do
     ["-I", "--include"].each do |opt|
       @config[:loadpath].delete "-Ipackage"
       @options.parse [opt, "package"]
-      @config[:loadpath].should include("-Ipackage")
+      expect(@config[:loadpath]).to include("-Ipackage")
     end
   end
 end
@@ -640,8 +640,8 @@ describe "The -r, --require LIBRARY option" do
   end
 
   it "is enabled with #targets" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-r", "--require", "LIBRARY",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-r", "--require", "LIBRARY",
         an_instance_of(String))
     @options.targets
   end
@@ -650,7 +650,7 @@ describe "The -r, --require LIBRARY option" do
     ["-r", "--require"].each do |opt|
       @config[:requires].delete "-rlibrick"
       @options.parse [opt, "librick"]
-      @config[:requires].should include("-rlibrick")
+      expect(@config[:requires]).to include("-rlibrick")
     end
   end
 end
@@ -662,8 +662,8 @@ describe "The -f, --format FORMAT option" do
   end
 
   it "is enabled with #formatters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-f", "--format", "FORMAT",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-f", "--format", "FORMAT",
         an_instance_of(String))
     @options.formatters
   end
@@ -673,7 +673,7 @@ describe "The -f, --format FORMAT option" do
       ["s", "specdoc"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == SpecdocFormatter
+        expect(@config[:formatter]).to eq(SpecdocFormatter)
       end
     end
   end
@@ -683,7 +683,7 @@ describe "The -f, --format FORMAT option" do
       ["h", "html"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == HtmlFormatter
+        expect(@config[:formatter]).to eq(HtmlFormatter)
       end
     end
   end
@@ -693,7 +693,7 @@ describe "The -f, --format FORMAT option" do
       ["d", "dot", "dotted"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == DottedFormatter
+        expect(@config[:formatter]).to eq(DottedFormatter)
       end
     end
   end
@@ -703,7 +703,7 @@ describe "The -f, --format FORMAT option" do
       ["b", "describe"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == DescribeFormatter
+        expect(@config[:formatter]).to eq(DescribeFormatter)
       end
     end
   end
@@ -713,7 +713,7 @@ describe "The -f, --format FORMAT option" do
       ["f", "file"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == FileFormatter
+        expect(@config[:formatter]).to eq(FileFormatter)
       end
     end
   end
@@ -723,7 +723,7 @@ describe "The -f, --format FORMAT option" do
       ["u", "unit", "unitdiff"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == UnitdiffFormatter
+        expect(@config[:formatter]).to eq(UnitdiffFormatter)
       end
     end
   end
@@ -733,7 +733,7 @@ describe "The -f, --format FORMAT option" do
       ["m", "summary"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == SummaryFormatter
+        expect(@config[:formatter]).to eq(SummaryFormatter)
       end
     end
   end
@@ -743,7 +743,7 @@ describe "The -f, --format FORMAT option" do
       ["a", "*", "spin"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == SpinnerFormatter
+        expect(@config[:formatter]).to eq(SpinnerFormatter)
       end
     end
   end
@@ -753,7 +753,7 @@ describe "The -f, --format FORMAT option" do
       ["t", "method"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == MethodFormatter
+        expect(@config[:formatter]).to eq(MethodFormatter)
       end
     end
   end
@@ -763,7 +763,7 @@ describe "The -f, --format FORMAT option" do
       ["y", "yaml"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == YamlFormatter
+        expect(@config[:formatter]).to eq(YamlFormatter)
       end
     end
   end
@@ -773,7 +773,7 @@ describe "The -f, --format FORMAT option" do
       ["j", "junit"].each do |f|
         @config[:formatter] = nil
         @options.parse [opt, f]
-        @config[:formatter].should == JUnitFormatter
+        expect(@config[:formatter]).to eq(JUnitFormatter)
       end
     end
   end
@@ -786,8 +786,8 @@ describe "The -o, --output FILE option" do
   end
 
   it "is enabled with #formatters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-o", "--output", "FILE",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-o", "--output", "FILE",
         an_instance_of(String))
     @options.formatters
   end
@@ -796,7 +796,7 @@ describe "The -o, --output FILE option" do
     ["-o", "--output"].each do |opt|
       @config[:output] = nil
       @options.parse [opt, "some/file"]
-      @config[:output].should == "some/file"
+      expect(@config[:output]).to eq("some/file")
     end
   end
 end
@@ -808,8 +808,8 @@ describe "The -e, --example STR" do
   end
 
   it "is enabled with #filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-e", "--example", "STR",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-e", "--example", "STR",
         an_instance_of(String))
     @options.filters
   end
@@ -818,7 +818,7 @@ describe "The -e, --example STR" do
     ["-e", "--example"].each do |opt|
       @config[:includes] = []
       @options.parse [opt, "this spec"]
-      @config[:includes].should include("this spec")
+      expect(@config[:includes]).to include("this spec")
     end
   end
 end
@@ -830,8 +830,8 @@ describe "The -E, --exclude STR" do
   end
 
   it "is enabled with #filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-E", "--exclude", "STR",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-E", "--exclude", "STR",
         an_instance_of(String))
     @options.filters
   end
@@ -840,7 +840,7 @@ describe "The -E, --exclude STR" do
     ["-E", "--exclude"].each do |opt|
       @config[:excludes] = []
       @options.parse [opt, "this spec"]
-      @config[:excludes].should include("this spec")
+      expect(@config[:excludes]).to include("this spec")
     end
   end
 end
@@ -852,8 +852,8 @@ describe "The -p, --pattern PATTERN" do
   end
 
   it "is enabled with #filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-p", "--pattern", "PATTERN",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-p", "--pattern", "PATTERN",
         an_instance_of(String))
     @options.filters
   end
@@ -862,7 +862,7 @@ describe "The -p, --pattern PATTERN" do
     ["-p", "--pattern"].each do |opt|
       @config[:patterns] = []
       @options.parse [opt, "this spec"]
-      @config[:patterns].should include(/this spec/)
+      expect(@config[:patterns]).to include(/this spec/)
     end
   end
 end
@@ -874,8 +874,8 @@ describe "The -P, --excl-pattern PATTERN" do
   end
 
   it "is enabled with #filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-P", "--excl-pattern", "PATTERN",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-P", "--excl-pattern", "PATTERN",
         an_instance_of(String))
     @options.filters
   end
@@ -884,7 +884,7 @@ describe "The -P, --excl-pattern PATTERN" do
     ["-P", "--excl-pattern"].each do |opt|
       @config[:xpatterns] = []
       @options.parse [opt, "this spec"]
-      @config[:xpatterns].should include(/this spec/)
+      expect(@config[:xpatterns]).to include(/this spec/)
     end
   end
 end
@@ -896,8 +896,8 @@ describe "The -g, --tag TAG" do
   end
 
   it "is enabled with #filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-g", "--tag", "TAG",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-g", "--tag", "TAG",
         an_instance_of(String))
     @options.filters
   end
@@ -906,7 +906,7 @@ describe "The -g, --tag TAG" do
     ["-g", "--tag"].each do |opt|
       @config[:tags] = []
       @options.parse [opt, "this spec"]
-      @config[:tags].should include("this spec")
+      expect(@config[:tags]).to include("this spec")
     end
   end
 end
@@ -918,8 +918,8 @@ describe "The -G, --excl-tag TAG" do
   end
 
   it "is enabled with #filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-G", "--excl-tag", "TAG",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-G", "--excl-tag", "TAG",
         an_instance_of(String))
     @options.filters
   end
@@ -928,7 +928,7 @@ describe "The -G, --excl-tag TAG" do
     ["-G", "--excl-tag"].each do |opt|
       @config[:xtags] = []
       @options.parse [opt, "this spec"]
-      @config[:xtags].should include("this spec")
+      expect(@config[:xtags]).to include("this spec")
     end
   end
 end
@@ -940,8 +940,8 @@ describe "The -w, --profile FILE option" do
   end
 
   it "is enabled with #filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-w", "--profile", "FILE",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-w", "--profile", "FILE",
         an_instance_of(String))
     @options.filters
   end
@@ -950,7 +950,7 @@ describe "The -w, --profile FILE option" do
     ["-w", "--profile"].each do |opt|
       @config[:profiles] = []
       @options.parse [opt, "spec/profiles/rails.yaml"]
-      @config[:profiles].should include("spec/profiles/rails.yaml")
+      expect(@config[:profiles]).to include("spec/profiles/rails.yaml")
     end
   end
 end
@@ -962,8 +962,8 @@ describe "The -W, --excl-profile FILE option" do
   end
 
   it "is enabled with #filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-W", "--excl-profile", "FILE",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-W", "--excl-profile", "FILE",
         an_instance_of(String))
     @options.filters
   end
@@ -972,7 +972,7 @@ describe "The -W, --excl-profile FILE option" do
     ["-W", "--excl-profile"].each do |opt|
       @config[:xprofiles] = []
       @options.parse [opt, "spec/profiles/rails.yaml"]
-      @config[:xprofiles].should include("spec/profiles/rails.yaml")
+      expect(@config[:xprofiles]).to include("spec/profiles/rails.yaml")
     end
   end
 end
@@ -984,12 +984,12 @@ describe "The -Z, --dry-run option" do
   end
 
   it "is enabled with #pretend" do
-    @options.should_receive(:on).with("-Z", "--dry-run", an_instance_of(String))
+    expect(@options).to receive(:on).with("-Z", "--dry-run", an_instance_of(String))
     @options.pretend
   end
 
   it "registers the MSpec pretend mode" do
-    MSpec.should_receive(:register_mode).with(:pretend).twice
+    expect(MSpec).to receive(:register_mode).with(:pretend).twice
     ["-Z", "--dry-run"].each do |opt|
       @options.parse opt
     end
@@ -1003,13 +1003,13 @@ describe "The --unguarded option" do
   end
 
   it "is enabled with #unguarded" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("--unguarded", an_instance_of(String))
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("--unguarded", an_instance_of(String))
     @options.unguarded
   end
 
   it "registers the MSpec unguarded mode" do
-    MSpec.should_receive(:register_mode).with(:unguarded)
+    expect(MSpec).to receive(:register_mode).with(:unguarded)
     @options.parse "--unguarded"
   end
 end
@@ -1021,13 +1021,13 @@ describe "The --no-ruby_guard option" do
   end
 
   it "is enabled with #unguarded" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("--no-ruby_bug", an_instance_of(String))
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("--no-ruby_bug", an_instance_of(String))
     @options.unguarded
   end
 
   it "registers the MSpec no_ruby_bug mode" do
-    MSpec.should_receive(:register_mode).with(:no_ruby_bug)
+    expect(MSpec).to receive(:register_mode).with(:no_ruby_bug)
     @options.parse "--no-ruby_bug"
   end
 end
@@ -1039,12 +1039,12 @@ describe "The -H, --random option" do
   end
 
   it "is enabled with #randomize" do
-    @options.should_receive(:on).with("-H", "--random", an_instance_of(String))
+    expect(@options).to receive(:on).with("-H", "--random", an_instance_of(String))
     @options.randomize
   end
 
   it "registers the MSpec randomize mode" do
-    MSpec.should_receive(:randomize=).twice
+    expect(MSpec).to receive(:randomize=).twice
     ["-H", "--random"].each do |opt|
       @options.parse opt
     end
@@ -1058,7 +1058,7 @@ describe "The -R, --repeat option" do
   end
 
   it "is enabled with #repeat" do
-    @options.should_receive(:on).with("-R", "--repeat", "NUMBER", an_instance_of(String))
+    expect(@options).to receive(:on).with("-R", "--repeat", "NUMBER", an_instance_of(String))
     @options.repeat
   end
 
@@ -1070,7 +1070,7 @@ describe "The -R, --repeat option" do
       MSpec.repeat do
         repeat_count += 1
       end
-      repeat_count.should == 10
+      expect(repeat_count).to eq(10)
     end
   end
 end
@@ -1082,14 +1082,14 @@ describe "The -V, --verbose option" do
   end
 
   it "is enabled with #verbose" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-V", "--verbose", an_instance_of(String))
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-V", "--verbose", an_instance_of(String))
     @options.verbose
   end
 
   it "registers a verbose output object with MSpec" do
-    MSpec.should_receive(:register).with(:start, anything()).twice
-    MSpec.should_receive(:register).with(:load, anything()).twice
+    expect(MSpec).to receive(:register).with(:start, anything()).twice
+    expect(MSpec).to receive(:register).with(:load, anything()).twice
     ["-V", "--verbose"].each do |opt|
       @options.parse opt
     end
@@ -1103,14 +1103,14 @@ describe "The -m, --marker MARKER option" do
   end
 
   it "is enabled with #verbose" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-m", "--marker", "MARKER",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-m", "--marker", "MARKER",
         an_instance_of(String))
     @options.verbose
   end
 
   it "registers a marker output object with MSpec" do
-    MSpec.should_receive(:register).with(:load, anything()).twice
+    expect(MSpec).to receive(:register).with(:load, anything()).twice
     ["-m", "--marker"].each do |opt|
       @options.parse [opt, ","]
     end
@@ -1124,14 +1124,14 @@ describe "The --int-spec option" do
   end
 
   it "is enabled with #interrupt" do
-    @options.should_receive(:on).with("--int-spec", an_instance_of(String))
+    expect(@options).to receive(:on).with("--int-spec", an_instance_of(String))
     @options.interrupt
   end
 
   it "sets the abort config option to false to only abort the running spec with ^C" do
     @config[:abort] = true
     @options.parse "--int-spec"
-    @config[:abort].should == false
+    expect(@config[:abort]).to eq(false)
   end
 end
 
@@ -1142,13 +1142,13 @@ describe "The -Y, --verify option" do
   end
 
   it "is enabled with #interrupt" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-Y", "--verify", an_instance_of(String))
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-Y", "--verify", an_instance_of(String))
     @options.verify
   end
 
   it "sets the MSpec mode to :verify" do
-    MSpec.should_receive(:register_mode).with(:verify).twice
+    expect(MSpec).to receive(:register_mode).with(:verify).twice
     ["-Y", "--verify"].each do |m|
       @options.parse m
     end
@@ -1162,13 +1162,13 @@ describe "The -O, --report option" do
   end
 
   it "is enabled with #interrupt" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-O", "--report", an_instance_of(String))
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-O", "--report", an_instance_of(String))
     @options.verify
   end
 
   it "sets the MSpec mode to :report" do
-    MSpec.should_receive(:register_mode).with(:report).twice
+    expect(MSpec).to receive(:register_mode).with(:report).twice
     ["-O", "--report"].each do |m|
       @options.parse m
     end
@@ -1192,25 +1192,25 @@ describe "The --report-on GUARD option" do
   end
 
   it "is enabled with #interrupt" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("--report-on", "GUARD", an_instance_of(String))
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("--report-on", "GUARD", an_instance_of(String))
     @options.verify
   end
 
   it "sets the MSpec mode to :report_on" do
-    MSpec.should_receive(:register_mode).with(:report_on)
+    expect(MSpec).to receive(:register_mode).with(:report_on)
     @options.parse ["--report-on", "ruby_bug"]
   end
 
   it "converts the guard name to a symbol" do
     name = double("ruby_bug")
-    name.should_receive(:to_sym)
+    expect(name).to receive(:to_sym)
     @options.parse ["--report-on", name]
   end
 
   it "saves the name of the guard" do
     @options.parse ["--report-on", "ruby_bug"]
-    SpecGuard.guards.should == [:ruby_bug]
+    expect(SpecGuard.guards).to eq([:ruby_bug])
   end
 end
 
@@ -1221,8 +1221,8 @@ describe "The -K, --action-tag TAG option" do
   end
 
   it "is enabled with #action_filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-K", "--action-tag", "TAG",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-K", "--action-tag", "TAG",
         an_instance_of(String))
     @options.action_filters
   end
@@ -1231,7 +1231,7 @@ describe "The -K, --action-tag TAG option" do
     ["-K", "--action-tag"].each do |opt|
       @config[:atags] = []
       @options.parse [opt, "action-tag"]
-      @config[:atags].should include("action-tag")
+      expect(@config[:atags]).to include("action-tag")
     end
   end
 end
@@ -1243,8 +1243,8 @@ describe "The -S, --action-string STR option" do
   end
 
   it "is enabled with #action_filters" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-S", "--action-string", "STR",
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-S", "--action-string", "STR",
         an_instance_of(String))
     @options.action_filters
   end
@@ -1253,7 +1253,7 @@ describe "The -S, --action-string STR option" do
     ["-S", "--action-string"].each do |opt|
       @config[:astrings] = []
       @options.parse [opt, "action-str"]
-      @config[:astrings].should include("action-str")
+      expect(@config[:astrings]).to include("action-str")
     end
   end
 end
@@ -1269,16 +1269,16 @@ describe "The -d, --debug option" do
   end
 
   it "is enabled with #debug" do
-    @options.stub(:on)
-    @options.should_receive(:on).with("-d", "--debug", an_instance_of(String))
+    allow(@options).to receive(:on)
+    expect(@options).to receive(:on).with("-d", "--debug", an_instance_of(String))
     @options.debug
   end
 
   it "sets $MSPEC_DEBUG to true" do
     ["-d", "--debug"].each do |opt|
-      $MSPEC_DEBUG.should_not be_true
+      expect($MSPEC_DEBUG).not_to be_truthy
       @options.parse opt
-      $MSPEC_DEBUG.should be_true
+      expect($MSPEC_DEBUG).to be_truthy
       $MSPEC_DEBUG = nil
     end
   end
@@ -1299,6 +1299,6 @@ describe "MSpecOptions#all" do
     option_methods = contents.scan(/def (\w+).*\n\s*on\(/).map(&:first)
     option_methods[0].sub!("configure", "configure {}")
 
-    calls.should == option_methods
+    expect(calls).to eq(option_methods)
   end
 end

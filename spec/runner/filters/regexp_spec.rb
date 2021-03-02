@@ -8,15 +8,15 @@ describe MatchFilter, "#===" do
   end
 
   it "returns true if the argument matches any of the #initialize strings" do
-    @filter.===('ab').should == true
-    @filter.===('bc suffix').should == true
-    @filter.===('prefix cc').should == true
+    expect(@filter.===('ab')).to eq(true)
+    expect(@filter.===('bc suffix')).to eq(true)
+    expect(@filter.===('prefix cc')).to eq(true)
   end
 
   it "returns false if the argument matches none of the #initialize strings" do
-    @filter.===('aa').should == false
-    @filter.===('ba').should == false
-    @filter.===('prefix d suffix').should == false
+    expect(@filter.===('aa')).to eq(false)
+    expect(@filter.===('ba')).to eq(false)
+    expect(@filter.===('prefix d suffix')).to eq(false)
   end
 end
 
@@ -26,6 +26,6 @@ describe RegexpFilter, "#to_regexp" do
   end
 
   it "converts its arguments to Regexp instances" do
-    @filter.send(:to_regexp, 'a(b|c)', 'b[^ab]', 'cc?').should == [/a(b|c)/, /b[^ab]/, /cc?/]
+    expect(@filter.send(:to_regexp, 'a(b|c)', 'b[^ab]', 'cc?')).to eq([/a(b|c)/, /b[^ab]/, /cc?/])
   end
 end

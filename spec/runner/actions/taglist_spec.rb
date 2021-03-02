@@ -6,28 +6,28 @@ require 'mspec/runner/tag'
 
 describe TagListAction, "#include?" do
   it "returns true" do
-    TagListAction.new.include?(:anything).should be_true
+    expect(TagListAction.new.include?(:anything)).to be_truthy
   end
 end
 
 describe TagListAction, "#===" do
   before :each do
     tag = SpecTag.new "fails:description"
-    MSpec.stub(:read_tags).and_return([tag])
+    allow(MSpec).to receive(:read_tags).and_return([tag])
     @filter = double("MatchFilter").as_null_object
-    MatchFilter.stub(:new).and_return(@filter)
+    allow(MatchFilter).to receive(:new).and_return(@filter)
     @action = TagListAction.new
     @action.load
   end
 
   it "returns true if filter === string returns true" do
-    @filter.should_receive(:===).with("str").and_return(true)
-    @action.===("str").should be_true
+    expect(@filter).to receive(:===).with("str").and_return(true)
+    expect(@action.===("str")).to be_truthy
   end
 
   it "returns false if filter === string returns false" do
-    @filter.should_receive(:===).with("str").and_return(false)
-    @action.===("str").should be_false
+    expect(@filter).to receive(:===).with("str").and_return(false)
+    expect(@action.===("str")).to be_falsey
   end
 end
 
@@ -44,13 +44,13 @@ describe TagListAction, "#start" do
   it "prints a banner for specific tags" do
     action = TagListAction.new ["fails", "unstable"]
     action.start
-    $stdout.should == "\nListing specs tagged with 'fails', 'unstable'\n\n"
+    expect($stdout).to eq("\nListing specs tagged with 'fails', 'unstable'\n\n")
   end
 
   it "prints a banner for all tags" do
     action = TagListAction.new
     action.start
-    $stdout.should == "\nListing all tagged specs\n\n"
+    expect($stdout).to eq("\nListing all tagged specs\n\n")
   end
 end
 
@@ -61,20 +61,20 @@ describe TagListAction, "#load" do
   end
 
   it "creates a MatchFilter for matching tags" do
-    MSpec.should_receive(:read_tags).with(["fails"]).and_return([@t1])
-    MatchFilter.should_receive(:new).with(nil, "I fail")
+    expect(MSpec).to receive(:read_tags).with(["fails"]).and_return([@t1])
+    expect(MatchFilter).to receive(:new).with(nil, "I fail")
     TagListAction.new(["fails"]).load
   end
 
   it "creates a MatchFilter for all tags" do
-    MSpec.should_receive(:read_tags).and_return([@t1, @t2])
-    MatchFilter.should_receive(:new).with(nil, "I fail", "I'm unstable")
+    expect(MSpec).to receive(:read_tags).and_return([@t1, @t2])
+    expect(MatchFilter).to receive(:new).with(nil, "I fail", "I'm unstable")
     TagListAction.new.load
   end
 
   it "does not create a MatchFilter if there are no matching tags" do
-    MSpec.stub(:read_tags).and_return([])
-    MatchFilter.should_not_receive(:new)
+    allow(MSpec).to receive(:read_tags).and_return([])
+    expect(MatchFilter).not_to receive(:new)
     TagListAction.new(["fails"]).load
   end
 end
@@ -85,7 +85,7 @@ describe TagListAction, "#after" do
     $stdout = IOStub.new
 
     @state = double("ExampleState")
-    @state.stub(:description).and_return("str")
+    allow(@state).to receive(:description).and_return("str")
 
     @action = TagListAction.new
   end
@@ -95,58 +95,58 @@ describe TagListAction, "#after" do
   end
 
   it "prints nothing if the filter does not match" do
-    @action.should_receive(:===).with("str").and_return(false)
+    expect(@action).to receive(:===).with("str").and_return(false)
     @action.after(@state)
-    $stdout.should == ""
+    expect($stdout).to eq("")
   end
 
   it "prints the example description if the filter matches" do
-    @action.should_receive(:===).with("str").and_return(true)
+    expect(@action).to receive(:===).with("str").and_return(true)
     @action.after(@state)
-    $stdout.should == "str\n"
+    expect($stdout).to eq("str\n")
   end
 end
 
 describe TagListAction, "#register" do
   before :each do
-    MSpec.stub(:register)
+    allow(MSpec).to receive(:register)
     @action = TagListAction.new
   end
 
   it "registers itself with MSpec for the :start event" do
-    MSpec.should_receive(:register).with(:start, @action)
+    expect(MSpec).to receive(:register).with(:start, @action)
     @action.register
   end
 
   it "registers itself with MSpec for the :load event" do
-    MSpec.should_receive(:register).with(:load, @action)
+    expect(MSpec).to receive(:register).with(:load, @action)
     @action.register
   end
 
   it "registers itself with MSpec for the :after event" do
-    MSpec.should_receive(:register).with(:after, @action)
+    expect(MSpec).to receive(:register).with(:after, @action)
     @action.register
   end
 end
 
 describe TagListAction, "#unregister" do
   before :each do
-    MSpec.stub(:unregister)
+    allow(MSpec).to receive(:unregister)
     @action = TagListAction.new
   end
 
   it "unregisters itself with MSpec for the :start event" do
-    MSpec.should_receive(:unregister).with(:start, @action)
+    expect(MSpec).to receive(:unregister).with(:start, @action)
     @action.unregister
   end
 
   it "unregisters itself with MSpec for the :load event" do
-    MSpec.should_receive(:unregister).with(:load, @action)
+    expect(MSpec).to receive(:unregister).with(:load, @action)
     @action.unregister
   end
 
   it "unregisters itself with MSpec for the :after event" do
-    MSpec.should_receive(:unregister).with(:after, @action)
+    expect(MSpec).to receive(:unregister).with(:after, @action)
     @action.unregister
   end
 end

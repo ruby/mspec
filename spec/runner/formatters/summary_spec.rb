@@ -21,6 +21,6 @@ describe SummaryFormatter, "#after" do
     exc = ExceptionState.new @state, nil, MSpecExampleError.new("painful")
     @formatter.exception exc
     @formatter.after(@state)
-    @out.should == ""
+    expect(@out).to eq("")
   end
 end

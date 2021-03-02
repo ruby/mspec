@@ -14,6 +14,6 @@ describe Object, "#suppress_warning" do
     suppress_warning do
       a = 1
     end
-    a.should == 1
+    expect(a).to eq(1)
   end
 end

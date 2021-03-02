@@ -37,7 +37,7 @@ class MSpecExampleError < Exception
 end
 
 def hide_deprecation_warnings
-  MSpec.stub(:deprecate)
+  allow(MSpec).to receive(:deprecate)
 end
 
 def run_mspec(command, args)

@@ -5,11 +5,11 @@ require 'mspec/runner/example'
 
 describe JUnitFormatter, "#initialize" do
   it "permits zero arguments" do
-    lambda { JUnitFormatter.new }.should_not raise_error
+    expect { JUnitFormatter.new }.not_to raise_error
   end
 
   it "accepts one argument" do
-    lambda { JUnitFormatter.new nil }.should_not raise_error
+    expect { JUnitFormatter.new nil }.not_to raise_error
   end
 end
 
@@ -17,7 +17,7 @@ describe JUnitFormatter, "#print" do
   before :each do
     $stdout = IOStub.new
     @out = IOStub.new
-    File.stub(:open).and_return(@out)
+    allow(File).to receive(:open).and_return(@out)
     @formatter = JUnitFormatter.new "some/file"
   end
 
@@ -27,23 +27,23 @@ describe JUnitFormatter, "#print" do
 
   it "writes to $stdout if #switch has not been called" do
     @formatter.print "begonias"
-    $stdout.should == "begonias"
-    @out.should == ""
+    expect($stdout).to eq("begonias")
+    expect(@out).to eq("")
   end
 
   it "writes to the file passed to #initialize once #switch has been called" do
     @formatter.switch
     @formatter.print "begonias"
-    $stdout.should == ""
-    @out.should == "begonias"
+    expect($stdout).to eq("")
+    expect(@out).to eq("begonias")
   end
 
   it "writes to $stdout once #switch is called if no file was passed to #initialize" do
     formatter = JUnitFormatter.new
     formatter.switch
     formatter.print "begonias"
-    $stdout.should == "begonias"
-    @out.should == ""
+    expect($stdout).to eq("begonias")
+    expect(@out).to eq("")
   end
 end
 
@@ -51,23 +51,23 @@ describe JUnitFormatter, "#finish" do
   before :each do
     @tally = double("tally").as_null_object
     @counter = double("counter").as_null_object
-    @tally.stub(:counter).and_return(@counter)
-    TallyAction.stub(:new).and_return(@tally)
+    allow(@tally).to receive(:counter).and_return(@counter)
+    allow(TallyAction).to receive(:new).and_return(@tally)
 
     @timer = double("timer").as_null_object
-    TimerAction.stub(:new).and_return(@timer)
+    allow(TimerAction).to receive(:new).and_return(@timer)
 
     $stdout = IOStub.new
     context = ContextState.new "describe"
     @state = ExampleState.new(context, "it")
 
     @formatter = JUnitFormatter.new
-    @formatter.stub(:backtrace).and_return("")
-    MSpec.stub(:register)
+    allow(@formatter).to receive(:backtrace).and_return("")
+    allow(MSpec).to receive(:register)
     @formatter.register
 
     exc = ExceptionState.new @state, nil, MSpecExampleError.new("broken")
-    exc.stub(:backtrace).and_return("path/to/some/file.rb:35:in method")
+    allow(exc).to receive(:backtrace).and_return("path/to/some/file.rb:35:in method")
     @formatter.exception exc
     @formatter.after @state
   end
@@ -77,71 +77,71 @@ describe JUnitFormatter, "#finish" do
   end
 
   it "calls #switch" do
-    @formatter.should_receive(:switch)
+    expect(@formatter).to receive(:switch)
     @formatter.finish
   end
 
   it "outputs a failure message and backtrace" do
     @formatter.finish
-    $stdout.should include 'message="error in describe it" type="error"'
-    $stdout.should include "MSpecExampleError: broken\n"
-    $stdout.should include "path/to/some/file.rb:35:in method"
+    expect($stdout).to include 'message="error in describe it" type="error"'
+    expect($stdout).to include "MSpecExampleError: broken\n"
+    expect($stdout).to include "path/to/some/file.rb:35:in method"
   end
 
   it "encodes message and backtrace in latin1 for jenkins" do
     exc = ExceptionState.new @state, nil, MSpecExampleError.new("broken…")
-    exc.stub(:backtrace).and_return("path/to/some/file.rb:35:in methød")
+    allow(exc).to receive(:backtrace).and_return("path/to/some/file.rb:35:in methød")
     @formatter.exception exc
     @formatter.finish
-    $stdout.should =~ /MSpecExampleError: broken((\.\.\.)|\?)\n/
-    $stdout.should =~ /path\/to\/some\/file\.rb:35:in meth(\?|o)d/
+    expect($stdout).to match(/MSpecExampleError: broken((\.\.\.)|\?)\n/)
+    expect($stdout).to match(/path\/to\/some\/file\.rb:35:in meth(\?|o)d/)
   end
 
   it "outputs an elapsed time" do
-    @timer.should_receive(:elapsed).and_return(4.2)
+    expect(@timer).to receive(:elapsed).and_return(4.2)
     @formatter.finish
-    $stdout.should include 'time="4.2"'
+    expect($stdout).to include 'time="4.2"'
   end
 
   it "outputs overall elapsed time" do
-    @timer.should_receive(:elapsed).and_return(4.2)
+    expect(@timer).to receive(:elapsed).and_return(4.2)
     @formatter.finish
-    $stdout.should include 'timeCount="4.2"'
+    expect($stdout).to include 'timeCount="4.2"'
   end
 
   it "outputs the number of examples as test count" do
-    @counter.should_receive(:examples).and_return(9)
+    expect(@counter).to receive(:examples).and_return(9)
     @formatter.finish
-    $stdout.should include 'tests="9"'
+    expect($stdout).to include 'tests="9"'
   end
 
   it "outputs overall number of examples as test count" do
-    @counter.should_receive(:examples).and_return(9)
+    expect(@counter).to receive(:examples).and_return(9)
     @formatter.finish
-    $stdout.should include 'testCount="9"'
+    expect($stdout).to include 'testCount="9"'
   end
 
   it "outputs a failure count" do
-    @counter.should_receive(:failures).and_return(2)
+    expect(@counter).to receive(:failures).and_return(2)
     @formatter.finish
-    $stdout.should include 'failureCount="2"'
+    expect($stdout).to include 'failureCount="2"'
   end
 
   it "outputs overall failure count" do
-    @counter.should_receive(:failures).and_return(2)
+    expect(@counter).to receive(:failures).and_return(2)
     @formatter.finish
-    $stdout.should include 'failures="2"'
+    expect($stdout).to include 'failures="2"'
   end
 
   it "outputs an error count" do
-    @counter.should_receive(:errors).and_return(1)
+    expect(@counter).to receive(:errors).and_return(1)
     @formatter.finish
-    $stdout.should include 'errors="1"'
+    expect($stdout).to include 'errors="1"'
   end
 
   it "outputs overall error count" do
-    @counter.should_receive(:errors).and_return(1)
+    expect(@counter).to receive(:errors).and_return(1)
     @formatter.finish
-    $stdout.should include 'errorCount="1"'
+    expect($stdout).to include 'errorCount="1"'
   end
 end
