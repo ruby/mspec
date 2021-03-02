@@ -3,9 +3,7 @@ RSpec.configure do |config|
   config.raise_errors_for_deprecations!
 end
 
-require 'mspec/utils/format'
-require 'mspec/helpers/io'
-require 'mspec/helpers/scratch'
+require 'mspec'
 
 # Remove this when MRI has intelligent warnings
 $VERBOSE = nil unless $VERBOSE
