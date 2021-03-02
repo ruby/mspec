@@ -105,7 +105,7 @@ describe MSpecTag, "#options" do
     expect(@options).to receive(:parse).and_return([])
     expect(@script).to receive(:exit)
     @script.options
-    expect($stdout).to include "No files specified"
+    expect($stdout.to_s).to include "No files specified"
   end
 end
 
