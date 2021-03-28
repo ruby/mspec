@@ -146,7 +146,8 @@ RSpec.describe Object, "#ruby_exe" do
 
     @script = RubyExeSpecs.new
     allow(@script).to receive(:`)
-    status_successful = double(Process::Status, success?: true)
+
+    status_successful = double(Process::Status,  exitstatus: 0)
     allow(Process).to receive(:last_status).and_return(status_successful)
   end
 
@@ -175,12 +176,12 @@ RSpec.describe Object, "#ruby_exe" do
     code = "code"
     options = {}
 
-    status_failed = double(Process::Status, success?: false, inspect: "#<Process::Status: pid 75873 exit 4>")
+    status_failed = double(Process::Status, exitstatus: 4)
     allow(Process).to receive(:last_status).and_return(status_failed)
 
     expect {
       @script.ruby_exe(code, options)
-    }.to raise_error(%r{ruby_exe\(.+\) failed: #<Process::Status: pid 75873 exit 4>})
+    }.to raise_error(%r{Expected exit status is 0 but actual is 4. Command ruby_exe\(.+\)})
   end
 
   describe "with :dir option" do
@@ -221,25 +222,23 @@ RSpec.describe Object, "#ruby_exe" do
     end
   end
 
-  describe "with :exception option" do
-    context "when Ruby command fails" do
-      before do
-        status_failed = double(Process::Status, success?: false)
-        allow(Process).to receive(:last_status).and_return(status_failed)
-      end
+  describe "with :exit_status option" do
+    before do
+      status_failed = double(Process::Status, exitstatus: 4)
+      allow(Process).to receive(:last_status).and_return(status_failed)
+    end
 
-      it "raises exception when exception: true" do
-        expect {
-          @script.ruby_exe("path", exception: true)
-        }.to raise_error(%r{ruby_exe\(.+\) failed:})
-      end
+    it "raises exception when command ends with not expected status" do
+      expect {
+        @script.ruby_exe("path", exit_status: 1)
+      }.to raise_error(%r{Expected exit status is 1 but actual is 4. Command ruby_exe\(.+\)})
+    end
 
-      it "does not raise exception when exception: false" do
-        output = "output"
-        allow(@script).to receive(:`).and_return(output)
+    it "does not raise exception when command ends with expected status" do
+      output = "output"
+      allow(@script).to receive(:`).and_return(output)
 
-        expect(@script.ruby_exe("path", exception: false)).to eq output
-      end
+      expect(@script.ruby_exe("path", exit_status: 4)).to eq output
     end
   end
 end
