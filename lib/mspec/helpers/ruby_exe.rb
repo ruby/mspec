@@ -142,8 +142,9 @@ def ruby_exe(code = :not_given, opts = {})
       command = ruby_cmd(code, opts)
       output = `#{command}`
 
-      if !$?.success? && exception
-        raise "ruby_exe(#{command}) failed: #{$?.inspect}"
+      last_status = Process.last_status
+      if !last_status.success? && exception
+        raise "ruby_exe(#{command}) failed: #{last_status.inspect}"
       end
 
       output
