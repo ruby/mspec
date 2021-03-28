@@ -146,16 +146,17 @@ RSpec.describe Object, "#ruby_exe" do
 
     @script = RubyExeSpecs.new
     allow(@script).to receive(:`)
-    allow($?).to receive(:success?).and_return(true)
+    status_successful = double(Process::Status, success?: true)
+    allow(Process).to receive(:last_status).and_return(status_successful)
   end
 
   it "returns command STDOUT when given command" do
     code = "code"
     options = {}
     output = "output"
-    @script.stub(:`) { output }
+    allow(@script).to receive(:`).and_return(output)
 
-    @script.ruby_exe(code, options).should == output
+    expect(@script.ruby_exe(code, options)).to eq output
   end
 
   it "returns an Array containing the interpreter executable and flags when given no arguments" do
@@ -174,14 +175,12 @@ RSpec.describe Object, "#ruby_exe" do
     code = "code"
     options = {}
 
-    @script.stub(:`) do
-      $?.stub(:success?) { false }
-      $?.stub(:inspect) { "#<Process::Status: pid 75873 exit 4>" }
-    end
+    status_failed = double(Process::Status, success?: false, inspect: "#<Process::Status: pid 75873 exit 4>")
+    allow(Process).to receive(:last_status).and_return(status_failed)
 
-    -> {
+    expect {
       @script.ruby_exe(code, options)
-    }.should raise_error(%r{ruby_exe\(.+\) failed: #<Process::Status: pid 75873 exit 4>})
+    }.to raise_error(%r{ruby_exe\(.+\) failed: #<Process::Status: pid 75873 exit 4>})
   end
 
   describe "with :dir option" do
@@ -225,20 +224,21 @@ RSpec.describe Object, "#ruby_exe" do
   describe "with :exception option" do
     context "when Ruby command fails" do
       before do
-        $?.stub(:success?) { false }
+        status_failed = double(Process::Status, success?: false)
+        allow(Process).to receive(:last_status).and_return(status_failed)
       end
 
       it "raises exception when exception: true" do
-        -> {
+        expect {
           @script.ruby_exe("path", exception: true)
-        }.should raise_error(%r{ruby_exe\(.+\) failed:})
+        }.to raise_error(%r{ruby_exe\(.+\) failed:})
       end
 
       it "does not raise exception when exception: false" do
         output = "output"
-        @script.stub(:`) { output }
+        allow(@script).to receive(:`).and_return(output)
 
-        @script.ruby_exe("path", exception: false).should == output
+        expect(@script.ruby_exe("path", exception: false)).to eq output
       end
     end
   end
