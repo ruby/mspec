@@ -135,7 +135,7 @@ def ruby_exe(code = :not_given, opts = {})
     code = tmpfile
   end
 
-  exception = opts.fetch(:exception, true)
+  expected_exit_status = opts.fetch(:exit_status, 0)
 
   begin
     platform_is_not :opal do
@@ -143,8 +143,8 @@ def ruby_exe(code = :not_given, opts = {})
       output = `#{command}`
 
       last_status = Process.last_status
-      if !last_status.success? && exception
-        raise "ruby_exe(#{command}) failed: #{last_status.inspect}"
+      if last_status.exitstatus != expected_exit_status
+        raise "Expected exit status is #{expected_exit_status} but actual is #{last_status.exitstatus}. Command ruby_exe(#{command})"
       end
 
       output
