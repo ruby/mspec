@@ -181,7 +181,19 @@ RSpec.describe Object, "#ruby_exe" do
 
     expect {
       @script.ruby_exe(code, options)
-    }.to raise_error(%r{Expected exit status is 0 but actual is 4. Command ruby_exe\(.+\)})
+    }.to raise_error(%r{Expected exit status is 0 but actual is 4 for command ruby_exe\(.+\)})
+  end
+
+  it "shows in the exception message if exitstatus is nil (e.g., signal)" do
+    code = "code"
+    options = {}
+
+    status_failed = double(Process::Status, exitstatus: nil)
+    allow(Process).to receive(:last_status).and_return(status_failed)
+
+    expect {
+      @script.ruby_exe(code, options)
+    }.to raise_error(%r{Expected exit status is 0 but actual is nil for command ruby_exe\(.+\)})
   end
 
   describe "with :dir option" do
@@ -231,7 +243,7 @@ RSpec.describe Object, "#ruby_exe" do
     it "raises exception when command ends with not expected status" do
       expect {
         @script.ruby_exe("path", exit_status: 1)
-      }.to raise_error(%r{Expected exit status is 1 but actual is 4. Command ruby_exe\(.+\)})
+      }.to raise_error(%r{Expected exit status is 1 but actual is 4 for command ruby_exe\(.+\)})
     end
 
     it "does not raise exception when command ends with expected status" do

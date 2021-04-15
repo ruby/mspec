@@ -144,7 +144,7 @@ def ruby_exe(code = :not_given, opts = {})
 
       last_status = Process.last_status
       if last_status.exitstatus != expected_exit_status
-        raise "Expected exit status is #{expected_exit_status} but actual is #{last_status.exitstatus}. Command ruby_exe(#{command})"
+        raise "Expected exit status is #{expected_exit_status.inspect} but actual is #{last_status.exitstatus.inspect} for command ruby_exe(#{command.inspect})"
       end
 
       output
