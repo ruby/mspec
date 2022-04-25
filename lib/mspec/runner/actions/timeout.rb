@@ -8,6 +8,7 @@ class TimeoutAction
   def register
     MSpec.register :start, self
     MSpec.register :before, self
+    MSpec.register :after, self
     MSpec.register :finish, self
   end
 
@@ -35,8 +36,12 @@ class TimeoutAction
           if @queue.empty?
             elapsed = now - @started
             if elapsed > @timeout
-              STDERR.puts "\n#{@current_state.description}"
-              STDERR.puts "Example took longer than the configured timeout of #{@timeout}s"
+              if @current_state
+                STDERR.puts "\nExample took longer than the configured timeout of #{@timeout}s:"
+                STDERR.puts "#{@current_state.description}"
+              else
+                STDERR.puts "\nSome code outside an example took longer than the configured timeout of #{@timeout}s"
+              end
               STDERR.flush
 
               show_backtraces
@@ -53,6 +58,12 @@ class TimeoutAction
     @queue << -> do
       @current_state = state
       @started = time
+    end
+  end
+
+  def after(state = nil)
+    @queue << -> do
+      @current_state = nil
     end
   end
 
