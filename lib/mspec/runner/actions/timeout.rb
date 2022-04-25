@@ -84,7 +84,9 @@ class TimeoutAction
       Truffle::Debug.show_backtraces
     else
       Thread.list.each do |thread|
-        STDERR.puts thread.inspect, thread.backtrace, ''
+        unless thread == Thread.current
+          STDERR.puts thread.inspect, thread.backtrace, ''
+        end
       end
     end
   end
