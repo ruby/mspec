@@ -86,8 +86,9 @@ class MSpecScript
       config[:path].each do |dir|
         begin
           file = File.expand_path name, dir
-        rescue ArgumentError
+        rescue ArgumentError => e
           # File.expand_path can issue error e.g. if HOME is not available
+          warn "File.expand_path(#{name}, #{dir}) failed with: #{e}"
           next
         end
         if @loaded.include?(file)
