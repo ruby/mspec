@@ -8,7 +8,7 @@ jobs:
         ruby: [ 2.6, 2.7, 3.0, 3.1, ruby-head, truffleruby-head ]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
@@ -19,8 +19,8 @@ jobs:
     name: Check ruby/spec still passes with MSpec changes
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
       with:
         repository: ruby/spec
         path: rubyspec
