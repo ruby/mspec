@@ -26,6 +26,6 @@ jobs:
         path: rubyspec
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7
+        ruby-version: ruby
         bundler: none
     - run: bin/mspec --timeout 30 rubyspec
