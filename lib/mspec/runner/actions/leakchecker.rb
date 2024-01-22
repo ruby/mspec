@@ -358,7 +358,7 @@ class LeakCheckerAction
     nss_configure_lookup.call 'passwd', 'files'
     nss_configure_lookup.call 'shadow', 'files'
     nss_configure_lookup.call 'group', 'files'
-    nss_configure_lookup.call 'hosts', 'files dns myhostname'
+    nss_configure_lookup.call 'hosts', 'files dns'
     nss_configure_lookup.call 'services', 'files'
     nss_configure_lookup.call 'netgroup', 'files'
     nss_configure_lookup.call 'automount', 'files'
