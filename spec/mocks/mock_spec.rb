@@ -22,7 +22,7 @@ end
 RSpec.describe Mock, ".replaced_name" do
   it "returns the name for a method that is being replaced by a mock method" do
     m = double('a fake id')
-    expect(Mock.replaced_name(Mock.replaced_key(m, :method_call))).to eq(:"__mspec_#{m.object_id}_method_call__")
+    expect(Mock.replaced_name(Mock.replaced_key(m, :method_call))).to eq(:"__mspec_method_call__")
   end
 end
 

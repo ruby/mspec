@@ -19,7 +19,7 @@ module Mock
   end
 
   def self.replaced_name(key)
-    :"__mspec_#{key.first}_#{key.last}__"
+    :"__mspec_#{key.last}__"
   end
 
   def self.replaced_key(obj, sym)
