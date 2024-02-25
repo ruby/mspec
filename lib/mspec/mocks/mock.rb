@@ -18,12 +18,12 @@ module Mock
     @stubs ||= Hash.new { |h,k| h[k] = [] }
   end
 
-  def self.replaced_name(obj, sym)
-    :"__mspec_#{obj.__id__}_#{sym}__"
+  def self.replaced_name(key)
+    :"__mspec_#{key.first}_#{key.last}__"
   end
 
   def self.replaced_key(obj, sym)
-    [replaced_name(obj, sym), sym]
+    [obj.__id__, sym]
   end
 
   def self.replaced?(key)
@@ -38,7 +38,7 @@ module Mock
   def self.mock_respond_to?(obj, sym, include_private = false)
     key = replaced_key(obj, :respond_to?)
     if replaced? key
-      name = replaced_name(obj, :respond_to?)
+      name = replaced_name(key)
       obj.__send__ name, sym, include_private
     else
       obj.respond_to? sym, include_private
@@ -57,7 +57,7 @@ module Mock
     end
 
     if (sym == :respond_to? or mock_respond_to?(obj, sym, true)) and !replaced?(key)
-      meta.__send__ :alias_method, key.first, sym
+      meta.__send__ :alias_method, replaced_name(key), sym
     end
 
     suppress_warning {
@@ -188,7 +188,7 @@ module Mock
         next
       end
 
-      replaced = key.first
+      replaced = replaced_name(key)
       sym = key.last
       meta = obj.singleton_class
 
