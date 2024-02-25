@@ -26,12 +26,8 @@ module Mock
     [replaced_name(obj, sym), sym]
   end
 
-  def self.has_key?(keys, sym)
-    !!keys.find { |k| k.first == sym }
-  end
-
-  def self.replaced?(sym)
-    has_key?(mocks.keys, sym) or has_key?(stubs.keys, sym)
+  def self.replaced?(key)
+    mocks.include?(key) or stubs.include?(key)
   end
 
   def self.clear_replaced(key)
@@ -40,8 +36,9 @@ module Mock
   end
 
   def self.mock_respond_to?(obj, sym, include_private = false)
-    name = replaced_name(obj, :respond_to?)
-    if replaced? name
+    key = replaced_key(obj, :respond_to?)
+    if replaced? key
+      name = replaced_name(obj, :respond_to?)
       obj.__send__ name, sym, include_private
     else
       obj.respond_to? sym, include_private
@@ -59,7 +56,7 @@ module Mock
       return
     end
 
-    if (sym == :respond_to? or mock_respond_to?(obj, sym, true)) and !replaced?(key.first)
+    if (sym == :respond_to? or mock_respond_to?(obj, sym, true)) and !replaced?(key)
       meta.__send__ :alias_method, key.first, sym
     end
 

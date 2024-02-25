@@ -42,16 +42,16 @@ RSpec.describe Mock, ".replaced?" do
 
   it "returns true if a method has been stubbed on an object" do
     Mock.install_method @mock, :method_call
-    expect(Mock.replaced?(Mock.replaced_name(@mock, :method_call))).to be_truthy
+    expect(Mock.replaced?(Mock.replaced_key(@mock, :method_call))).to be_truthy
   end
 
   it "returns true if a method has been mocked on an object" do
     Mock.install_method @mock, :method_call, :stub
-    expect(Mock.replaced?(Mock.replaced_name(@mock, :method_call))).to be_truthy
+    expect(Mock.replaced?(Mock.replaced_key(@mock, :method_call))).to be_truthy
   end
 
   it "returns false if a method has not been stubbed or mocked" do
-    expect(Mock.replaced?(Mock.replaced_name(@mock, :method_call))).to be_falsey
+    expect(Mock.replaced?(Mock.replaced_key(@mock, :method_call))).to be_falsey
   end
 end
 
@@ -521,10 +521,9 @@ RSpec.describe Mock, ".cleanup" do
     replaced_key = Mock.replaced_key(@mock, :method_call)
     expect(Mock).to receive(:clear_replaced).with(replaced_key)
 
-    replaced_name = Mock.replaced_name(@mock, :method_call)
-    expect(Mock.replaced?(replaced_name)).to be_truthy
+    expect(Mock.replaced?(replaced_key)).to be_truthy
 
     Mock.cleanup
-    expect(Mock.replaced?(replaced_name)).to be_falsey
+    expect(Mock.replaced?(replaced_key)).to be_falsey
   end
 end
