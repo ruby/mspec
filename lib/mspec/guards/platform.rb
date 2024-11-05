@@ -53,20 +53,23 @@ class PlatformGuard < SpecGuard
     end
   end
 
+  # In bits
   WORD_SIZE = 1.size * 8
   deprecate_constant :WORD_SIZE
 
+  # In bits
   POINTER_SIZE = begin
     require 'rbconfig/sizeof'
     RbConfig::SIZEOF["void*"] * 8
   rescue LoadError
-    [0].pack('j').size
+    [0].pack('j').size * 8
   end
 
+  # In bits
   C_LONG_SIZE = if defined?(RbConfig::SIZEOF[])
     RbConfig::SIZEOF["long"] * 8
   else
-    [0].pack('l!').size
+    [0].pack('l!').size * 8
   end
 
   def self.wordsize?(size)
