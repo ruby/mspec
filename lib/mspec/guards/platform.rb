@@ -53,6 +53,9 @@ class PlatformGuard < SpecGuard
     end
   end
 
+  WORD_SIZE = 1.size * 8
+  deprecate_constant :WORD_SIZE
+
   POINTER_SIZE = begin
     require 'rbconfig/sizeof'
     RbConfig::SIZEOF["void*"] * 8
@@ -64,6 +67,11 @@ class PlatformGuard < SpecGuard
     RbConfig::SIZEOF["long"] * 8
   else
     [0].pack('l!').size
+  end
+
+  def self.wordsize?(size)
+    warn "#wordsize? is deprecated, use #c_long_size?"
+    size == WORD_SIZE
   end
 
   def self.pointer_size?(size)
@@ -91,6 +99,9 @@ class PlatformGuard < SpecGuard
         match &&= PlatformGuard.os?(*value)
       when :pointer_size
         match &&= PlatformGuard.pointer_size? value
+      when :wordsize
+        warn ":wordsize is deprecated, use :c_long_size"
+        match &&= PlatformGuard.wordsize? value
       when :c_long_size
         match &&= PlatformGuard::c_long_size? value
       end
