@@ -21,6 +21,8 @@ module NameMapSpecs
     def f; end
   end
 
+  autoload :BadFile, "#{__dir__}/fixtures/this_file_raises.rb"
+
   def self.n; end
   def n; end
 end
@@ -83,6 +85,11 @@ RSpec.describe NameMap, "#class_or_module" do
     expect(@map.class_or_module("Heaven")).to eq(nil)
     expect(@map.class_or_module("Hell")).to eq(nil)
     expect(@map.class_or_module("Bush::Brain")).to eq(nil)
+  end
+
+  it "returns nil if accessing the constant raises RuntimeError" do
+    expect { NameMapSpecs::BadFile }.to raise_error(RuntimeError)
+    expect(@map.class_or_module("NameMapSpecs::BadFile")).to eq(nil)
   end
 end
 
