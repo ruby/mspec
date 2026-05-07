@@ -36,7 +36,7 @@ class SpecPositiveOperatorMatcher < BasicObject
     end
   end
 
-  def raise(exception = Exception, message = nil, options = nil, &block)
+  def raise(exception = ::Exception, message = nil, options = nil, &block)
     matcher = ::RaiseErrorMatcher.new(exception, message, options, &block)
     unless matcher.matches? @actual
       expected, actual = matcher.failure_message
@@ -78,7 +78,7 @@ class SpecNegativeOperatorMatcher < BasicObject
     end
   end
 
-  def raise(exception = Exception, message = nil, options = nil, &block)
+  def raise(exception = ::Exception, message = nil, options = nil, &block)
     matcher = ::RaiseErrorMatcher.new(exception, message, options, &block)
     if matcher.matches? @actual
       expected, actual = matcher.negative_failure_message
